@@ -1,0 +1,1 @@
+"""A CLI for PyScript!"""
