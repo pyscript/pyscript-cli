@@ -1,0 +1,28 @@
+# Byte-compiled
+__pycache__/
+*.py[cod]
+
+# Distribution / packaging
+dist/
+
+# Sphinx documentation
+docs/_build/
+
+# Environments
+.venv
+env/
+venv/
+
+# Poetry lock file
+poetry.lock
+
+# Unit test / coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+coverage.xml
+.pytest_cache/
+
+# mypy
+.mypy_cache/
