@@ -14,6 +14,11 @@ repos:
         args: [--autofix, --indent, '4']
     -   id: pretty-format-toml
         args: [--autofix]
+-   repo: https://github.com/sondrelg/pep585-upgrade
+    rev: v1.0.1
+    hooks:
+    -   id: upgrade-type-hints
+        args: [--futures=true]
 -   repo: https://github.com/pycqa/isort
     rev: 5.10.1
     hooks:
