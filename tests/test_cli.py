@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import unittest.mock
 from pathlib import Path
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING, Callable, Optional
 
 import pytest
 from mypy_extensions import VarArg
@@ -87,3 +88,54 @@ def test_wrap_file(
         html_text = fp.read()
 
     assert f"<py-script>\n{command}\n</py-script>" in html_text
+
+
+@pytest.mark.parametrize(
+    "input_filename, additional_args, expected_output_filename",
+    [
+        ("hello.py", ("-o", "output.html"), "output.html"),
+        ("hello.py", tuple(), None),
+        (None, ("-c", 'print("Hello World!"'), None),
+    ],
+)
+def test_wrap_show(
+    invoke_cli: CLIInvoker,
+    tmp_path: Path,
+    input_filename: Optional[str],
+    additional_args: tuple[str],
+    expected_output_filename: Optional[str],
+) -> None:
+    # TODO: Refactor this test
+
+    # Generate an input file
+    input_file: Optional[Path] = None
+    if input_filename:
+        input_file = tmp_path / input_filename
+        with input_file.open("w") as fp:
+            fp.write('print("Hello World!")')
+        args = (str(input_file), *additional_args)
+    else:
+        args = additional_args
+
+    with unittest.mock.patch("pyscript.cli.webbrowser.open") as browser_mock:
+        result = invoke_cli("wrap", "--show", *args)
+
+    assert result.exit_code == 0
+    assert browser_mock.called
+
+    should_be_deleted = False
+    if expected_output_filename is None and input_filename is not None:
+        assert input_file is not None
+        expected_html_path = input_file.with_suffix(".html")
+    elif expected_output_filename:
+        expected_html_path = tmp_path / expected_output_filename
+    else:
+        expected_html_path = tmp_path / "pyscript_tmp.html"
+        should_be_deleted = True
+
+    browser_mock.assert_called_with(f"file://{expected_html_path.resolve()}")
+
+    if not should_be_deleted:
+        assert expected_html_path.exists()
+    else:
+        assert not expected_html_path.exists()
