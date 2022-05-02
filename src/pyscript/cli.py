@@ -8,7 +8,7 @@ from pyscript._generator import file_to_html, string_to_html
 
 try:
     import rich_click.typer as typer
-except ImportError:
+except ImportError:  # pragma: no cover
     import typer  # type: ignore
 from rich.console import Console
 
