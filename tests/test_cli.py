@@ -52,13 +52,23 @@ def test_wrap_command(invoke_cli: CLIInvoker, tmp_path: Path, flag: str) -> None
 
 
 @pytest.mark.parametrize(
-    "extra_args, expected_output_filename",
+    "wrap_args",
+    [tuple(), ("-c", "print()", "script_name.py"), ("-c", "print()")],
+    ids=["empty_args", "command_and_script", "command_no_output_or_show"],
+)
+def test_wrap_abort(invoke_cli: CLIInvoker, wrap_args: tuple[str]):
+    result = invoke_cli("wrap", *wrap_args)
+    assert result.exit_code == 1
+
+
+@pytest.mark.parametrize(
+    "wrap_args, expected_output_filename",
     [(("-o", "output.html"), "output.html"), (tuple(), "hello.html")],
 )
 def test_wrap_file(
     invoke_cli: CLIInvoker,
     tmp_path: Path,
-    extra_args: tuple[str],
+    wrap_args: tuple[str],
     expected_output_filename: str,
 ) -> None:
     command = 'print("Hello World!")'
@@ -67,7 +77,7 @@ def test_wrap_file(
     with input_file.open("w") as fp:
         fp.write(command)
 
-    result = invoke_cli("wrap", str(input_file), *extra_args)
+    result = invoke_cli("wrap", str(input_file), *wrap_args)
     assert result.exit_code == 0
 
     expected_html_path = tmp_path / expected_output_filename
