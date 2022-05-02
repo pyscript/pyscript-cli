@@ -102,7 +102,7 @@ def test_wrap_show(
     invoke_cli: CLIInvoker,
     tmp_path: Path,
     input_filename: Optional[str],
-    additional_args: tuple[str],
+    additional_args: tuple[str, ...],
     expected_output_filename: Optional[str],
 ) -> None:
     # TODO: Refactor this test
