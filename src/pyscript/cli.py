@@ -1,12 +1,14 @@
 """The main CLI entrypoint and commands."""
+import time
+import webbrowser
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 from pyscript._generator import file_to_html, string_to_html
 
 try:
     import rich_click.typer as typer
-except ImportError:
+except ImportError:  # pragma: no cover
     import typer  # type: ignore
 from rich.console import Console
 
@@ -38,18 +40,68 @@ def version() -> None:
     _print_version()
 
 
+_input_file_argument = typer.Argument(
+    None,
+    help="An optional path to the input .py script. If not provided, must use '-c' flag.",
+)
+_output_file_option = typer.Option(
+    None,
+    "-o",
+    "--output",
+    help="Path to the resulting HTML output file. Defaults to input_file with suffix replaced.",
+)
+_command_option = typer.Option(
+    None, "-c", "--command", help="If provided, embed a single command string."
+)
+_show_option = typer.Option(None, help="Open output file in web browser.")
+
+
+class Abort(typer.Abort):
+    def __init__(self, msg: str, *args: Any, **kwargs: Any):
+        console.print(msg, style="red")
+        super().__init__(*args, **kwargs)
+
+
 @app.command()
 def wrap(
-    input_file: Optional[Path] = typer.Argument(None),
-    command: Optional[str] = typer.Option(None, "-c", "--command"),
-    output: Optional[Path] = typer.Option(None, "-o"),
+    input_file: Optional[Path] = _input_file_argument,
+    output: Optional[Path] = _output_file_option,
+    command: Optional[str] = _command_option,
+    show: Optional[bool] = _show_option,
 ) -> None:
     """Wrap a Python script inside an HTML file."""
+
+    if not input_file and not command:
+        raise Abort(
+            "Must provide either an input '.py' file or a command with the '-c' option."
+        )
+    if input_file and command:
+        raise Abort("Cannot provide both an input '.py' file and '-c' option.")
+
+    # Derive the output path if it is not provided
+    remove_output = False
+    if output is None:
+        if command and show:
+            output = Path("pyscript_tmp.html")
+            remove_output = True
+        elif not command:
+            assert input_file is not None
+            output = input_file.with_suffix(".html")
+        else:
+            raise Abort("Must provide an output file or use `--show` option")
+
     if input_file is not None:
-        assert command is None
         file_to_html(input_file, output)
-        raise typer.Exit()
 
     if command:
-        assert output is not None
         string_to_html(command, output)
+
+    assert output is not None
+
+    if show:
+        console.print("Opening in web browser!")
+        webbrowser.open(f"file://{output.resolve()}")
+
+    if remove_output:
+        time.sleep(1)
+        output.unlink()
