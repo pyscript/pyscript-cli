@@ -1,5 +1,8 @@
 """The main CLI entrypoint and commands."""
+from pathlib import Path
 from typing import Optional
+
+from pyscript._generator import string_to_html
 
 try:
     import rich_click.typer as typer
@@ -36,5 +39,10 @@ def version() -> None:
 
 
 @app.command()
-def wrap() -> None:
+def wrap(
+    command: Optional[str] = typer.Option(None, "-c", "--command"),
+    output: Path = typer.Option(..., "-o"),
+) -> None:
     """Wrap a Python script inside an HTML file."""
+    if command:
+        string_to_html(command, output)

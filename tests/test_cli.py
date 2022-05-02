@@ -32,3 +32,18 @@ def test_version(invoke_cli: CLIInvoker, cli_arg: str) -> None:
     result = invoke_cli(cli_arg)
     assert result.exit_code == 0
     assert f"PyScript CLI version: {__version__}" in result.stdout
+
+
+@pytest.mark.parametrize("flag", ["-c", "--command"])
+def test_wrap_command(invoke_cli: CLIInvoker, tmp_path: Path, flag: str) -> None:
+    command = 'print("Hello World!")'
+    result = invoke_cli("wrap", flag, command, "-o", "output.html")
+    assert result.exit_code == 0
+
+    expected_html_path = tmp_path / "output.html"
+    assert expected_html_path.exists()
+
+    with expected_html_path.open() as fp:
+        html_text = fp.read()
+
+    assert f"<py-script>\n{command}\n</py-script>" in html_text
