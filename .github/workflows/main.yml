@@ -33,7 +33,7 @@ jobs:
         -   name: Test with pytest
             run: |
                 poetry run coverage run -m pytest tests
-                poetry run coverage report xml
+                poetry run coverage xml
         -   uses: codecov/codecov-action@v2
             with:
                 files: ./coverage.xml
