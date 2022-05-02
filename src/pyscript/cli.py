@@ -1,4 +1,5 @@
 """The main CLI entrypoint and commands."""
+import webbrowser
 from pathlib import Path
 from typing import Optional
 
@@ -40,9 +41,20 @@ def version() -> None:
 
 @app.command()
 def wrap(
-    input_file: Optional[Path] = typer.Argument(None),
-    command: Optional[str] = typer.Option(None, "-c", "--command"),
-    output: Optional[Path] = typer.Option(None, "-o"),
+    input_file: Optional[Path] = typer.Argument(
+        None,
+        help="An optional path to the input .py script. If not provided, must use '-c' flag.",
+    ),
+    command: Optional[str] = typer.Option(
+        None, "-c", "--command", help="If provided, embed a single command string."
+    ),
+    output: Optional[Path] = typer.Option(
+        None,
+        "-o",
+        "--output",
+        help="Path to the resulting HTML output file. Defaults to input_file with suffix replaced.",
+    ),
+    show: Optional[bool] = typer.Option(None, help="Open output file in web browser."),
 ) -> None:
     """Wrap a Python script inside an HTML file."""
     if input_file is not None:
@@ -53,3 +65,7 @@ def wrap(
     if command:
         assert output is not None
         string_to_html(command, output)
+
+    if show:
+        console.print("Opening in web browser!")
+        webbrowser.open(f"file://{output.resolve()}")
