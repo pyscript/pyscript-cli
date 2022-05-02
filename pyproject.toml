@@ -14,6 +14,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
+importlib-metadata = {version = "^4.11.3", python = "3.7"}
 rich = "^12.3.0"
 rich-click = {extras = ["typer"], version = "^1.3.0"}
 typer = "^0.4.1"

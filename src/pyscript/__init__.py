@@ -1,6 +1,9 @@
 """A CLI for PyScript!"""
 
-from importlib import metadata
+try:
+    from importlib import metadata
+except ImportError:
+    import importlib_metadata as metadata  # type: ignore
 
 try:
     __version__ = metadata.version("pyscript-cli")
