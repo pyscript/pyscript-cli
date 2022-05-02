@@ -39,22 +39,28 @@ def version() -> None:
     _print_version()
 
 
+_input_file_argument = typer.Argument(
+    None,
+    help="An optional path to the input .py script. If not provided, must use '-c' flag.",
+)
+_output_file_option = typer.Option(
+    None,
+    "-o",
+    "--output",
+    help="Path to the resulting HTML output file. Defaults to input_file with suffix replaced.",
+)
+_command_option = typer.Option(
+    None, "-c", "--command", help="If provided, embed a single command string."
+)
+_show_option = typer.Option(None, help="Open output file in web browser.")
+
+
 @app.command()
 def wrap(
-    input_file: Optional[Path] = typer.Argument(
-        None,
-        help="An optional path to the input .py script. If not provided, must use '-c' flag.",
-    ),
-    command: Optional[str] = typer.Option(
-        None, "-c", "--command", help="If provided, embed a single command string."
-    ),
-    output: Optional[Path] = typer.Option(
-        None,
-        "-o",
-        "--output",
-        help="Path to the resulting HTML output file. Defaults to input_file with suffix replaced.",
-    ),
-    show: Optional[bool] = typer.Option(None, help="Open output file in web browser."),
+    input_file: Optional[Path] = _input_file_argument,
+    output: Optional[Path] = _output_file_option,
+    command: Optional[str] = _command_option,
+    show: Optional[bool] = _show_option,
 ) -> None:
     """Wrap a Python script inside an HTML file."""
     if input_file is not None:
