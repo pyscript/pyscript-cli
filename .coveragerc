@@ -1,0 +1,7 @@
+[report]
+omit =
+    __main__.py
+exclude_lines =
+    pragma: no cover
+    # This covers both typing.TYPE_CHECKING and plain TYPE_CHECKING, with any amount of whitespace
+    if\s+(typing\.)?TYPE_CHECKING:
