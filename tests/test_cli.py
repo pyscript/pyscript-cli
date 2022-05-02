@@ -47,3 +47,31 @@ def test_wrap_command(invoke_cli: CLIInvoker, tmp_path: Path, flag: str) -> None
         html_text = fp.read()
 
     assert f"<py-script>\n{command}\n</py-script>" in html_text
+
+
+@pytest.mark.parametrize(
+    "extra_args, expected_output_filename",
+    [(("-o", "output.html"), "output.html"), (tuple(), "hello.html")],
+)
+def test_wrap_file(
+    invoke_cli: CLIInvoker,
+    tmp_path: Path,
+    extra_args: tuple[str],
+    expected_output_filename: str,
+) -> None:
+    command = 'print("Hello World!")'
+
+    input_file = tmp_path / "hello.py"
+    with input_file.open("w") as fp:
+        fp.write(command)
+
+    result = invoke_cli("wrap", str(input_file), *extra_args)
+    assert result.exit_code == 0
+
+    expected_html_path = tmp_path / expected_output_filename
+    assert expected_html_path.exists()
+
+    with expected_html_path.open() as fp:
+        html_text = fp.read()
+
+    assert f"<py-script>\n{command}\n</py-script>" in html_text

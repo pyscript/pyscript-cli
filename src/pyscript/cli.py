@@ -2,7 +2,7 @@
 from pathlib import Path
 from typing import Optional
 
-from pyscript._generator import string_to_html
+from pyscript._generator import file_to_html, string_to_html
 
 try:
     import rich_click.typer as typer
@@ -40,9 +40,16 @@ def version() -> None:
 
 @app.command()
 def wrap(
+    input_file: Optional[Path] = typer.Argument(None),
     command: Optional[str] = typer.Option(None, "-c", "--command"),
-    output: Path = typer.Option(..., "-o"),
+    output: Optional[Path] = typer.Option(None, "-o"),
 ) -> None:
     """Wrap a Python script inside an HTML file."""
+    if input_file is not None:
+        assert command is None
+        file_to_html(input_file, output)
+        raise typer.Exit()
+
     if command:
+        assert output is not None
         string_to_html(command, output)
