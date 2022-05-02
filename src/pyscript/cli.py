@@ -1,4 +1,5 @@
 """The main CLI entrypoint and commands."""
+import time
 import webbrowser
 from pathlib import Path
 from typing import Any, Optional
@@ -69,18 +70,38 @@ def wrap(
     show: Optional[bool] = _show_option,
 ) -> None:
     """Wrap a Python script inside an HTML file."""
+
+    if not input_file and not command:
+        raise Abort(
+            "Must provide either an input '.py' file or a command with the '-c' option."
+        )
+    if input_file and command:
+        raise Abort("Cannot provide both an input '.py' file and '-c' option.")
+
+    # Derive the output path if it is not provided
+    remove_output = False
+    if output is None:
+        if command and show:
+            output = Path("pyscript_tmp.html")
+            remove_output = True
+        elif not command:
+            assert input_file is not None
+            output = input_file.with_suffix(".html")
+        else:
+            raise Abort("Must provide an output file or use `--show` option")
+
     if input_file is not None:
-        if command is not None:
-            raise Abort("Cannot provide both an input file and `-c` option.")
         file_to_html(input_file, output)
 
     if command:
-        if output is None:
-            raise Abort("Must provide an output file or use `--show` option")
         string_to_html(command, output)
 
+    assert output is not None
+
     if show:
-        if output is None:
-            raise Abort("Must provide an output file to use `--show` option")
         console.print("Opening in web browser!")
         webbrowser.open(f"file://{output.resolve()}")
+
+    if remove_output:
+        time.sleep(1)
+        output.unlink()
