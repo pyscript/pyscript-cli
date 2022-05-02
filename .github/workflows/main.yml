@@ -1,4 +1,4 @@
-name: Run Python Tests
+name: Test and Publish
 
 on: [push, pull_request]
 
