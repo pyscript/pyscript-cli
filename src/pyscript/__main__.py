@@ -1,3 +1,3 @@
-from pyscript.cli import main
+from pyscript.cli import app
 
-main()
+app()
