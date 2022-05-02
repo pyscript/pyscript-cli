@@ -1,7 +1,10 @@
 """The main CLI entrypoint and commands."""
 from typing import Optional
 
-import rich_click.typer as typer
+try:
+    import rich_click.typer as typer
+except ImportError:
+    import typer  # type: ignore
 from rich.console import Console
 
 from pyscript import __version__
