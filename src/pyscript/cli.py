@@ -1,7 +1,7 @@
 """The main CLI entrypoint and commands."""
 import webbrowser
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 from pyscript._generator import file_to_html, string_to_html
 
@@ -55,6 +55,12 @@ _command_option = typer.Option(
 _show_option = typer.Option(None, help="Open output file in web browser.")
 
 
+class Abort(typer.Abort):
+    def __init__(self, msg: str, *args: Any, **kwargs: Any):
+        console.print(msg, style="red")
+        super().__init__(*args, **kwargs)
+
+
 @app.command()
 def wrap(
     input_file: Optional[Path] = _input_file_argument,
@@ -64,14 +70,17 @@ def wrap(
 ) -> None:
     """Wrap a Python script inside an HTML file."""
     if input_file is not None:
-        assert command is None
+        if command is not None:
+            raise Abort("Cannot provide both an input file and `-c` option.")
         file_to_html(input_file, output)
-        raise typer.Exit()
 
     if command:
-        assert output is not None
+        if output is None:
+            raise Abort("Must provide an output file or use `--show` option")
         string_to_html(command, output)
 
     if show:
+        if output is None:
+            raise Abort("Must provide an output file to use `--show` option")
         console.print("Opening in web browser!")
         webbrowser.open(f"file://{output.resolve()}")
