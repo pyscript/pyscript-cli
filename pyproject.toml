@@ -19,9 +19,9 @@ rich-click = {extras = ["typer"], version = "^1.3.0"}
 typer = "^0.4.1"
 
 [tool.poetry.dev-dependencies]
+coverage = "^6.3.2"
 mypy = "^0.950"
 pytest = "^7.1.2"
-pytest-cov = "^3.0.0"
 
 [tool.poetry.scripts]
 pyscript = "pyscript.cli:app"
