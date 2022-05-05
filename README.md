@@ -11,7 +11,7 @@ A command-line interface for [PyScript](https://pyscript.net).
 
 Quickly wrap Python scripts into a HTML template, pre-configured with [PyScript](https://pyscript.net).
 
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/11037737/166255722-269b8dc0-8b60-4521-a383-f4273f5645a5.gif)
+![demo](https://user-images.githubusercontent.com/11037737/166962281-d3a244ea-977a-48bb-8286-9c52f8761f32.svg)
 
 ## Installation
 
