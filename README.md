@@ -2,6 +2,8 @@
 
 A command-line interface for [PyScript](https://pyscript.net).
 
+
+[![Version](https://img.shields.io/pypi/v/pyscript-cli.svg)](https://pypi.org/project/pyscript-cli/)
 [![Test and Publish](https://github.com/mattkram/pyscript-cli/actions/workflows/main.yml/badge.svg)](https://github.com/mattkram/pyscript-cli/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/mattkram/pyscript-cli/branch/main/graph/badge.svg?token=dCxt9oBQPL)](https://codecov.io/gh/mattkram/pyscript-cli)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/mattkram/pyscript-cli/main.svg)](https://results.pre-commit.ci/latest/github/mattkram/pyscript-cli/main)
