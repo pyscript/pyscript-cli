@@ -4,9 +4,9 @@ A command-line interface for [PyScript](https://pyscript.net).
 
 
 [![Version](https://img.shields.io/pypi/v/pyscript-cli.svg)](https://pypi.org/project/pyscript-cli/)
-[![Test and Publish](https://github.com/mattkram/pyscript-cli/actions/workflows/main.yml/badge.svg)](https://github.com/mattkram/pyscript-cli/actions/workflows/main.yml)
-[![codecov](https://codecov.io/gh/mattkram/pyscript-cli/branch/main/graph/badge.svg?token=dCxt9oBQPL)](https://codecov.io/gh/mattkram/pyscript-cli)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/mattkram/pyscript-cli/main.svg)](https://results.pre-commit.ci/latest/github/mattkram/pyscript-cli/main)
+[![Test and Publish](https://github.com/pyscript/pyscript-cli/actions/workflows/main.yml/badge.svg)](https://github.com/pyscript/pyscript-cli/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/pyscript/pyscript-cli/branch/main/graph/badge.svg?token=dCxt9oBQPL)](https://codecov.io/gh/pyscript/pyscript-cli)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/pyscript/pyscript-cli/main.svg)](https://results.pre-commit.ci/latest/github/pyscript/pyscript-cli/main)
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 
 Quickly wrap Python scripts into a HTML template, pre-configured with [PyScript](https://pyscript.net).
