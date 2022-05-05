@@ -4,10 +4,10 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "pyscript-cli"
-version = "0.2.0"
+version = "0.2.1"
 description = "Command Line Interface for PyScript"
 authors = ["Matt Kramer <mkramer@anaconda.com>"]
-license = "MIT"
+license = "Apache-2.0"
 repository = "https://github.com/mattkram/pyscript-cli"
 readme = "README.md"
 packages = [
