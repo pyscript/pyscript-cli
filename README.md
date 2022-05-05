@@ -26,3 +26,25 @@ $ pip install pyscript-cli
 ```shell
 $ pyscript wrap <filename.py>
 ```
+
+This will generate a file called `<filename.html>` by default.
+This can be overwritten with the `-o` or `--output` option:
+
+```shell
+$ pyscript wrap <filename.py> -o <another_filename.html>
+```
+
+### Open the script inside the browser using the `--show` option
+
+```shell
+$ pyscript wrap <filename.py> --show
+```
+
+### Very simple command examples with `--command` option
+
+The `-c` or `--command` option can be used to demo very simple cases.
+In this case, if the `--show` option is used and no `--output` file is used, a temporary file will be generated.
+
+```shell
+$ pyscript wrap -c 'print("Hello World!")' --show
+```
