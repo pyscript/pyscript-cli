@@ -57,6 +57,7 @@ _show_option = typer.Option(None, help="Open output file in web browser.")
 
 _title_option = typer.Option(None, help="Add title to html file")
 
+
 class Abort(typer.Abort):
     def __init__(self, msg: str, *args: Any, **kwargs: Any):
         console.print(msg, style="red")

@@ -141,7 +141,9 @@ def test_wrap_show(
         assert not expected_html_path.exists()
 
 
-@pytest.mark.parametrize("title, expected_title", [("test-title", "test-title"), (None, "PyScript App")])
+@pytest.mark.parametrize(
+    "title, expected_title", [("test-title", "test-title"), (None, "PyScript App")]
+)
 def test_wrap_title(
     invoke_cli: CLIInvoker,
     title: str,
