@@ -54,6 +54,7 @@ _command_option = typer.Option(
     None, "-c", "--command", help="If provided, embed a single command string."
 )
 _show_option = typer.Option(None, help="Open output file in web browser.")
+_title_option = typer.Option(None, help="Add title to HTML file.")
 
 
 class Abort(typer.Abort):
@@ -68,8 +69,10 @@ def wrap(
     output: Optional[Path] = _output_file_option,
     command: Optional[str] = _command_option,
     show: Optional[bool] = _show_option,
+    title: Optional[str] = _title_option,
 ) -> None:
     """Wrap a Python script inside an HTML file."""
+    title = title or "PyScript App"
 
     if not input_file and not command:
         raise Abort(
@@ -91,10 +94,10 @@ def wrap(
             raise Abort("Must provide an output file or use `--show` option")
 
     if input_file is not None:
-        file_to_html(input_file, output)
+        file_to_html(input_file, title, output)
 
     if command:
-        string_to_html(command, output)
+        string_to_html(command, title, output)
 
     assert output is not None
 
