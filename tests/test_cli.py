@@ -142,7 +142,8 @@ def test_wrap_show(
 
 
 @pytest.mark.parametrize(
-    "title, expected_title", [("test-title", "test-title"), (None, "PyScript App"), ("", "PyScript App")]
+    "title, expected_title",
+    [("test-title", "test-title"), (None, "PyScript App"), ("", "PyScript App")],
 )
 def test_wrap_title(
     invoke_cli: CLIInvoker,
