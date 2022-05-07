@@ -40,6 +40,14 @@ $ pyscript wrap <filename.py> -o <another_filename.html>
 $ pyscript wrap <filename.py> --show
 ```
 
+### Set a title for the browser tab
+
+You can set the title of the browser tab with the `--title` option:
+
+```shell
+$ pyscript wrap <filename.py> --title "My cool app!"
+```
+
 ### Very simple command examples with `--command` option
 
 The `-c` or `--command` option can be used to demo very simple cases.
