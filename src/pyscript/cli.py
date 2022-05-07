@@ -55,7 +55,7 @@ _command_option = typer.Option(
 )
 _show_option = typer.Option(None, help="Open output file in web browser.")
 
-_title_option = typer.Option(default="PyScript App", help="Add title to html file")
+_title_option = typer.Option(None, help="Add title to html file")
 
 class Abort(typer.Abort):
     def __init__(self, msg: str, *args: Any, **kwargs: Any):
@@ -79,6 +79,9 @@ def wrap(
         )
     if input_file and command:
         raise Abort("Cannot provide both an input '.py' file and '-c' option.")
+
+    if not title:
+        title = "PyScript App"
 
     # Derive the output path if it is not provided
     remove_output = False
