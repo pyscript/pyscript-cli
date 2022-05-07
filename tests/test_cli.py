@@ -146,12 +146,15 @@ def test_wrap_show(
 )
 def test_wrap_title(
     invoke_cli: CLIInvoker,
-    title: str,
+    title: Optional[str],
     expected_title: str,
     tmp_path: Path,
 ) -> None:
     command = 'print("Hello World!")'
-    result = invoke_cli("wrap", "-c", command, "-o", "output.html", "--title", title)
+    args = ["wrap", "-c", command, "-o", "output.html"]
+    if title is not None:
+        args.extend(["--title", title])
+    result = invoke_cli(*args)
     assert result.exit_code == 0
 
     expected_html_path = tmp_path / "output.html"
