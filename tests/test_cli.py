@@ -139,3 +139,25 @@ def test_wrap_show(
         assert expected_html_path.exists()
     else:
         assert not expected_html_path.exists()
+
+
+@pytest.mark.parametrize("title, expected_title", [("test-title", "test-title"), (None, "PyScript App")])
+def test_wrap_title(
+    invoke_cli: CLIInvoker,
+    title: str,
+    expected_title: str,
+    tmp_path: Path,
+) -> None:
+    command = 'print("Hello World!")'
+    result = invoke_cli("wrap", "-c", command, "-o", "output.html", "--title", title)
+    assert result.exit_code == 0
+
+    expected_html_path = tmp_path / "output.html"
+    assert expected_html_path.exists()
+
+    with expected_html_path.open() as fp:
+        html_text = fp.read()
+
+    assert f"<py-script>\n{command}\n</py-script>" in html_text
+
+    assert f"<title>{expected_title}</title>" in html_text
