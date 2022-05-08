@@ -8,6 +8,7 @@ import pytest
 from mypy_extensions import VarArg
 from typer.testing import CliRunner, Result
 
+import pyscript
 from pyscript import __version__
 from pyscript.cli import app
 
@@ -23,6 +24,8 @@ def invoke_cli(tmp_path: Path, monkeypatch: "MonkeyPatch") -> CLIInvoker:
     runner = CliRunner()
 
     monkeypatch.chdir(tmp_path)
+    # We also need to patch the template filesystem loader to use the new CWD
+    monkeypatch.setattr(pyscript._generator._cwd_loader, "searchpath", [tmp_path])
 
     def f(*args: str) -> Result:
         return runner.invoke(app, args)
@@ -167,3 +170,27 @@ def test_wrap_title(
     assert f"<py-script>\n{command}\n</py-script>" in html_text
 
     assert f"<title>{expected_title}</title>" in html_text
+
+
+@pytest.fixture()
+def user_template(tmp_path: Path) -> str:
+    name = "user_template.html"
+    with (tmp_path / name).open("w") as fp:
+        fp.write("User template")
+    return name
+
+
+def test_wrap_user_template(
+    invoke_cli: CLIInvoker, tmp_path: Path, user_template: str
+) -> None:
+    command = 'print("Hello World!")'
+    result = invoke_cli(
+        "wrap", "-c", command, "-o", "output.html", "--template", user_template
+    )
+    assert result.exit_code == 0
+
+    expected_html_path = tmp_path / "output.html"
+    with expected_html_path.open() as fp:
+        html_text = fp.read()
+
+    assert "User template" in html_text
