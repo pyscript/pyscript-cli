@@ -3,7 +3,7 @@ name: Publish
 on:
     # Only on merges into main
     push:
-        tags: v*
+        tags: 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
     publish:
