@@ -3,8 +3,7 @@ name: Publish
 on:
     # Only on merges into main
     push:
-        tags:
-            'v*'
+        tags: v*
 
 jobs:
     publish:
