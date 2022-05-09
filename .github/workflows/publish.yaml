@@ -3,12 +3,11 @@ name: Publish
 on:
     # Only on merges into main
     push:
-        branches:
-        -   main
+        tags:
+            'v*'
 
 jobs:
     publish:
-        if: startsWith(github.ref, 'refs/tags/v') # Only if tagged
         runs-on: ubuntu-latest
 
         steps:
