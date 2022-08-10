@@ -4,7 +4,7 @@ import webbrowser
 from pathlib import Path
 from typing import Any, Optional
 
-from pyscript._generator import file_to_html, string_to_html
+from pyscript._generator import file_to_html, string_to_html, new_project
 
 try:
     import rich_click.typer as typer
@@ -108,3 +108,24 @@ def wrap(
     if remove_output:
         time.sleep(1)
         output.unlink()
+
+
+@app.command()
+def new(
+    app_name: str,
+    app_description: str = typer.Option(..., prompt=True),
+    author_name: str = typer.Option(..., prompt=True),
+    author_email: str = typer.Option(..., prompt=True),
+):
+    """
+    Create a new pyscript project with the passed in name, creating a new
+    directory in the current directory.
+
+    Inspired by Sphinx guided setup.
+    """
+    try:
+        new_project(app_name, app_description, author_name, author_email)
+    except FileExistsError:
+        raise Abort(
+            f"A directory called {app_name} already exists in this location."
+        )

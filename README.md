@@ -56,3 +56,22 @@ In this case, if the `--show` option is used and no `--output` file is used, a t
 ```shell
 $ pyscript wrap -c 'print("Hello World!")' --show
 ```
+
+## Developer Setup
+
+This project uses [poetry](https://python-poetry.org/) to organise and maintain
+dependencies. Simply create a new virtual environment, activate it and then:
+
+```shell
+$ poetry install
+```
+
+To run the test suite:
+
+```shell
+$ pytest
+```
+
+To run the command (installed in editable mode), simply run the command from
+within the active virtual environment you're using for development purposes,
+as described in the usage instructions above.
