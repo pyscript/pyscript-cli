@@ -3,8 +3,9 @@ Tests for utility functions in the _generator.py module that cannot be
 exercised because of limitations in the Typer testing framework (specifically,
 multiple "prompt" arguments).
 """
-from pyscript import _generator as gen
 from unittest import mock
+
+from pyscript import _generator as gen
 
 
 def test_new_project() -> None:
@@ -20,7 +21,5 @@ def test_new_project() -> None:
     gen.new_project(app_name, app_description, author_name, author_email)
     assert gen.toml.dump.call_count == 1
     gen.string_to_html.assert_called_once_with(
-        'print("Hello, world!")',
-        app_name,
-        mock_path
-    ) 
+        'print("Hello, world!")', app_name, mock_path
+    )

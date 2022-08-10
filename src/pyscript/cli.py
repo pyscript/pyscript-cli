@@ -4,12 +4,13 @@ import webbrowser
 from pathlib import Path
 from typing import Any, Optional
 
-from pyscript._generator import file_to_html, string_to_html, new_project
+from pyscript._generator import file_to_html, new_project, string_to_html
 
 try:
     import rich_click.typer as typer
 except ImportError:  # pragma: no cover
     import typer  # type: ignore
+
 from rich.console import Console
 
 from pyscript import __version__
@@ -126,6 +127,4 @@ def new(
     try:
         new_project(app_name, app_description, author_name, author_email)
     except FileExistsError:
-        raise Abort(
-            f"A directory called {app_name} already exists in this location."
-        )
+        raise Abort(f"A directory called {app_name} already exists in this location.")
