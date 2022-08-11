@@ -4,6 +4,21 @@
     <title>{{ title }}</title>
     <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css"/>
     <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+
+    {% if modules or paths %}
+    <py-env>
+    {% for module in modules %}
+        - {{module}}
+    {% endfor %}
+    {% if paths %}
+        - paths:
+            {% for path in paths %}
+            - {{path}}
+            {% endfor %}
+    {% endif %}
+    </py-env>
+    {% endif %}
+
 </head>
 <body>
 <py-script>
