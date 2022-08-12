@@ -3,11 +3,9 @@ ast-based parser to gather modules/package dependencies of a Python module.
 Code adapted from the find-imports project, currently in graveyard archive.
 """
 import ast
-from inspect import Attribute
 import os
 import pkgutil
 from pathlib import Path
-from typing import Union
 from collections import namedtuple, defaultdict
 from itertools import filterfalse, chain
 
@@ -18,9 +16,6 @@ class UnsupportedFileType(Exception):
     pass
 
 
-ImportInfo = namedtuple("ImportInfo", ["packages", "paths"])
-
-
 class NamespaceInfo:
     def __init__(self, source_fpath: Path) -> None:
         # expanding base_folder to absolute as pkgutils.FileFinder will do so - easier for later purging
@@ -28,7 +23,7 @@ class NamespaceInfo:
         self.source_mod_name = source_fpath.stem
         self._collect()
         # storing this as it will be useful for multiple lookups
-        self._all_namespace = set(chain(self.modules, self.packages))
+        self._all_namespace = set(chain(self.modules, self._packages))
 
     def _collect(self):
         iter_modules_paths = [self.base_folder]
@@ -36,7 +31,7 @@ class NamespaceInfo:
             for dirname in dirs:
                 iter_modules_paths.append(os.path.join(root, dirname))
 
-        # need to consume generator as I will iterate two times for packages, and modules
+        # need to consume generator as I will iterate two times for _packages, and modules
         pkg_mods = tuple(pkgutil.iter_modules(iter_modules_paths))
         modules = map(
             lambda mi: os.path.join(mi.module_finder.path, mi.name),
@@ -44,12 +39,12 @@ class NamespaceInfo:
                 lambda mi: mi.ispkg or mi.name == self.source_mod_name, pkg_mods
             ),
         )
-        packages = map(
+        _packages = map(
             lambda mi: os.path.join(mi.module_finder.path, mi.name),
             filter(lambda mi: mi.ispkg, pkg_mods),
         )
         self.modules = set(map(self._dotted_path, modules))
-        self.packages = set(map(self._dotted_path, packages))
+        self._packages = set(map(self._dotted_path, _packages))
 
     def _dotted_path(self, p: str):
         p = p.replace(self.base_folder, "").replace(os.path.sep, ".")
@@ -61,7 +56,7 @@ class NamespaceInfo:
         return item in self._all_namespace
 
     def __str__(self) -> str:
-        return f"NameSpace info for {self.base_folder} \n\t Modules: {self.modules} \n\t Packages: {self.packages}"
+        return f"NameSpace info for {self.base_folder} \n\t Modules: {self.modules} \n\t Packages: {self._packages}"
 
     def __repr__(self) -> str:
         return str(self)
@@ -69,33 +64,44 @@ class NamespaceInfo:
 
 class FinderResult:
     def __init__(self) -> None:
-        self.packages = set()
-        self.locals = set()
-        self.unsupported = defaultdict(set)
+        self._packages = set()
+        self._locals = set()
+        self._unsupported = defaultdict(set)
 
     def add_package(self, pkg_name: str) -> None:
-        self.packages.add(pkg_name)
+        self._packages.add(pkg_name)
 
     def add_locals(self, pkg_name: str) -> None:
-        self.locals.add(pkg_name)
+        self._locals.add(pkg_name)
 
     def add_unsupported_external_package(self, pkg_name: str) -> None:
-        self.unsupported["external"].add(pkg_name)
+        self._unsupported["external"].add(pkg_name)
 
     def add_unsupported_local_package(self, pkg_name: str) -> None:
-        self.unsupported["local"].add(pkg_name)
+        self._unsupported["local"].add(pkg_name)
 
     @property
     def has_warnings(self):
-        return len(self.unsupported) > 0
+        return len(self._unsupported) > 0
 
     @property
     def unsupported_packages(self):
-        return self.unsupported["external"]
+        return self._unsupported["external"]
 
     @property
     def unsupported_paths(self):
-        return self.unsupported["local"]
+        return self._unsupported["local"]
+
+    @property
+    def packages(self):
+        return self._packages
+
+    @property
+    def paths(self):
+        pyenv_paths = map(
+            lambda l: "{}.py".format(l.replace(".", os.path.sep)), self._locals
+        )
+        return set(pyenv_paths)
 
 
 # https://stackoverflow.com/a/58847554
@@ -123,7 +129,7 @@ class ModuleFinder(ast.NodeVisitor):
 
     def _import_name(self, imported):
         if imported in self.context:
-            if imported not in self.context.packages:
+            if imported not in self.context._packages:
                 self.results.add_locals(imported)
             else:
                 self.results.add_unsupported_local_package(imported)
@@ -146,18 +152,7 @@ def _find_modules(source: str, source_fpath: Path):
 
     finder = ModuleFinder(context=namespace_info)
     finder.visit(nodes)
-    report = finder.results
-    pyenv_paths = map(
-        lambda l: "{}.py".format(l.replace(".", os.path.sep)), report.locals
-    )
-    pyenv = ImportInfo(packages=report.packages, paths=set(pyenv_paths))
-    if not report.has_warnings:
-        return pyenv, None
-
-    warnings = ImportInfo(
-        packages=report.unsupported_packages, paths=report.unsupported_paths
-    )
-    return pyenv, warnings
+    return finder.results
 
 
 def _convert_notebook(source_fpath: Path) -> str:
@@ -169,12 +164,10 @@ def _convert_notebook(source_fpath: Path) -> str:
     return source
 
 
-def find_imports(
-    source_fpath: Path,
-) -> Union[ImportInfo, tuple[ImportInfo, ImportInfo]]:
+def find_imports(source_fpath: Path,) -> FinderResult:
     """
     Parse the input source, and returns its dependencies, as organised in
-    the sets of external packages, and local modules, respectively.
+    the sets of external _packages, and local modules, respectively.
     Any modules or package with the same name found in the local
 
     Parameters
@@ -184,11 +177,10 @@ def find_imports(
 
     Returns
     -------
-    Union[ImportInfo, tuple[ImportInfo, ImportInfo]]
-        The function returns an instance of `ImportInfo` containing the 
-        environment with packages and paths to include in py-env.
-        Optionally, if the parsing detected unsupported packages and local modules, 
-        this will be returned as well (still as `ImportInfo` instance)
+    FinderResults
+        Return the results of parsing as a `FinderResults` instance. 
+        This instance provides reference to packages and paths to 
+        include in the py-env, as well as any unsuppoted import.
     """
     fname, extension = source_fpath.name, source_fpath.suffix
     if extension == ".py":
