@@ -63,6 +63,12 @@ class Abort(typer.Abort):
         super().__init__(*args, **kwargs)
 
 
+class Warning(typer.Exit):
+    def __init__(self, msg: str, *args: Any, **kwargs: Any):
+        console.print(msg, style="yellow")
+        super().__init__(*args, **kwargs)
+
+
 @app.command()
 def wrap(
     input_file: Optional[Path] = _input_file_argument,
@@ -94,7 +100,18 @@ def wrap(
             raise Abort("Must provide an output file or use `--show` option")
 
     if input_file is not None:
-        file_to_html(input_file, title, output)
+        parsing_res = file_to_html(input_file, title, output)
+        if parsing_res is not None:
+            msg_template = "WARNING: The input file contains some imports which are not currently supported PyScript.\nTherefore the code might not work, or require some changes.{packages}{locals}"
+            msg = msg_template.format(
+                packages=f"\n{str(parsing_res.unsupported_packages)}"
+                if parsing_res.unsupported_packages
+                else "",
+                locals=f"\n{str(parsing_res.unsupported_paths)}"
+                if parsing_res.unsupported_paths
+                else "",
+            )
+            raise Warning(msg=msg)
 
     if command:
         string_to_html(command, title, output)
