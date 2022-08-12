@@ -12,10 +12,6 @@ from itertools import filterfalse, chain
 from ._supported_packages import PACKAGE_RENAMES, STANDARD_LIBRARY, PYODIDE_PACKAGES
 
 
-class UnsupportedFileType(Exception):
-    pass
-
-
 class NamespaceInfo:
     def __init__(self, source_fpath: Path) -> None:
         # expanding base_folder to absolute as pkgutils.FileFinder will do so - easier for later purging
@@ -164,7 +160,7 @@ def _convert_notebook(source_fpath: Path) -> str:
     return source
 
 
-def find_imports(source_fpath: Path,) -> FinderResult:
+def find_imports(source: str, source_fpath: Path,) -> FinderResult:
     """
     Parse the input source, and returns its dependencies, as organised in
     the sets of external _packages, and local modules, respectively.
@@ -172,6 +168,8 @@ def find_imports(source_fpath: Path,) -> FinderResult:
 
     Parameters
     ----------
+    source  : str
+        Python source code to parse
     source_fpath : Path
         Path to the input Python module to parse
 
@@ -182,24 +180,5 @@ def find_imports(source_fpath: Path,) -> FinderResult:
         This instance provides reference to packages and paths to 
         include in the py-env, as well as any unsuppoted import.
     """
-    fname, extension = source_fpath.name, source_fpath.suffix
-    if extension == ".py":
-        with open(source_fpath, "rt") as f:
-            source = f.read()
-
-    elif extension == ".ipynb":
-        try:
-            import nbconvert
-        except ImportError as e:  # pragma no cover
-            raise ImportError(
-                "Please install nbconvert to serve Jupyter Notebooks."
-            ) from e
-
-        source = _convert_notebook(source_fpath)
-
-    else:
-        raise UnsupportedFileType(
-            "{} is neither a script (.py) nor a notebook (.ipynb)".format(fname)
-        )
 
     return _find_modules(source, source_fpath)

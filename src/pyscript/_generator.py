@@ -4,6 +4,12 @@ from typing import Optional
 import jinja2
 
 from ._node_parser import find_imports, FinderResult
+from ._node_parser import _convert_notebook
+
+
+class UnsupportedFileType(Exception):
+    pass
+
 
 _env = jinja2.Environment(
     loader=jinja2.PackageLoader("pyscript"), trim_blocks=True, lstrip_blocks=True
@@ -33,8 +39,28 @@ def file_to_html(
     Warnings will be returned when scanning for environment, if any.
     """
     output_path = output_path or input_path.with_suffix(".html")
-    import_results = find_imports(input_path)
+
+    fname, extension = input_path.name, input_path.suffix
+    if extension == ".py":
+        with open(input_path, "rt") as f:
+            source = f.read()
+
+    elif extension == ".ipynb":
+        try:
+            import nbconvert
+        except ImportError as e:  # pragma no cover
+            raise ImportError(
+                "Please install nbconvert to serve Jupyter Notebooks."
+            ) from e
+        source = _convert_notebook(input_path)
+
+    else:
+        raise UnsupportedFileType(
+            "{} is neither a script (.py) nor a notebook (.ipynb)".format(fname)
+        )
+
+    import_results = find_imports(source, input_path)
     with input_path.open("r") as fp:
-        string_to_html(fp.read(), title, output_path, pyenv=import_results)
+        string_to_html(source, title, output_path, pyenv=import_results)
     if import_results.has_warnings:
         return import_results
