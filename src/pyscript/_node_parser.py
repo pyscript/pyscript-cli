@@ -177,8 +177,8 @@ def find_imports(source_fpath: Path,) -> FinderResult:
 
     Returns
     -------
-    FinderResults
-        Return the results of parsing as a `FinderResults` instance. 
+    FinderResult
+        Return the results of parsing as a `FinderResult` instance. 
         This instance provides reference to packages and paths to 
         include in the py-env, as well as any unsuppoted import.
     """
