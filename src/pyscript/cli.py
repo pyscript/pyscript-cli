@@ -7,12 +7,13 @@ from typing import Any, Optional
 
 from pluggy import PluginManager
 
-from pyscript import __version__, app, console, typer
-from pyscript.plugins import hookspecs, _add_cmd
 import pyscript.plugins
+from pyscript import __version__, app, console, typer
 from pyscript._generator import file_to_html, string_to_html
+from pyscript.plugins import _add_cmd, hookspecs
 
-DEFAULT_PLUGINS = ['create', 'delete']
+DEFAULT_PLUGINS = ["create", "delete"]
+
 
 def _print_version():
     console.print(f"PyScript CLI version: {__version__}", style="bold green")
