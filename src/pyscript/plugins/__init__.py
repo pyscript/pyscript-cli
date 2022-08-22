@@ -1,4 +1,5 @@
 from pluggy import HookimplMarker
+
 from pyscript import app
 
 register = HookimplMarker("pyscript-cli")

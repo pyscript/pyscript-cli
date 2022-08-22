@@ -5,14 +5,12 @@ import webbrowser
 from pathlib import Path
 from typing import Any, Optional
 
-from pyscript._generator import file_to_html, string_to_html
-
-
 from pluggy import PluginManager
 
 from pyscript import __version__, app, console, typer
-from pyscript.plugins import create, delete, hookspecs, _add_cmd
+from pyscript.plugins import hookspecs, _add_cmd
 import pyscript.plugins
+from pyscript._generator import file_to_html, string_to_html
 
 DEFAULT_PLUGINS = ['create', 'delete']
 
@@ -107,10 +105,10 @@ def wrap(
         time.sleep(1)
         output.unlink()
 
+
 pm = PluginManager("pyscript-cli")
 
 pm.add_hookspecs(hookspecs)
-
 
 for modname in DEFAULT_PLUGINS:
     importspec = f"pyscript.plugins.{modname}"

@@ -1,3 +1,4 @@
+
 from pyscript import console, plugins
 
 
@@ -8,5 +9,4 @@ def create():
 
 @plugins.register
 def pyscript_subcommand():
-    return create   
-    
+    return create
