@@ -8,6 +8,7 @@ from typing import Any, Optional
 from pluggy import PluginManager
 
 from pyscript import plugins
+from pyscript.plugins import hookspecs
 from pyscript import __version__, app, console, typer
 from pyscript._generator import file_to_html, string_to_html
 
@@ -108,7 +109,7 @@ def wrap(
 
 pm = PluginManager("pyscript-cli")
 
-pm.add_hookspecs(plugins.hookspecs)
+pm.add_hookspecs(hookspecs)
 
 for modname in DEFAULT_PLUGINS:
     importspec = f"pyscript.plugins.{modname}"
@@ -124,7 +125,7 @@ for modname in DEFAULT_PLUGINS:
         mod = sys.modules[importspec]
         pm.register(mod, modname)
 
-    pm.load_setuptools_entrypoints("pyscript-cli")
+    loaded = pm.load_setuptools_entrypoints("pyscript-cli")
 
 for cmd in pm.hook.pyscript_subcommand():
     plugins._add_cmd(cmd)
