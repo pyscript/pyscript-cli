@@ -1,4 +1,5 @@
 """The main CLI entrypoint and commands."""
+import sys
 import time
 import webbrowser
 from pathlib import Path
@@ -10,8 +11,10 @@ from pyscript._generator import file_to_html, string_to_html
 from pluggy import PluginManager
 
 from pyscript import __version__, app, console, typer
-from pyscript.plugins import create, delete, hookspecs, add_cmd
+from pyscript.plugins import create, delete, hookspecs, _add_cmd
+import pyscript.plugins
 
+DEFAULT_PLUGINS = ['create', 'delete']
 
 def _print_version():
     console.print(f"PyScript CLI version: {__version__}", style="bold green")
@@ -108,8 +111,22 @@ pm = PluginManager("pyscript-cli")
 
 pm.add_hookspecs(hookspecs)
 
-pm.load_setuptools_entrypoints("pyscript-cli")
-pm.register(create)
 
-for cmd in pm.hook.register_cmd():
-    add_cmd(cmd)
+for modname in DEFAULT_PLUGINS:
+    importspec = f"pyscript.plugins.{modname}"
+
+    try:
+        __import__(importspec)
+    except ImportError as e:
+        raise ImportError(
+            f'Error importing plugin "{modname}": {e.args[0]}'
+        ).with_traceback(e.__traceback__) from e
+
+    else:
+        mod = sys.modules[importspec]
+        pm.register(mod, modname)
+
+    pm.load_setuptools_entrypoints("pyscript-cli")
+
+for cmd in pm.hook.pyscript_subcommand():
+    _add_cmd(cmd)

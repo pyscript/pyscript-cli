@@ -5,6 +5,6 @@ hookspec = HookspecMarker("pyscript-cli")
 
 
 @hookspec
-def register_cmd():
+def pyscript_subcommand():
     """My special little hook that you can customize."""
 

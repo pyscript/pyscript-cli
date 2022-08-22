@@ -1,7 +1,11 @@
-from pyscript import app, console
-from pyscript.plugins import add_cmd
+from pyscript import console
+from pyscript.plugins import register
 
-@add_cmd
+
 def delete():
-    console.print(f"PyScript DELETED IT!", style="bold red")
+    console.print(f"pyscript delete cmd not yet available..", style="bold red")
     return True
+
+@register
+def pyscript_subcommand():
+    return delete
