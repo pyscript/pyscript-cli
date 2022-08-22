@@ -7,8 +7,7 @@ from typing import Any, Optional
 
 from pluggy import PluginManager
 
-from pyscript import plugins
-from pyscript import __version__, app, console, typer
+from pyscript import __version__, app, console, plugins, typer
 from pyscript._generator import file_to_html, string_to_html
 
 DEFAULT_PLUGINS = ["create", "delete"]
