@@ -6,16 +6,11 @@ from typing import Any, Optional
 
 from pyscript._generator import file_to_html, string_to_html
 
-try:
-    import rich_click.typer as typer
-except ImportError:  # pragma: no cover
-    import typer  # type: ignore
-from rich.console import Console
 
-from pyscript import __version__
+from pluggy import PluginManager
 
-console = Console()
-app = typer.Typer(add_completion=False)
+from pyscript import __version__, app, console, typer
+from pyscript.plugins import create, delete, hookspecs, add_cmd
 
 
 def _print_version():
@@ -108,3 +103,13 @@ def wrap(
     if remove_output:
         time.sleep(1)
         output.unlink()
+
+pm = PluginManager("pyscript-cli")
+
+pm.add_hookspecs(hookspecs)
+
+pm.load_setuptools_entrypoints("pyscript-cli")
+pm.register(create)
+
+for cmd in pm.hook.register_cmd():
+    add_cmd(cmd)
