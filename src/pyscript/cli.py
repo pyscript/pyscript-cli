@@ -49,6 +49,6 @@ for modname in DEFAULT_PLUGINS:
         mod = sys.modules[importspec]
         pm.register(mod, modname)
     loaded = pm.load_setuptools_entrypoints("pyscript-cli")
-    
+
 for cmd in pm.hook.pyscript_subcommand():
     plugins._add_cmd(cmd)

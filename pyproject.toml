@@ -27,8 +27,6 @@ rich = "^12.3.0"
 rich-click = {extras = ["typer"], version = "^1.3.0"}
 toml = "^0.10.2"
 typer = "^0.4.1"
-
-# Optional docs dependencies
 Sphinx = {version = "^5.1.1", optional = true}
 sphinx-autobuild = {version = "^2021.3.14", optional = true}
 sphinx-autodoc-typehints = {version = "^1.19.2", optional = true}
