@@ -12,7 +12,7 @@ except ImportError:  # pragma: no cover
 from rich.console import Console
 
 try:
-    __version__ = metadata.version("pyscript-cli")
+    __version__ = metadata.version("pyscript")
 except metadata.PackageNotFoundError:  # pragma: no cover
     __version__ = "unknown"
 

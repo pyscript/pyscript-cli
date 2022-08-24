@@ -1,6 +1,6 @@
 from pluggy import HookspecMarker
 
-hookspec = HookspecMarker("pyscript-cli")
+hookspec = HookspecMarker("pyscript")
 
 
 @hookspec

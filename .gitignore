@@ -26,3 +26,7 @@ coverage.xml
 
 # mypy
 .mypy_cache/
+
+# Generated documentation
+/docs/build/
+/docs/source/api/
