@@ -1,11 +1,10 @@
+import datetime
 from pathlib import Path
 from typing import Optional
 from uuid import uuid4
 
 import jinja2
 import toml
-import datetime
-
 
 _env = jinja2.Environment(loader=jinja2.PackageLoader("pyscript"))
 

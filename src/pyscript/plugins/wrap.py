@@ -1,9 +1,11 @@
 import time
 import webbrowser
 from pathlib import Path
-from pyscript import app, console, plugins, cli
-from pyscript._generator import file_to_html, string_to_html
 from typing import Optional
+
+from pyscript import app, cli, console, plugins
+from pyscript._generator import file_to_html, string_to_html
+
 try:
     import rich_click.typer as typer
 except ImportError:  # pragma: no cover
@@ -48,9 +50,7 @@ def wrap(
             assert input_file is not None
             output = input_file.with_suffix(".html")
         else:
-            raise cli.Abort(
-                "Must provide an output file or use `--show` option"
-            )
+            raise cli.Abort("Must provide an output file or use `--show` option")
     if input_file is not None:
         file_to_html(input_file, title, output)
     if command:

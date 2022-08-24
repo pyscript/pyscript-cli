@@ -1,9 +1,11 @@
-from pyscript import app, console, plugins, cli
+from pyscript import app, cli, console, plugins
 from pyscript._generator import create_project
+
 try:
     import rich_click.typer as typer
 except ImportError:  # pragma: no cover
     import typer  # type: ignore
+
 
 @app.command()
 def create(
