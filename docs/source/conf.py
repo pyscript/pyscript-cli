@@ -39,7 +39,7 @@ extensions = [
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
-exclude_patterns = []
+exclude_patterns: list[str] = []
 
 # The suffix(es) of source filenames.
 source_suffix = [".rst", ".md"]
