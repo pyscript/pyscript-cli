@@ -12,7 +12,7 @@ def tmp_cwd(monkeypatch: MonkeyPatch, tmp_path: Path) -> Path:
     return tmp_path
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def is_not_none() -> Any:
     """
     An object that can be used to test whether another is None.
