@@ -3,12 +3,16 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "pyscript-cli"
-version = "0.2.1"
+name = "pyscript"
+version = "0.2.2"
 description = "Command Line Interface for PyScript"
-authors = ["Matt Kramer <mkramer@anaconda.com>"]
+authors = [
+    "Matt Kramer <mkramer@anaconda.com>",
+    "Fabio Pliger <fpliger@anaconda.com>",
+    "Nicholas Tollervey <ntollervey@anaconda.com>",
+]
 license = "Apache-2.0"
-repository = "https://github.com/mattkram/pyscript-cli"
+repository = "https://github.com/pyscript/pyscript-cli"
 readme = "README.md"
 packages = [
     { include = "pyscript", from = "src" },
