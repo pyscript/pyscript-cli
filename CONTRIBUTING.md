@@ -1,6 +1,8 @@
 # Contribution guide for developers
 
-## Install the documentation dependencies
+## Documentation
+
+### Install the documentation dependencies
 
 To get started, you will need to install the documentation dependencies from the project root:
 
@@ -8,7 +10,16 @@ To get started, you will need to install the documentation dependencies from the
 poetry install --extras docs
 ```
 
-## Activate the environment
+### The quickest way to get started
+
+The following command (run from project root) will launch a live-reloaded session of the
+documentation in your browser, effectively combining the steps detailed in the following sections:
+
+```shell
+poetry run make -C docs live
+```
+
+### Activate the environment
 
 You will need to activate the virtual environment in order to use the dependencies that were
 just installed:
@@ -23,7 +34,7 @@ Your prompt should now have a prefix, e.g.:
 (pyscript-cli-_y5OiBT8-py3.9) mattkram [~/dev/pyscript-cli] $
 ```
 
-## Generate the docs in live mode
+### Generate the docs in live mode
 
 The live mode will allow you to generate the documentation with live reload.
 
@@ -44,7 +55,7 @@ Either of the above commands should launch a live dev server and you will be abl
 docs in your browser.
 As the files are updated, the docs should be refreshed.
 
-## Generate static docs
+### Generate static docs
 
 If you don't want to use the live reload mode, simply replace either command above with `html`,
 e.g.:
