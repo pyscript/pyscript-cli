@@ -1,4 +1,4 @@
-from pyscript import app, plugins, cli
+from pyscript import app, cli, plugins
 from pyscript._generator import create_project
 
 try:
