@@ -38,9 +38,9 @@ def create_project(
 
     TODO: more files to add to the core project start state.
     """
-    version = f"{datetime.date.today().year}.1.1"
-    created_on = datetime.datetime.now()
     context = {k: v for k, v in locals().items() if not k.startswith("__")}
+    context["version"] = f"{datetime.date.today().year}.1.1"
+    context["created_on"] = datetime.datetime.now()
     context["id"] = str(uuid4())
     app_dir = Path(".") / app_name
     app_dir.mkdir()

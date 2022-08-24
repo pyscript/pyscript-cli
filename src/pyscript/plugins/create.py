@@ -1,4 +1,4 @@
-from pyscript import app, console, plugins, cli
+from pyscript import app, plugins, cli
 from pyscript._generator import create_project
 try:
     import rich_click.typer as typer
