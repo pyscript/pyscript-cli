@@ -30,9 +30,7 @@ def main(
     Command Line Interface for PyScript.
     """
     if version:
-        console.print(
-            f"PyScript CLI version: {__version__}", style="bold green"
-        )
+        console.print(f"PyScript CLI version: {__version__}", style="bold green")
         raise typer.Exit()
 
 
