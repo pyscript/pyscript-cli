@@ -106,7 +106,7 @@ def wrap(
         output.unlink()
 
 
-pm = PluginManager("pyscript-cli")
+pm = PluginManager("pyscript")
 
 pm.add_hookspecs(hookspecs)
 
@@ -124,7 +124,7 @@ for modname in DEFAULT_PLUGINS:
         mod = sys.modules[importspec]
         pm.register(mod, modname)
 
-    loaded = pm.load_setuptools_entrypoints("pyscript-cli")
+    loaded = pm.load_setuptools_entrypoints("pyscript")
 
 for cmd in pm.hook.pyscript_subcommand():
     plugins._add_cmd(cmd)
