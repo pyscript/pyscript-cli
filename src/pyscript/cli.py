@@ -10,7 +10,7 @@ from pyscript.plugins import hookspecs
 DEFAULT_PLUGINS = ["create", "wrap"]
 
 
-def ok(msg: str=""):
+def ok(msg: str = ""):
     """
     Simply prints "OK" and an optional message, to the console, before cleanly
     exiting.
