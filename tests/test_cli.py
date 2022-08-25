@@ -30,9 +30,9 @@ def invoke_cli(tmp_path: Path, monkeypatch: "MonkeyPatch") -> CLIInvoker:
     return f
 
 
-@pytest.mark.parametrize("cli_arg", ["version", "--version"])
-def test_version(invoke_cli: CLIInvoker, cli_arg: str) -> None:
-    result = invoke_cli(cli_arg)
+def test_version() -> None:
+    runner = CliRunner()
+    result = runner.invoke(app, "--version")
     assert result.exit_code == 0
     assert f"PyScript CLI version: {__version__}" in result.stdout
 
@@ -117,7 +117,7 @@ def test_wrap_show(
     else:
         args = additional_args
 
-    with unittest.mock.patch("pyscript.cli.webbrowser.open") as browser_mock:
+    with unittest.mock.patch("pyscript.plugins.wrap.webbrowser.open") as browser_mock:
         result = invoke_cli("wrap", "--show", *args)
 
     assert result.exit_code == 0
