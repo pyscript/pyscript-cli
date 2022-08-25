@@ -52,6 +52,7 @@ def create_project(
     app_dir = Path(".") / app_name
     app_dir.mkdir()
     manifest_file = app_dir / "manifest.toml"
-    toml.dump(context, manifest_file.open("w", encoding="utf-8"))
+    with manifest_file.open("w", encoding="utf-8") as fp:
+        toml.dump(context, fp)
     index_file = app_dir / "index.html"
     string_to_html('print("Hello, world!")', app_name, index_file)
