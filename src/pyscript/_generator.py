@@ -46,9 +46,6 @@ def create_project(
         "created_on": datetime.datetime.now(),
         "id": str(uuid4()),
     }
-    context["version"] = f"{datetime.date.today().year}.1.1"
-    context["created_on"] = datetime.datetime.now()
-    context["id"] = str(uuid4())
     app_dir = Path(".") / app_name
     app_dir.mkdir()
     manifest_file = app_dir / "manifest.toml"
