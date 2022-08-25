@@ -37,7 +37,15 @@ def create_project(
 
     TODO: more files to add to the core project start state.
     """
-    context = {k: v for k, v in locals().items() if not k.startswith("__")}
+    context = {
+        "app_name": app_name,
+        "app_description": app_description,
+        "author_name": author_name,
+        "author_email": author_email,
+        "version": f"{datetime.date.today().year}.1.1",
+        "created_on": datetime.datetime.now(),
+        "id": str(uuid4()),
+    }
     context["version"] = f"{datetime.date.today().year}.1.1"
     context["created_on"] = datetime.datetime.now()
     context["id"] = str(uuid4())
