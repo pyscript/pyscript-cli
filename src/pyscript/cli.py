@@ -10,6 +10,17 @@ from pyscript.plugins import hookspecs
 DEFAULT_PLUGINS = ["create", "wrap"]
 
 
+def ok(msg: str = ""):
+    """
+    Simply prints "OK" and an optional message, to the console, before cleanly
+    exiting.
+
+    Provides a standard way to end/confirm a successful command.
+    """
+    console.print(f"OK. {msg}".rstrip(), style="green")
+    raise typer.Exit()
+
+
 class Abort(typer.Abort):
     """
     Abort with a consistent error message.
