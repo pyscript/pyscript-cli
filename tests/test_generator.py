@@ -26,8 +26,9 @@ def test_create_project(tmp_cwd: Path, is_not_none: Any) -> None:
         contents = toml.load(fp)
 
     assert contents == {
-        "app_name": "app_name",
-        "app_description": "A longer, human friendly, app description.",
+        "name": "app_name",
+        "description": "A longer, human friendly, app description.",
+        "type": "app",
         "author_name": "A.Coder",
         "author_email": "acoder@domain.com",
         "created_on": is_not_none,

@@ -38,8 +38,9 @@ def create_project(
     TODO: more files to add to the core project start state.
     """
     context = {
-        "app_name": app_name,
-        "app_description": app_description,
+        "name": app_name,
+        "description": app_description,
+        "type": "app",
         "author_name": author_name,
         "author_email": author_email,
         "version": f"{datetime.date.today().year}.1.1",
