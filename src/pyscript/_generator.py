@@ -1,7 +1,6 @@
 import datetime
 from pathlib import Path
 from typing import Optional
-from uuid import uuid4
 
 import jinja2
 import toml
@@ -45,7 +44,6 @@ def create_project(
         "author_email": author_email,
         "version": f"{datetime.date.today().year}.1.1",
         "created_on": datetime.datetime.now(),
-        "id": str(uuid4()),
     }
     app_dir = Path(".") / app_name
     app_dir.mkdir()
