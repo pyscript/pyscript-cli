@@ -32,7 +32,6 @@ def test_create_project(tmp_cwd: Path, is_not_none: Any) -> None:
         "author_name": "A.Coder",
         "author_email": "acoder@domain.com",
         "created_on": is_not_none,
-        "id": is_not_none,
         "version": is_not_none,
     }
 
