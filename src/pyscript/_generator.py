@@ -64,3 +64,35 @@ def file_to_html(
         string_to_html(source, title, output_path, pyenv=import_results)
     if import_results.has_warnings:
         return import_results
+
+
+def create_project(
+    app_name: str,
+    app_description: str,
+    author_name: str,
+    author_email: str,
+) -> None:
+    """
+    New files created:
+
+    manifest.toml - project metadata
+    index.html - a "Hello world" start page for the project.
+
+    TODO: more files to add to the core project start state.
+    """
+    context = {
+        "name": app_name,
+        "description": app_description,
+        "type": "app",
+        "author_name": author_name,
+        "author_email": author_email,
+        "version": f"{datetime.date.today().year}.1.1",
+        "created_on": datetime.datetime.now(),
+    }
+    app_dir = Path(".") / app_name
+    app_dir.mkdir()
+    manifest_file = app_dir / "manifest.toml"
+    with manifest_file.open("w", encoding="utf-8") as fp:
+        toml.dump(context, fp)
+    index_file = app_dir / "index.html"
+    string_to_html('print("Hello, world!")', app_name, index_file)
