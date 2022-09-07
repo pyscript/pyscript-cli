@@ -15,6 +15,7 @@ docs/_build/
 .venv
 env/
 venv/
+.idea
 
 # Poetry lock file
 poetry.lock
