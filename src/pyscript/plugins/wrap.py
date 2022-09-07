@@ -52,9 +52,28 @@ def wrap(
         else:
             raise cli.Abort("Must provide an output file or use `--show` option")
     if input_file is not None:
-        file_to_html(input_file, title, output)
+        parsing_res = file_to_html(input_file, title, output)
+        if parsing_res.has_warnings:
+            warn_msg_template = (
+                "WARNING: The input file has some dependencies that are not currently supported "
+                "in PyScript:{list}\n As a result, the wrapped code may not work."
+            )
+            unsupported_deps = ""
+            if parsing_res.unsupported_packages:
+                unsupported_deps += "\n\t -" + "\n\t -".join(
+                    parsing_res.unsupported_packages
+                )
+
+            if parsing_res.unsupported_paths:
+                unsupported_deps += "\n\t -" + "\n\t -".join(
+                    parsing_res.unsupported_paths
+                )
+
+            raise cli.Warning(msg=warn_msg_template.format(list=unsupported_deps))
+
     if command:
         string_to_html(command, title, output)
+
     if output:
         if show:
             console.print("Opening in web browser!")
