@@ -1,3 +1,6 @@
+# OSx rubbish
+.DS_Store
+
 # Byte-compiled
 __pycache__/
 *.py[cod]
