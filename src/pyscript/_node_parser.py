@@ -2,13 +2,14 @@
 ast-based parser to gather modules/package dependencies of a Python module.
 Code adapted from the find-imports project, currently in graveyard archive.
 """
+from __future__ import annotations
+
 import ast
 import os
 import pkgutil
 from collections import defaultdict
 from itertools import chain, filterfalse
 from pathlib import Path
-from typing import DefaultDict
 
 from ._supported_packages import PACKAGE_RENAMES, PYODIDE_PACKAGES, STANDARD_LIBRARY
 
@@ -68,7 +69,7 @@ class FinderResult:
     def __init__(self) -> None:
         self._packages: set[str] = set()
         self._locals: set[str] = set()
-        self._unsupported: DefaultDict[str, set] = defaultdict(set)
+        self._unsupported: defaultdict[str, set] = defaultdict(set)
 
     def add_package(self, pkg_name: str) -> None:
         self._packages.add(pkg_name)
