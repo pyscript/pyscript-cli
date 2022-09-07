@@ -25,9 +25,9 @@ class Dependency:
     This class is a general abstraction over both external and local module dependency."""
 
     import_line: str  # Import line to inject in code under test
-    filename: str = None  # filename: to be used for tmp local modules, i.e. paths
-    code: str = None  # code in the tmp local modules
-    inject: str = None  # any code to inject in code under test
+    filename: str | None = None  # filename: to be used for tmp local modules, i.e. paths
+    code: str | None = None  # code in the tmp local modules
+    inject: str | None = None  # any code to inject in code under test
 
 
 @pytest.fixture()
