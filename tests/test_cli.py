@@ -160,7 +160,14 @@ def test_wrap_file(
             ),
             False,
         ),
-        ((Dependency(import_line="from umap import UMAP",),), True,),
+        (
+            (
+                Dependency(
+                    import_line="from umap import UMAP",
+                ),
+            ),
+            True,
+        ),
     ],
 )
 def test_wrap_file_with_imports(
