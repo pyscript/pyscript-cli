@@ -48,7 +48,7 @@ def file_to_html(
 
     elif extension == ".ipynb":
         try:
-            import nbconvert as _  # noqa
+            import nbconvert  # noqa
         except ImportError as e:  # pragma no cover
             raise ImportError(
                 "Please install nbconvert to serve Jupyter Notebooks."
