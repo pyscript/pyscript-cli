@@ -67,7 +67,10 @@ def file_to_html(
 
 
 def create_project(
-    app_name: str, app_description: str, author_name: str, author_email: str,
+    app_name: str,
+    app_description: str,
+    author_name: str,
+    author_email: str,
 ) -> None:
     """
     New files created:

@@ -5,11 +5,11 @@ Code adapted from the find-imports project, currently in graveyard archive.
 import ast
 import os
 import pkgutil
+from collections import defaultdict, namedtuple
+from itertools import chain, filterfalse
 from pathlib import Path
-from collections import namedtuple, defaultdict
-from itertools import filterfalse, chain
 
-from ._supported_packages import PACKAGE_RENAMES, STANDARD_LIBRARY, PYODIDE_PACKAGES
+from ._supported_packages import PACKAGE_RENAMES, PYODIDE_PACKAGES, STANDARD_LIBRARY
 
 
 class NamespaceInfo:
@@ -160,7 +160,10 @@ def _convert_notebook(source_fpath: Path) -> str:
     return source
 
 
-def find_imports(source: str, source_fpath: Path,) -> FinderResult:
+def find_imports(
+    source: str,
+    source_fpath: Path,
+) -> FinderResult:
     """
     Parse the input source, and returns its dependencies, as organised in
     the sets of external _packages, and local modules, respectively.
@@ -176,8 +179,8 @@ def find_imports(source: str, source_fpath: Path,) -> FinderResult:
     Returns
     -------
     FinderResult
-        Return the results of parsing as a `FinderResult` instance. 
-        This instance provides reference to packages and paths to 
+        Return the results of parsing as a `FinderResult` instance.
+        This instance provides reference to packages and paths to
         include in the py-env, as well as any unsuppoted import.
     """
 
