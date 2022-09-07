@@ -165,7 +165,10 @@ def _convert_notebook(source_fpath: Path) -> str:
     return source
 
 
-def find_imports(source: str, source_fpath: Path,) -> FinderResult:
+def find_imports(
+    source: str,
+    source_fpath: Path,
+) -> FinderResult:
     """
     Parse the input source, and returns its dependencies, as organised in
     the sets of external _packages, and local modules, respectively.
