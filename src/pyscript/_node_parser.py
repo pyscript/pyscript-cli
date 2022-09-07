@@ -5,16 +5,17 @@ Code adapted from the find-imports project, currently in graveyard archive.
 import ast
 import os
 import pkgutil
+from collections import defaultdict
+from itertools import chain, filterfalse
 from pathlib import Path
-from collections import namedtuple, defaultdict
-from itertools import filterfalse, chain
 
-from ._supported_packages import PACKAGE_RENAMES, STANDARD_LIBRARY, PYODIDE_PACKAGES
+from ._supported_packages import PACKAGE_RENAMES, PYODIDE_PACKAGES, STANDARD_LIBRARY
 
 
 class NamespaceInfo:
     def __init__(self, source_fpath: Path) -> None:
-        # expanding base_folder to absolute as pkgutils.FileFinder will do so - easier for later purging
+        # expanding base_folder to absolute as pkgutils.
+        # FileFinder will do so - easier for later purging
         self.base_folder = str(source_fpath.parent.absolute())
         self.source_mod_name = source_fpath.stem
         self._collect()
@@ -27,7 +28,8 @@ class NamespaceInfo:
             for dirname in dirs:
                 iter_modules_paths.append(os.path.join(root, dirname))
 
-        # need to consume generator as I will iterate two times for _packages, and modules
+        # need to consume generator as I will iterate
+        # two times for _packages, and modules
         pkg_mods = tuple(pkgutil.iter_modules(iter_modules_paths))
         modules = map(
             lambda mi: os.path.join(mi.module_finder.path, mi.name),
@@ -52,7 +54,10 @@ class NamespaceInfo:
         return item in self._all_namespace
 
     def __str__(self) -> str:
-        return f"NameSpace info for {self.base_folder} \n\t Modules: {self.modules} \n\t Packages: {self._packages}"
+        return (
+            f"NameSpace info for {self.base_folder} \n\t "
+            f"Modules: {self.modules} \n\t Packages: {self._packages}"
+        )
 
     def __repr__(self) -> str:
         return str(self)
@@ -160,7 +165,10 @@ def _convert_notebook(source_fpath: Path) -> str:
     return source
 
 
-def find_imports(source: str, source_fpath: Path,) -> FinderResult:
+def find_imports(
+    source: str,
+    source_fpath: Path,
+) -> FinderResult:
     """
     Parse the input source, and returns its dependencies, as organised in
     the sets of external _packages, and local modules, respectively.
@@ -176,9 +184,9 @@ def find_imports(source: str, source_fpath: Path,) -> FinderResult:
     Returns
     -------
     FinderResult
-        Return the results of parsing as a `FinderResult` instance. 
-        This instance provides reference to packages and paths to 
-        include in the py-env, as well as any unsuppoted import.
+        Return the results of parsing as a `FinderResult` instance.
+        This instance provides reference to packages and paths to
+        include in the py-env, as well as any unsupported import.
     """
 
     return _find_modules(source, source_fpath)
