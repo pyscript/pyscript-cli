@@ -1,3 +1,6 @@
+# OSx rubbish
+.DS_Store
+
 # Byte-compiled
 __pycache__/
 *.py[cod]
@@ -12,9 +15,11 @@ docs/_build/
 .venv
 env/
 venv/
+.idea
 
 # Poetry lock file
 poetry.lock
+.python-version
 
 # Unit test / coverage reports
 htmlcov/

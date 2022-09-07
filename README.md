@@ -21,10 +21,16 @@ $ pip install pyscript
 
 ## Usage
 
-### Embed a Python script into a PyScript HTML file
+### Embed Python code into a PyScript HTML file
 
 ```shell
 $ pyscript wrap <filename.py>
+```
+
+Alternatively you could also use a **Jupyter notebook** as input file:
+
+```shell
+$ python wrap <filename.ipynb>
 ```
 
 This will generate a file called `<filename.html>` by default.

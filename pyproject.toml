@@ -1,6 +1,9 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.1.0b3"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
 
 [tool.poetry]
 name = "pyscript"
@@ -32,12 +35,17 @@ sphinx-autobuild = {version = "^2021.3.14", optional = true}
 sphinx-autodoc-typehints = {version = "^1.19.2", optional = true}
 myst-parser = {version = "^0.18.0", optional = true}
 pydata-sphinx-theme = {version = "^0.9.0", optional = true}
+requests = "^2.28.1"
+six = "^1.16.0"
+nbconvert = "^7.0.0"
+ipykernel = "^6.15.2"
 
 [tool.poetry.dev-dependencies]
 coverage = "^6.3.2"
 mypy = "^0.950"
 pytest = "^7.1.2"
 types-toml = "^0.10.8"
+pre-commit = "^2.20.0"
 
 [tool.poetry.extras]
 docs = [

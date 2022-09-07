@@ -31,6 +31,16 @@ class Abort(typer.Abort):
         super().__init__(*args, **kwargs)
 
 
+class Warning(typer.Exit):
+    """Warning with a consistent error message.
+    (Similar in essence to the Abort class - it only changes font color to yellow!)
+    """
+
+    def __init__(self, msg: str, *args: Any, **kwargs: Any):
+        console.print(msg, style="yellow")
+        super().__init__(*args, **kwargs)
+
+
 @app.callback(invoke_without_command=True, no_args_is_help=True)
 def main(
     version: Optional[bool] = typer.Option(
@@ -46,6 +56,7 @@ def main(
 
 
 pm = PluginManager("pyscript")
+
 
 pm.add_hookspecs(hookspecs)
 for modname in DEFAULT_PLUGINS:
