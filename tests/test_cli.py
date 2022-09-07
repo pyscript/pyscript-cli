@@ -140,7 +140,8 @@ def test_wrap_file(
             (
                 Dependency(
                     filename="preprocessor.py",
-                    code="from sklearn.preprocessing import StandardScaler\n scaler = StandardScaler()",
+                    code="from sklearn.preprocessing import StandardScaler\n "
+                    "scaler = StandardScaler()",
                     import_line="from preprocessor import scaler",
                     inject="scaler.fit(iris.data)",
                 ),
@@ -151,7 +152,8 @@ def test_wrap_file(
             (
                 Dependency(
                     filename="preprocessor.py",
-                    code="from sklearn.preprocessing import StandardScaler\n scaler = StandardScaler()",
+                    code="from sklearn.preprocessing import StandardScaler\n "
+                    "scaler = StandardScaler()",
                     import_line="import preprocessor",
                     inject="preprocessor.scaler.fit(iris.data)",
                 ),
