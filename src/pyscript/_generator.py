@@ -1,10 +1,11 @@
+import datetime
 from pathlib import Path
 from typing import Optional
 
 import jinja2
+import toml
 
-from ._node_parser import find_imports, FinderResult
-from ._node_parser import _convert_notebook
+from ._node_parser import FinderResult, _convert_notebook, find_imports
 
 
 class UnsupportedFileType(Exception):
@@ -33,7 +34,7 @@ def string_to_html(
 
 def file_to_html(
     input_path: Path, title: str, output_path: Optional[Path]
-) -> Optional[FinderResult]:
+) -> FinderResult:
     """Write a Python script string to an HTML file template.
 
     Warnings will be returned when scanning for environment, if any.
@@ -47,12 +48,13 @@ def file_to_html(
 
     elif extension == ".ipynb":
         try:
-            import nbconvert
+            import nbconvert as _  # noqa
         except ImportError as e:  # pragma no cover
             raise ImportError(
                 "Please install nbconvert to serve Jupyter Notebooks."
             ) from e
-        source = _convert_notebook(input_path)
+        else:
+            source = _convert_notebook(input_path)
 
     else:
         raise UnsupportedFileType(
@@ -60,17 +62,12 @@ def file_to_html(
         )
 
     import_results = find_imports(source, input_path)
-    with input_path.open("r") as fp:
-        string_to_html(source, title, output_path, pyenv=import_results)
-    if import_results.has_warnings:
-        return import_results
+    string_to_html(source, title, output_path, pyenv=import_results)
+    return import_results
 
 
 def create_project(
-    app_name: str,
-    app_description: str,
-    author_name: str,
-    author_email: str,
+    app_name: str, app_description: str, author_name: str, author_email: str,
 ) -> None:
     """
     New files created:
