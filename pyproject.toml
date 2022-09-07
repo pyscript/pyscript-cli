@@ -56,10 +56,5 @@ docs = [
     "pydata-sphinx-theme",
 ]
 
-# [tool.poetry.group.dev-dependencies.dependencies]
-# pre-commit = "^2.20.0"
-# requests = "^2.28.1"
-# six = "^1.16.0"
-
 [tool.poetry.scripts]
 pyscript = "pyscript.cli:app"
