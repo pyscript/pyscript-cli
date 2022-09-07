@@ -19,6 +19,7 @@ venv/
 
 # Poetry lock file
 poetry.lock
+.python-version
 
 # Unit test / coverage reports
 htmlcov/
