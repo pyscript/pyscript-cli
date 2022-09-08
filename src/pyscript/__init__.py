@@ -1,9 +1,9 @@
 """A CLI for PyScript!"""
 from pathlib import Path
-from rich.console import Console
 
 import platformdirs
 import toml
+from rich.console import Console
 
 APPNAME = "pyscript"
 APPAUTHOR = "python"
