@@ -1,8 +1,8 @@
 """A CLI for PyScript!"""
-import toml
-import platformdirs
 from pathlib import Path
 
+import platformdirs
+import toml
 
 APPNAME = "pyscript"
 APPAUTHOR = "python"
@@ -23,6 +23,7 @@ try:
     import rich_click.typer as typer
 except ImportError:  # pragma: no cover
     import typer  # type: ignore
+
 from rich.console import Console
 
 try:
