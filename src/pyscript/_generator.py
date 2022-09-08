@@ -5,6 +5,8 @@ from typing import Optional
 
 import jinja2
 
+from pyscript import DEFAULT_CONFIG_FILENAME
+
 _env = jinja2.Environment(loader=jinja2.PackageLoader("pyscript"))
 
 
@@ -31,7 +33,7 @@ def create_project(
     """
     New files created:
 
-    manifest.json - project metadata
+    pyscript.json - project metadata
     index.html - a "Hello world" start page for the project.
 
     TODO: more files to add to the core project start state.
@@ -46,7 +48,7 @@ def create_project(
     }
     app_dir = Path(".") / app_name
     app_dir.mkdir()
-    manifest_file = app_dir / "manifest.json"
+    manifest_file = app_dir / DEFAULT_CONFIG_FILENAME
     with manifest_file.open("w", encoding="utf-8") as fp:
         json.dump(context, fp)
     index_file = app_dir / "index.html"

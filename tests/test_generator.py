@@ -19,7 +19,7 @@ def test_create_project(tmp_cwd: Path, is_not_none: Any) -> None:
     author_email = "acoder@domain.com"
     gen.create_project(app_name, app_description, author_name, author_email)
 
-    manifest_path = tmp_cwd / app_name / "manifest.json"
+    manifest_path = tmp_cwd / app_name / gen.DEFAULT_CONFIG_FILENAME
     assert manifest_path.exists()
 
     with manifest_path.open() as fp:
