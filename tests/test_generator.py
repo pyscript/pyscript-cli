@@ -3,11 +3,11 @@ Tests for utility functions in the _generator.py module that cannot be
 exercised because of limitations in the Typer testing framework (specifically,
 multiple "prompt" arguments).
 """
+import json
 from pathlib import Path
 from typing import Any
 
 import pytest
-import json
 
 from pyscript import _generator as gen
 

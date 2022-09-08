@@ -1,8 +1,8 @@
 """A CLI for PyScript!"""
+import json
 from pathlib import Path
 
 import platformdirs
-import json 
 from rich.console import Console
 
 APPNAME = "pyscript"
