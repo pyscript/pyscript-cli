@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Optional
 
 import jinja2
-import toml
+import json
 
 _env = jinja2.Environment(loader=jinja2.PackageLoader("pyscript"))
 
@@ -31,7 +31,7 @@ def create_project(
     """
     New files created:
 
-    manifest.toml - project metadata
+    manifest.json - project metadata
     index.html - a "Hello world" start page for the project.
 
     TODO: more files to add to the core project start state.
@@ -43,12 +43,11 @@ def create_project(
         "author_name": author_name,
         "author_email": author_email,
         "version": f"{datetime.date.today().year}.1.1",
-        "created_on": datetime.datetime.now(),
     }
     app_dir = Path(".") / app_name
     app_dir.mkdir()
-    manifest_file = app_dir / "manifest.toml"
+    manifest_file = app_dir / "manifest.json"
     with manifest_file.open("w", encoding="utf-8") as fp:
-        toml.dump(context, fp)
+        json.dump(context, fp)
     index_file = app_dir / "index.html"
     string_to_html('print("Hello, world!")', app_name, index_file)

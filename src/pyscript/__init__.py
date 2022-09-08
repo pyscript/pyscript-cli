@@ -2,7 +2,7 @@
 from pathlib import Path
 
 import platformdirs
-import toml
+import json 
 from rich.console import Console
 
 APPNAME = "pyscript"
@@ -10,10 +10,11 @@ APPAUTHOR = "python"
 
 
 DATA_DIR = Path(platformdirs.user_data_dir(appname=APPNAME, appauthor=APPAUTHOR))
-CONFIG_FILE = DATA_DIR / Path("pyscript.toml")
-if not DATA_DIR.exists():
-    DATA_DIR.mkdir(parents=True)
-    CONFIG_FILE.touch(exist_ok=True)
+CONFIG_FILE = DATA_DIR / Path("config.json")
+if not CONFIG_FILE.is_file():
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    with CONFIG_FILE.open("w") as config_file:
+        json.dump({}, config_file)
 
 
 try:
@@ -36,4 +37,5 @@ except metadata.PackageNotFoundError:  # pragma: no cover
 
 console = Console()
 app = typer.Typer(add_completion=False)
-config = toml.load(CONFIG_FILE)
+with CONFIG_FILE.open() as config_file:
+    config = json.load(config_file)
