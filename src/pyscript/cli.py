@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 from pluggy import PluginManager
 
-from pyscript import __version__, app, console, plugins, typer, config
+from pyscript import __version__, app, console, plugins, typer
 from pyscript.plugins import hookspecs
 
 DEFAULT_PLUGINS = ["create", "wrap"]
