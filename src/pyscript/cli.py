@@ -1,9 +1,7 @@
 """The main CLI entrypoint and commands."""
 import sys
 from typing import Any, Optional
-
 from pluggy import PluginManager
-
 from pyscript import __version__, app, console, plugins, typer
 from pyscript.plugins import hookspecs
 
