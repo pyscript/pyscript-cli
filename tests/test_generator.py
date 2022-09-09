@@ -3,13 +3,14 @@ Tests for utility functions in the _generator.py module that cannot be
 exercised because of limitations in the Typer testing framework (specifically,
 multiple "prompt" arguments).
 """
+import json
 from pathlib import Path
 from typing import Any
 
 import pytest
-import toml
 
 from pyscript import _generator as gen
+from pyscript import config
 
 
 def test_create_project(tmp_cwd: Path, is_not_none: Any) -> None:
@@ -19,11 +20,11 @@ def test_create_project(tmp_cwd: Path, is_not_none: Any) -> None:
     author_email = "acoder@domain.com"
     gen.create_project(app_name, app_description, author_name, author_email)
 
-    manifest_path = tmp_cwd / app_name / "manifest.toml"
+    manifest_path = tmp_cwd / app_name / config["project_config_filename"]
     assert manifest_path.exists()
 
     with manifest_path.open() as fp:
-        contents = toml.load(fp)
+        contents = json.load(fp)
 
     assert contents == {
         "name": "app_name",
@@ -31,7 +32,6 @@ def test_create_project(tmp_cwd: Path, is_not_none: Any) -> None:
         "type": "app",
         "author_name": "A.Coder",
         "author_email": "acoder@domain.com",
-        "created_on": is_not_none,
         "version": is_not_none,
     }
 

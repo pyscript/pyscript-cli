@@ -1,19 +1,28 @@
 """A CLI for PyScript!"""
+import json
 from pathlib import Path
 
 import platformdirs
-import toml
 from rich.console import Console
 
 APPNAME = "pyscript"
 APPAUTHOR = "python"
+DEFAULT_CONFIG_FILENAME = "pyscript.json"
+
+
+# Default initial data for the command line.
+DEFAULT_CONFIG = {
+    # Name of config file for PyScript projects.
+    "project_config_filename": "manifest.json",
+}
 
 
 DATA_DIR = Path(platformdirs.user_data_dir(appname=APPNAME, appauthor=APPAUTHOR))
-CONFIG_FILE = DATA_DIR / Path("pyscript.toml")
-if not DATA_DIR.exists():
-    DATA_DIR.mkdir(parents=True)
-    CONFIG_FILE.touch(exist_ok=True)
+CONFIG_FILE = DATA_DIR / Path(DEFAULT_CONFIG_FILENAME)
+if not CONFIG_FILE.is_file():
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    with CONFIG_FILE.open("w") as config_file:
+        json.dump(DEFAULT_CONFIG, config_file)
 
 
 try:
@@ -36,4 +45,5 @@ except metadata.PackageNotFoundError:  # pragma: no cover
 
 console = Console()
 app = typer.Typer(add_completion=False)
-config = toml.load(CONFIG_FILE)
+with CONFIG_FILE.open() as config_file:
+    config = json.load(config_file)
