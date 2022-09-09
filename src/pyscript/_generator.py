@@ -2,9 +2,10 @@ import datetime
 import json
 from pathlib import Path
 from typing import Optional
-from pyscript import config
 
 import jinja2
+
+from pyscript import config
 
 _env = jinja2.Environment(loader=jinja2.PackageLoader("pyscript"))
 
