@@ -7,6 +7,7 @@ from rich.console import Console
 
 APPNAME = "pyscript"
 APPAUTHOR = "python"
+DEFAULT_CONFIG_FILENAME = "pyscript.json"
 
 
 # Default initial data for the command line.
@@ -17,7 +18,7 @@ DEFAULT_CONFIG = {
 
 
 DATA_DIR = Path(platformdirs.user_data_dir(appname=APPNAME, appauthor=APPAUTHOR))
-CONFIG_FILE = DATA_DIR / Path("config.json")
+CONFIG_FILE = DATA_DIR / Path(DEFAULT_CONFIG_FILENAME)
 if not CONFIG_FILE.is_file():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     with CONFIG_FILE.open("w") as config_file:

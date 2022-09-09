@@ -6,6 +6,8 @@ from pyscript import config
 
 import jinja2
 
+from pyscript import DEFAULT_CONFIG_FILENAME
+
 _env = jinja2.Environment(loader=jinja2.PackageLoader("pyscript"))
 
 
@@ -32,7 +34,7 @@ def create_project(
     """
     New files created:
 
-    manifest.json - project metadata
+    pyscript.json - project metadata
     index.html - a "Hello world" start page for the project.
 
     TODO: more files to add to the core project start state.
