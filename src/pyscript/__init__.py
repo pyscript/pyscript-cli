@@ -9,12 +9,19 @@ APPNAME = "pyscript"
 APPAUTHOR = "python"
 
 
+# Default initial data for the command line.
+DEFAULT_CONFIG = {
+    # Name of config file for PyScript projects.
+    "project_config_filename": "manifest.json",
+}
+
+
 DATA_DIR = Path(platformdirs.user_data_dir(appname=APPNAME, appauthor=APPAUTHOR))
 CONFIG_FILE = DATA_DIR / Path("config.json")
 if not CONFIG_FILE.is_file():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     with CONFIG_FILE.open("w") as config_file:
-        json.dump({}, config_file)
+        json.dump(DEFAULT_CONFIG, config_file)
 
 
 try:

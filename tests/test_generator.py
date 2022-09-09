@@ -10,6 +10,7 @@ from typing import Any
 import pytest
 
 from pyscript import _generator as gen
+from pyscript import config
 
 
 def test_create_project(tmp_cwd: Path, is_not_none: Any) -> None:
@@ -19,7 +20,7 @@ def test_create_project(tmp_cwd: Path, is_not_none: Any) -> None:
     author_email = "acoder@domain.com"
     gen.create_project(app_name, app_description, author_name, author_email)
 
-    manifest_path = tmp_cwd / app_name / "manifest.json"
+    manifest_path = tmp_cwd / app_name / config["project_config_filename"]
     assert manifest_path.exists()
 
     with manifest_path.open() as fp:

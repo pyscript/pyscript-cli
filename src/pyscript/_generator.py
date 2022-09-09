@@ -2,6 +2,7 @@ import datetime
 import json
 from pathlib import Path
 from typing import Optional
+from pyscript import config
 
 import jinja2
 
@@ -46,7 +47,7 @@ def create_project(
     }
     app_dir = Path(".") / app_name
     app_dir.mkdir()
-    manifest_file = app_dir / "manifest.json"
+    manifest_file = app_dir / config["project_config_filename"]
     with manifest_file.open("w", encoding="utf-8") as fp:
         json.dump(context, fp)
     index_file = app_dir / "index.html"
