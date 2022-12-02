@@ -51,5 +51,18 @@ def create_project(
     manifest_file = app_dir / config["project_config_filename"]
     with manifest_file.open("w", encoding="utf-8") as fp:
         json.dump(context, fp)
+
+    if project_type == "plugin":
+        create_plugin_files()
+    else:
+        create_app_files()
+
+
+def create_app_files(app_dir):
     index_file = app_dir / "index.html"
+    string_to_html('print("Hello, world!")', app_name, index_file)
+
+
+def create_plugin_files(app_dir, name):
+    index_file = app_dir / f"{name}.py"
     string_to_html('print("Hello, world!")', app_name, index_file)
