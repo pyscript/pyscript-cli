@@ -22,6 +22,7 @@ def create(
     """
     try:
         create_project(app_name, app_description, author_name, author_email)
+        cli.ok(f"Project {app_name} created succesfully. cd into the the {app_name} folder to start using it.")
     except FileExistsError:
         raise cli.Abort(
             f"A directory called {app_name} already exists in this location."
