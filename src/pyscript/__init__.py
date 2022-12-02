@@ -7,13 +7,13 @@ from rich.console import Console
 
 APPNAME = "pyscript"
 APPAUTHOR = "python"
-DEFAULT_CONFIG_FILENAME = "pyscript.json"
+DEFAULT_CONFIG_FILENAME = ".pyscriptconfig"
 
 
 # Default initial data for the command line.
 DEFAULT_CONFIG = {
     # Name of config file for PyScript projects.
-    "project_config_filename": "manifest.json",
+    "project_config_filename": "pyscript.json",
 }
 
 
