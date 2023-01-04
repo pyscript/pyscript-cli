@@ -6,6 +6,7 @@ multiple "prompt" arguments).
 import json
 from pathlib import Path
 from typing import Any
+import toml
 
 import pytest
 
@@ -18,13 +19,20 @@ def test_create_project(tmp_cwd: Path, is_not_none: Any) -> None:
     app_description = "A longer, human friendly, app description."
     author_name = "A.Coder"
     author_email = "acoder@domain.com"
+
+    # GIVEN a a new project
     gen.create_project(app_name, app_description, author_name, author_email)
 
+    # with a default config path
     manifest_path = tmp_cwd / app_name / config["project_config_filename"]
+
+    # assert that the new project config file exists
     assert manifest_path.exists()
 
+    # assert that we can load it as a TOML file (TOML is the default config format)
+    # and that the contents of the config are as we expect
     with manifest_path.open() as fp:
-        contents = json.load(fp)
+        contents = toml.load(fp)
 
     assert contents == {
         "name": "app_name",
