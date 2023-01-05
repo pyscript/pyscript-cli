@@ -110,7 +110,7 @@ def test_create_project_explicit_toml(tmp_cwd: Path, is_not_none: Any, monkeypat
 
 def check_project_manifest(
     config_path: Path, serializer: Any, app_name: str, is_not_none: Any,
-    app_description: str = "A longer, human friendly, app description.", 
+    app_description: str = "A longer, human friendly, app description.",
     author_name: str = "A.Coder", author_email: str = "acoder@domain.com",
     project_type: str = "app"):
     """
