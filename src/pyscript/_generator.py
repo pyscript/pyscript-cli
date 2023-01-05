@@ -86,8 +86,8 @@ def create_project(
     }
     app_dir = Path(".") / app_name
     app_dir.mkdir()
-    config_file = app_dir / config["project_config_filename"]
-    save_config_file(config_file, context)
+    config_filepath = app_dir / config["project_config_filename"]
+    save_config_file(config_filepath, context)
 
     index_file = app_dir / "index.html"
 
@@ -96,4 +96,9 @@ def create_project(
     with python_filepath.open("w", encoding="utf-8") as fp:
         fp.write(TEMPLATE_PYTHON_CODE)
 
-    create_project_html('print("Hello, world!")', app_name, index_file)
+    create_project_html(
+        app_name,
+        config["project_main_filename"],
+        config["project_config_filename"],
+        index_file,
+    )
