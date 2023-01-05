@@ -9,6 +9,43 @@ import toml
 from pyscript import config
 
 _env = jinja2.Environment(loader=jinja2.PackageLoader("pyscript"))
+TEMPLATE_PYTHON_CODE = """# Replace the code below with your own
+print("Hello, world!")
+"""
+
+
+def create_project_html(
+    title: str, python_file_path: str, config_file_path: str, output_file_path: Path
+) -> None:
+    """Write a Python script string to an HTML file template."""
+    template = _env.get_template("basic.html")
+    with output_file_path.open("w") as fp:
+        fp.write(
+            template.render(
+                python_file_path=python_file_path,
+                config_file_path=config_file_path,
+                title=title,
+            )
+        )
+
+
+def save_config_file(config_file: Path, configuration: dict):
+    """Write an app configuration dict to `config_file`.
+
+    Params:
+
+     - config_file(Path): path configuration file. (I.e.: "pyscript.toml"). Supported
+                          formats: `toml` and `json`.
+     - configuration(dict): app configuration to be saved
+
+    Return:
+        (None)
+    """
+    with config_file.open("w", encoding="utf-8") as fp:
+        if str(config_file).endswith(".json"):
+            json.dump(configuration, fp)
+        else:
+            toml.dump(configuration, fp)
 
 
 def string_to_html(input_str: str, title: str, output_path: Path) -> None:
@@ -49,12 +86,14 @@ def create_project(
     }
     app_dir = Path(".") / app_name
     app_dir.mkdir()
-    manifest_file = app_dir / config["project_config_filename"]
-    with manifest_file.open("w", encoding="utf-8") as fp:
-        if str(manifest_file).endswith(".json"):
-            json.dump(context, fp)
-        else:
-            toml.dump(context, fp)
+    config_file = app_dir / config["project_config_filename"]
+    save_config_file(config_file, context)
 
     index_file = app_dir / "index.html"
-    string_to_html('print("Hello, world!")', app_name, index_file)
+
+    # Save the new python file
+    python_filepath = app_dir / "main.py"
+    with python_filepath.open("w", encoding="utf-8") as fp:
+        fp.write(TEMPLATE_PYTHON_CODE)
+
+    create_project_html('print("Hello, world!")', app_name, index_file)
