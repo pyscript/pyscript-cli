@@ -48,3 +48,7 @@ console = Console()
 app = typer.Typer(add_completion=False)
 with CONFIG_FILE.open() as config_file:
     config = json.load(config_file)
+
+# Make sure all configuration keys are there. If any is missing,
+# we pick from the default config
+config = DEFAULT_CONFIG | config
