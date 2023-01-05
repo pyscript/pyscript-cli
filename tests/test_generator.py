@@ -6,13 +6,12 @@ multiple "prompt" arguments).
 import json
 from pathlib import Path
 from typing import Any
-import toml
 
 import pytest
+import toml
 
 from pyscript import _generator as gen
 from pyscript import config
-
 
 TESTS_AUTHOR_NAME = "A.Coder"
 TESTS_AUTHOR_EMAIL = "acoder@domain.com"
@@ -21,8 +20,6 @@ TESTS_AUTHOR_EMAIL = "acoder@domain.com"
 def test_create_project(tmp_cwd: Path, is_not_none: Any) -> None:
     app_name = "app_name"
     app_description = "A longer, human friendly, app description."
-    author_name = "A.Coder"
-    author_email = "acoder@domain.com"
 
     # GIVEN a a new project
     gen.create_project(app_name, app_description, TESTS_AUTHOR_NAME, TESTS_AUTHOR_EMAIL)
@@ -40,16 +37,20 @@ def test_create_project_twice_raises_error(tmp_cwd: Path) -> None:
     gen.create_project(app_name, app_description, TESTS_AUTHOR_NAME, TESTS_AUTHOR_EMAIL)
 
     with pytest.raises(FileExistsError):
-        gen.create_project(app_name, app_description, TESTS_AUTHOR_NAME, TESTS_AUTHOR_EMAIL)
+        gen.create_project(
+            app_name, app_description, TESTS_AUTHOR_NAME, TESTS_AUTHOR_EMAIL
+        )
 
 
-def test_create_project_explicit_json(tmp_cwd: Path, is_not_none: Any, monkeypatch) -> None:
+def test_create_project_explicit_json(
+    tmp_cwd: Path, is_not_none: Any, monkeypatch
+) -> None:
     app_name = "JSON_app_name"
     app_description = "A longer, human friendly, app description."
 
     # Let's patch the config so that the project config file is a JSON file
-    config_file_name = 'pyscript.json'
-    monkeypatch.setitem(gen.config, 'project_config_filename', config_file_name)
+    config_file_name = "pyscript.json"
+    monkeypatch.setitem(gen.config, "project_config_filename", config_file_name)
 
     # GIVEN a new project
     gen.create_project(app_name, app_description, TESTS_AUTHOR_NAME, TESTS_AUTHOR_EMAIL)
@@ -60,13 +61,15 @@ def test_create_project_explicit_json(tmp_cwd: Path, is_not_none: Any, monkeypat
     check_project_manifest(manifest_path, json, app_name, is_not_none)
 
 
-def test_create_project_explicit_toml(tmp_cwd: Path, is_not_none: Any, monkeypatch) -> None:
+def test_create_project_explicit_toml(
+    tmp_cwd: Path, is_not_none: Any, monkeypatch
+) -> None:
     app_name = "TOML_app_name"
     app_description = "A longer, human friendly, app description."
 
     # Let's patch the config so that the project config file is a JSON file
-    config_file_name = 'mypyscript.toml'
-    monkeypatch.setitem(gen.config, 'project_config_filename', config_file_name)
+    config_file_name = "mypyscript.toml"
+    monkeypatch.setitem(gen.config, "project_config_filename", config_file_name)
 
     # GIVEN a new project
     gen.create_project(app_name, app_description, TESTS_AUTHOR_NAME, TESTS_AUTHOR_EMAIL)
@@ -76,11 +79,17 @@ def test_create_project_explicit_toml(tmp_cwd: Path, is_not_none: Any, monkeypat
 
     check_project_manifest(manifest_path, toml, app_name, is_not_none)
 
+
 def check_project_manifest(
-    config_path: Path, serializer: Any, app_name: str, is_not_none: Any,
+    config_path: Path,
+    serializer: Any,
+    app_name: str,
+    is_not_none: Any,
     app_description: str = "A longer, human friendly, app description.",
-    author_name: str = TESTS_AUTHOR_NAME, author_email: str = TESTS_AUTHOR_EMAIL ,
-    project_type: str = "app"):
+    author_name: str = TESTS_AUTHOR_NAME,
+    author_email: str = TESTS_AUTHOR_EMAIL,
+    project_type: str = "app",
+):
     """
     Perform the following:
 

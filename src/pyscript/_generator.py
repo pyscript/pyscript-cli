@@ -2,8 +2,9 @@ import datetime
 import json
 from pathlib import Path
 from typing import Optional
-import toml
+
 import jinja2
+import toml
 
 from pyscript import config
 
