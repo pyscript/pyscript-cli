@@ -14,6 +14,7 @@ DEFAULT_CONFIG_FILENAME = ".pyscriptconfig"
 DEFAULT_CONFIG = {
     # Name of config file for PyScript projects.
     "project_config_filename": "pyscript.toml",
+    "project_main_filename": "main.py",
 }
 
 
