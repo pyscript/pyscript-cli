@@ -6,9 +6,9 @@ multiple "prompt" arguments).
 import json
 from pathlib import Path
 from typing import Any
-import toml
 
 import pytest
+import toml
 
 from pyscript import _generator as gen
 from pyscript import config
@@ -56,15 +56,17 @@ def test_create_project_twice_raises_error(tmp_cwd: Path) -> None:
         gen.create_project(app_name, app_description, author_name, author_email)
 
 
-def test_create_project_explicit_json(tmp_cwd: Path, is_not_none: Any, monkeypatch) -> None:
+def test_create_project_explicit_json(
+    tmp_cwd: Path, is_not_none: Any, monkeypatch
+) -> None:
     app_name = "JSON_app_name"
     app_description = "A longer, human friendly, app description."
     author_name = "A.Coder"
     author_email = "acoder@domain.com"
 
     # Let's patch the config so that the project config file is a JSON file
-    config_file_name = 'pyscript.json'
-    monkeypatch.setitem(gen.config, 'project_config_filename', config_file_name)
+    config_file_name = "pyscript.json"
+    monkeypatch.setitem(gen.config, "project_config_filename", config_file_name)
 
     # GIVEN a new project
     gen.create_project(app_name, app_description, author_name, author_email)
@@ -90,15 +92,17 @@ def test_create_project_explicit_json(tmp_cwd: Path, is_not_none: Any, monkeypat
     }
 
 
-def test_create_project_explicit_toml(tmp_cwd: Path, is_not_none: Any, monkeypatch) -> None:
+def test_create_project_explicit_toml(
+    tmp_cwd: Path, is_not_none: Any, monkeypatch
+) -> None:
     app_name = "TOML_app_name"
     app_description = "A longer, human friendly, app description."
     author_name = "A.Coder"
     author_email = "acoder@domain.com"
 
     # Let's patch the config so that the project config file is a JSON file
-    config_file_name = 'mypyscript.toml'
-    monkeypatch.setitem(gen.config, 'project_config_filename', config_file_name)
+    config_file_name = "mypyscript.toml"
+    monkeypatch.setitem(gen.config, "project_config_filename", config_file_name)
 
     # GIVEN a new project
     gen.create_project(app_name, app_description, author_name, author_email)
@@ -108,11 +112,17 @@ def test_create_project_explicit_toml(tmp_cwd: Path, is_not_none: Any, monkeypat
 
     check_project_manifest(manifest_path, toml, app_name, is_not_none)
 
+
 def check_project_manifest(
-    config_path: Path, serializer: Any, app_name: str, is_not_none: Any,
-    app_description: str = "A longer, human friendly, app description.", 
-    author_name: str = "A.Coder", author_email: str = "acoder@domain.com",
-    project_type: str = "app"):
+    config_path: Path,
+    serializer: Any,
+    app_name: str,
+    is_not_none: Any,
+    app_description: str = "A longer, human friendly, app description.",
+    author_name: str = "A.Coder",
+    author_email: str = "acoder@domain.com",
+    project_type: str = "app",
+):
     """
     Perform the following:
 
