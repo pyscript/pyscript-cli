@@ -52,9 +52,9 @@ def wrap(
         else:
             raise cli.Abort("Must provide an output file or use `--show` option")
     if input_file is not None:
-        file_to_html(input_file, title, output)
+        file_to_html(input_file, title, output, template="wrap.html")
     if command:
-        string_to_html(command, title, output)
+        string_to_html(command, title, output, template="wrap.html")
     if output:
         if show:
             console.print("Opening in web browser!")
