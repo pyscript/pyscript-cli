@@ -36,7 +36,7 @@ platformdirs = "^2.5.2"
 
 [tool.poetry.dev-dependencies]
 coverage = "^6.3.2"
-mypy = "^0.950"
+mypy = "^0.991"
 pytest = "^7.1.2"
 types-toml = "^0.10.8"
 
