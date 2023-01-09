@@ -12,8 +12,6 @@ repos:
     hooks:
     -   id: pretty-format-yaml
         args: [--autofix, --indent, '4']
-    -   id: pretty-format-toml
-        args: [--autofix]
 -   repo: https://github.com/sondrelg/pep585-upgrade
     rev: v1.0
     hooks:
