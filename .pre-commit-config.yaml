@@ -12,8 +12,11 @@ repos:
     hooks:
     -   id: pretty-format-yaml
         args: [--autofix, --indent, '4']
-    -   id: pretty-format-toml
-        args: [--autofix]
+# TODO: This formatter is broken due to a sub-dependency
+# It should be fixed in a future release but for now, ignore TOML file formatting
+# See: https://github.com/macisamuele/language-formatters-pre-commit-hooks/issues/133
+#    -   id: pretty-format-toml
+#        args: [--autofix]
 -   repo: https://github.com/sondrelg/pep585-upgrade
     rev: v1.0
     hooks:
