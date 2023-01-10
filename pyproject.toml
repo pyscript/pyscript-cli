@@ -1,53 +1,44 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
 
-[tool.poetry]
+[project]
 name = "pyscript"
 version = "0.2.5"
 description = "Command Line Interface for PyScript"
 authors = [
-    "Matt Kramer <mkramer@anaconda.com>",
-    "Fabio Pliger <fpliger@anaconda.com>",
-    "Nicholas Tollervey <ntollervey@anaconda.com>",
+    {name = "Matt Kramer", email = "mkramer@anaconda.com"},
+    {name = "Fabio Pliger", email = "fpliger@anaconda.com"},
+    {name = "Nicholas Tollervey", email = "ntollervey@anaconda.com"},
 ]
-license = "Apache-2.0"
-repository = "https://github.com/pyscript/pyscript-cli"
+license = {text = "Apache-2.0"}
 readme = "README.md"
-packages = [
-    { include = "pyscript", from = "src" },
+requires-python = ">=3.7"
+dependencies = [
+    'importlib-metadata; python_version<"3.8"',
+    "Jinja2<3.2",
+    "pluggy<1.1",
+    "rich<13.0",
+    "rich-click[typer]<1.4",
+    "toml<0.11",
+    "typer<0.5",
+    "platformdirs<2.6",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.7"
-importlib-metadata = {version = "^4.11.3", python = "3.7"}
-Jinja2 = "^3.1.2"
-pluggy = "^1.0.0"
-rich = "^12.3.0"
-rich-click = {extras = ["typer"], version = "^1.3.0"}
-toml = "^0.10.2"
-typer = "^0.4.1"
-Sphinx = {version = "^5.1.1", optional = true}
-sphinx-autobuild = {version = "^2021.3.14", optional = true}
-sphinx-autodoc-typehints = {version = "^1.19.2", optional = true}
-myst-parser = {version = "^0.18.0", optional = true}
-pydata-sphinx-theme = {version = "^0.9.0", optional = true}
-platformdirs = "^2.5.2"
-
-[tool.poetry.dev-dependencies]
-coverage = "^6.3.2"
-mypy = "^0.950"
-pytest = "^7.1.2"
-types-toml = "^0.10.8"
-
-[tool.poetry.extras]
+[project.optional-dependencies]
+dev = [
+    "coverage<6.4",
+    "mypy<=0.950",
+    "pytest<7.2",
+    "types-toml<0.11",
+]
 docs = [
-    "sphinx",
-    "sphinx-autobuild",
-    "sphinx-autodoc-typehints",
-    "myst-parser",
-    "pydata-sphinx-theme",
+    "Sphinx<5.2",
+    "sphinx-autobuild<2021.4.0",
+    "sphinx-autodoc-typehints<1.20",
+    "myst-parser<0.19.0",
+    "pydata-sphinx-theme<0.10.0",
 ]
 
-[tool.poetry.scripts]
+[project.scripts]
 pyscript = "pyscript.cli:app"
