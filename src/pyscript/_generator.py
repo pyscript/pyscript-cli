@@ -93,8 +93,12 @@ def create_project(
     }
     app_dir = Path(".") / app_name
     app_dir.mkdir()
-    config_filepath = app_dir / config["project_config_filename"]
-    save_config_file(config_filepath, context)
+    manifest_file = app_dir / config["project_config_filename"]
+    with manifest_file.open("w", encoding="utf-8") as fp:
+        if str(manifest_file).endswith(".json"):
+            json.dump(context, fp)
+        else:
+            toml.dump(context, fp)
 
     index_file = app_dir / "index.html"
 
