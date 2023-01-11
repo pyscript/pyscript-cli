@@ -8,7 +8,7 @@ import pytest
 from mypy_extensions import VarArg
 from typer.testing import CliRunner, Result
 
-from pyscript import LATEST_PYSCRIPT_VERSION, __version__
+from pyscript import LATEST_PYSCRIPT_VERSION, __version__, config
 from pyscript.cli import app
 
 if TYPE_CHECKING:
@@ -179,21 +179,30 @@ def test_wrap_pyscript_version(
     expected_version: str,
     tmp_path: Path,
 ) -> None:
+    """
+    Test that when wrap is called passing a string code input and an explicit pyscript version
+    the project is created correctly
+    """
     command = 'print("Hello World!")'
     args = ["wrap", "-c", command, "-o", "output.html"]
     if version is not None:
         args.extend(["--pyscript-version", version])
+
+    # GIVEN a call to wrap with a cmd input and specific pyscript version as arguments
     result = invoke_cli(*args)
     assert result.exit_code == 0
 
+    # EXPECT the output file to exist
     expected_html_path = tmp_path / "output.html"
     assert expected_html_path.exists()
 
     with expected_html_path.open() as fp:
         html_text = fp.read()
 
+    # EXPECT the right cmd to be present in the output file
     assert f"<py-script>\n{command}\n</py-script>" in html_text
 
+    # EXPECT the right JS and CSS version to be present in the output file
     version_str = (
         f'<script defer src="https://pyscript.net/releases/{expected_version}'
         '/pyscript.js"></script>'
@@ -216,6 +225,10 @@ def test_wrap_pyscript_version_file(
     expected_version: str,
     tmp_path: Path,
 ) -> None:
+    """
+    Test that when wrap is called passing a file input and an explicit pyscript version
+    the project is created correctly
+    """
     command = 'print("Hello World!")'
     input_file = tmp_path / "hello.py"
     with input_file.open("w") as fp:
@@ -225,17 +238,22 @@ def test_wrap_pyscript_version_file(
 
     if version is not None:
         args.extend(["--pyscript-version", version])
+
+    # GIVEN a call to wrap with a file and specific pyscript version as arguments
     result = invoke_cli(*args)
     assert result.exit_code == 0
 
+    # EXPECT the output file to exist
     expected_html_path = tmp_path / "output.html"
     assert expected_html_path.exists()
 
     with expected_html_path.open() as fp:
         html_text = fp.read()
 
+    # EXPECT the right cmd to be present in the output file
     assert f"<py-script>\n{command}\n</py-script>" in html_text
 
+    # EXPECT the right JS and CSS version to be present in the output file
     version_str = (
         f'<script defer src="https://pyscript.net/releases/{expected_version}'
         '/pyscript.js"></script>'
@@ -261,6 +279,9 @@ def test_create_project_version(
     create_args: tuple[str],
     expected_version: str,
 ) -> None:
+    """
+    Test that project created with an explicit pyscript version are created correctly
+    """
     command = 'print("Hello World!")'
 
     input_file = tmp_path / "hello.py"
@@ -275,15 +296,22 @@ def test_create_project_version(
         "--author-email",
         "tester@me.com",
     ]
+
+    # GIVEN a call to wrap with a file and specific pyscript version as arguments
     result = invoke_cli("create", *cmd_args)
-    # breakpoint()
     assert result.exit_code == 0
+
+    # EXPECT the app folder to exist
     expected_app_path = tmp_path / create_args[0]
     assert expected_app_path.exists()
+
+    # EXPECT the app folder to contain the right index.html file
     app_file = expected_app_path / "index.html"
     assert app_file.exists()
     with app_file.open() as fp:
         html_text = fp.read()
+
+    # EXPECT the right JS and CSS version to be present in the html file
     version_str = (
         f'<script defer src="https://pyscript.net/releases/{expected_version}'
         '/pyscript.js"></script>'
@@ -294,3 +322,11 @@ def test_create_project_version(
     )
     assert version_str in html_text
     assert css_version_str in html_text
+
+    # EXPECT the folder to also contain the python main file
+    py_file = expected_app_path / config["project_main_filename"]
+    assert py_file.exists()
+
+    # EXPECT the folder to also contain the config file
+    config_file = expected_app_path / config["project_config_filename"]
+    assert config_file.exists()
