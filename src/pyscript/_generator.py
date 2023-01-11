@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Optional
 
 import jinja2
+import toml
 
 from pyscript import config
 
@@ -50,6 +51,10 @@ def create_project(
     app_dir.mkdir()
     manifest_file = app_dir / config["project_config_filename"]
     with manifest_file.open("w", encoding="utf-8") as fp:
-        json.dump(context, fp)
+        if str(manifest_file).endswith(".json"):
+            json.dump(context, fp)
+        else:
+            toml.dump(context, fp)
+
     index_file = app_dir / "index.html"
     string_to_html('print("Hello, world!")', app_name, index_file)
