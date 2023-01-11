@@ -1,4 +1,6 @@
-from pyscript import app, cli, plugins
+from typing import Optional
+
+from pyscript import LATEST_PYSCRIPT_VERSION, app, cli, plugins
 from pyscript._generator import create_project
 
 try:
@@ -13,6 +15,11 @@ def create(
     app_description: str = typer.Option(..., prompt=True),
     author_name: str = typer.Option(..., prompt=True),
     author_email: str = typer.Option(..., prompt=True),
+    pyscript_version: Optional[str] = typer.Option(
+        LATEST_PYSCRIPT_VERSION,
+        "--pyscript-version",
+        help="If provided, embed a single command string.",
+    ),
 ):
     """
     Create a new pyscript project with the passed in name, creating a new
@@ -21,7 +28,9 @@ def create(
     TODO: Agree on the metadata to be collected from the user.
     """
     try:
-        create_project(app_name, app_description, author_name, author_email)
+        create_project(
+            app_name, app_description, author_name, author_email, pyscript_version
+        )
     except FileExistsError:
         raise cli.Abort(
             f"A directory called {app_name} already exists in this location."
