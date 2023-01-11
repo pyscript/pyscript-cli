@@ -170,6 +170,43 @@ def test_wrap_title(
 
 
 @pytest.mark.parametrize(
+    "version, expected_version",
+    [(None, LATEST_PYSCRIPT_VERSION), ("2022.9.1", "2022.9.1")],
+)
+def test_wrap_pyscript_version(
+    invoke_cli: CLIInvoker,
+    version: Optional[str],
+    expected_version: str,
+    tmp_path: Path,
+) -> None:
+    command = 'print("Hello World!")'
+    args = ["wrap", "-c", command, "-o", "output.html"]
+    if version is not None:
+        args.extend(["--pyscript-version", version])
+    result = invoke_cli(*args)
+    assert result.exit_code == 0
+
+    expected_html_path = tmp_path / "output.html"
+    assert expected_html_path.exists()
+
+    with expected_html_path.open() as fp:
+        html_text = fp.read()
+
+    assert f"<py-script>\n{command}\n</py-script>" in html_text
+
+    version_str = (
+        f'<script defer src="https://pyscript.net/releases/{expected_version}'
+        '/pyscript.js"></script>'
+    )
+    css_version_str = (
+        '<link rel="stylesheet" href="https://pyscript.net/releases/'
+        f'{expected_version}/pyscript.css"/>'
+    )
+    assert version_str in html_text
+    assert css_version_str in html_text
+
+
+@pytest.mark.parametrize(
     "create_args, expected_version",
     [
         (("myapp1",), LATEST_PYSCRIPT_VERSION),
@@ -209,4 +246,9 @@ def test_create_project_version(
         f'<script defer src="https://pyscript.net/releases/{expected_version}'
         '/pyscript.js"></script>'
     )
+    css_version_str = (
+        '<link rel="stylesheet" href="https://pyscript.net/releases/'
+        f'{expected_version}/pyscript.css"/>'
+    )
     assert version_str in html_text
+    assert css_version_str in html_text

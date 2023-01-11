@@ -3,7 +3,7 @@ import webbrowser
 from pathlib import Path
 from typing import Optional
 
-from pyscript import app, cli, console, plugins
+from pyscript import LATEST_PYSCRIPT_VERSION, app, cli, console, plugins
 from pyscript._generator import file_to_html, string_to_html
 
 try:
@@ -29,6 +29,11 @@ def wrap(
     ),
     show: Optional[bool] = typer.Option(None, help="Open output file in web browser."),
     title: Optional[str] = typer.Option(None, help="Add title to HTML file."),
+    pyscript_version: Optional[str] = typer.Option(
+        LATEST_PYSCRIPT_VERSION,
+        "--pyscript-version",
+        help="If provided, defines what version of pyscript will be used to create the app",
+    ),
 ) -> None:
     """Wrap a Python script inside an HTML file."""
     title = title or "PyScript App"
@@ -52,9 +57,21 @@ def wrap(
         else:
             raise cli.Abort("Must provide an output file or use `--show` option")
     if input_file is not None:
-        file_to_html(input_file, title, output, template_name="wrap.html")
+        file_to_html(
+            input_file,
+            title,
+            output,
+            template_name="wrap.html",
+            pyscript_version=pyscript_version,
+        )
     if command:
-        string_to_html(command, title, output, template_name="wrap.html")
+        string_to_html(
+            command,
+            title,
+            output,
+            template_name="wrap.html",
+            pyscript_version=pyscript_version,
+        )
     if output:
         if show:
             console.print("Opening in web browser!")
