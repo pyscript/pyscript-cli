@@ -49,12 +49,24 @@ def save_config_file(config_file: Path, configuration: dict):
 
 
 def string_to_html(
-    input_str: str, title: str, output_path: Path, template_name: str = "basic.html"
+    code: str, title: str, output_path: Path, template_name: str = "basic.html"
 ) -> None:
-    """Write a Python script string to an HTML file template."""
+    """Write a Python script string to an HTML file template.
+
+    Params:
+
+        - code(str): string containing the application code to be written to the
+                     PyScript app template
+        - title(str): application title, that will be placed as title of the html
+                      app template
+        - template_name(str): name of the template to be used
+
+    Output:
+        (None)
+    """
     template = _env.get_template(template_name)
     with output_path.open("w") as fp:
-        fp.write(template.render(code=input_str, title=title))
+        fp.write(template.render(code=code, title=title))
 
 
 def file_to_html(
