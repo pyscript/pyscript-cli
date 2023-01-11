@@ -5,10 +5,10 @@ from pathlib import Path
 import platformdirs
 from rich.console import Console
 
+LATEST_PYSCRIPT_VERSION = "2022.12.1"
 APPNAME = "pyscript"
 APPAUTHOR = "python"
 DEFAULT_CONFIG_FILENAME = ".pyscriptconfig"
-
 
 # Default initial data for the command line.
 DEFAULT_CONFIG = {
