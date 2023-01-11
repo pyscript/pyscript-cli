@@ -8,7 +8,7 @@ import pytest
 from mypy_extensions import VarArg
 from typer.testing import CliRunner, Result
 
-from pyscript import __version__
+from pyscript import LATEST_PYSCRIPT_VERSION, __version__
 from pyscript.cli import app
 
 if TYPE_CHECKING:
@@ -167,3 +167,46 @@ def test_wrap_title(
     assert f"<py-script>\n{command}\n</py-script>" in html_text
 
     assert f"<title>{expected_title}</title>" in html_text
+
+
+@pytest.mark.parametrize(
+    "create_args, expected_version",
+    [
+        (("myapp1",), LATEST_PYSCRIPT_VERSION),
+        (("myapp-w-version", "--pyscript-version", "2022.9.1"), "2022.9.1"),
+    ],
+)
+def test_create_project_version(
+    invoke_cli: CLIInvoker,
+    tmp_path: Path,
+    create_args: tuple[str],
+    expected_version: str,
+) -> None:
+    command = 'print("Hello World!")'
+
+    input_file = tmp_path / "hello.py"
+    with input_file.open("w") as fp:
+        fp.write(command)
+
+    cmd_args = list(create_args) + [
+        "--app-description",
+        "",
+        "--author-name",
+        "tester",
+        "--author-email",
+        "tester@me.com",
+    ]
+    result = invoke_cli("create", *cmd_args)
+    # breakpoint()
+    assert result.exit_code == 0
+    expected_app_path = tmp_path / create_args[0]
+    assert expected_app_path.exists()
+    app_file = expected_app_path / "index.html"
+    assert app_file.exists()
+    with app_file.open() as fp:
+        html_text = fp.read()
+    version_str = (
+        f'<script defer src="https://pyscript.net/releases/{expected_version}'
+        '/pyscript.js"></script>'
+    )
+    assert version_str in html_text
