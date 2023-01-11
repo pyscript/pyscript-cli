@@ -1,5 +1,3 @@
-from typing import Optional
-
 from pyscript import LATEST_PYSCRIPT_VERSION, app, cli, plugins
 from pyscript._generator import create_project
 
@@ -15,7 +13,7 @@ def create(
     app_description: str = typer.Option(..., prompt=True),
     author_name: str = typer.Option(..., prompt=True),
     author_email: str = typer.Option(..., prompt=True),
-    pyscript_version: Optional[str] = typer.Option(
+    pyscript_version: str = typer.Option(
         LATEST_PYSCRIPT_VERSION,
         "--pyscript-version",
         help="If provided, defines what version of pyscript will be used to create the app",

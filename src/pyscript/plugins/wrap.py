@@ -29,7 +29,7 @@ def wrap(
     ),
     show: Optional[bool] = typer.Option(None, help="Open output file in web browser."),
     title: Optional[str] = typer.Option(None, help="Add title to HTML file."),
-    pyscript_version: Optional[str] = typer.Option(
+    pyscript_version: str = typer.Option(
         LATEST_PYSCRIPT_VERSION,
         "--pyscript-version",
         help="If provided, defines what version of pyscript will be used to create the app",
