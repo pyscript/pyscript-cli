@@ -18,7 +18,7 @@ def create(
     pyscript_version: Optional[str] = typer.Option(
         LATEST_PYSCRIPT_VERSION,
         "--pyscript-version",
-        help="If provided, embed a single command string.",
+        help="If provided, defines what version of pyscript will be used to create the app",
     ),
 ):
     """

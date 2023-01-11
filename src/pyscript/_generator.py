@@ -139,4 +139,5 @@ def create_project(
         config["project_main_filename"],
         config["project_config_filename"],
         index_file,
+        pyscript_version=pyscript_version,
     )
