@@ -14,6 +14,7 @@ DEFAULT_CONFIG_FILENAME = ".pyscriptconfig"
 DEFAULT_CONFIG = {
     # Name of config file for PyScript projects.
     "project_config_filename": "pyscript.toml",
+    "project_main_filename": "main.py",
 }
 
 
@@ -47,3 +48,9 @@ console = Console()
 app = typer.Typer(add_completion=False)
 with CONFIG_FILE.open() as config_file:
     config = json.load(config_file)
+
+# Make sure all configuration keys are there. If any is missing,
+# we pick from the default config
+for (k, v) in DEFAULT_CONFIG.items():
+    if k not in config:
+        config[k] = v
