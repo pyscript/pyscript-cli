@@ -101,6 +101,7 @@ def create_project(
     author_name: str,
     author_email: str,
     pyscript_version: str = LATEST_PYSCRIPT_VERSION,
+    project_type: str = "app",
 ) -> None:
     """
     New files created:
