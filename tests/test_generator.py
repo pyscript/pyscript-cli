@@ -34,12 +34,12 @@ def test_create_app(tmp_cwd: Path, is_not_none: Any) -> None:
 
 def test_create_plugin(tmp_cwd: Path, is_not_none: Any) -> None:
     plugin_name = "test_plugin"
-    app_description = "A longer, human friendly, plugin description."
+    plugin_description = "A longer, human friendly, plugin description."
 
     # GIVEN a a new project
     gen.create_project(
         plugin_name,
-        app_description,
+        plugin_description,
         TESTS_AUTHOR_NAME,
         TESTS_AUTHOR_EMAIL,
         project_type="plugin",
@@ -48,8 +48,10 @@ def test_create_plugin(tmp_cwd: Path, is_not_none: Any) -> None:
     # with a default config path
     manifest_path = tmp_cwd / plugin_name / config["project_config_filename"]
 
-    check_project_manifest(manifest_path, toml, plugin_name, is_not_none)
-    check_plugin_project_files(tmp_cwd / plugin_name, plugin_name)
+    check_project_manifest(
+        manifest_path, toml, plugin_name, is_not_none, plugin_description
+    )
+    check_plugin_project_files(tmp_cwd / plugin_name, plugin_name, plugin_description)
 
 
 def test_create_project_twice_raises_error(tmp_cwd: Path) -> None:
@@ -145,7 +147,7 @@ def check_project_manifest(
     with config_path.open() as fp:
         contents = serializer.load(fp)
 
-    assert contents == {
+    expected = {
         "name": app_name,
         "description": app_description,
         "type": project_type,
@@ -153,6 +155,7 @@ def check_project_manifest(
         "author_email": author_email,
         "version": is_not_none,
     }
+    assert contents == expected
 
 
 def check_project_files(
