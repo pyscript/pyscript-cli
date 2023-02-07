@@ -36,11 +36,11 @@ def create_project_html(
     Output:
         (None)
     """
-    template = _env.get_template(template)
+    template_instance = _env.get_template(template)
 
     with output_file_path.open("w") as fp:
         fp.write(
-            template.render(
+            template_instance.render(
                 python_file_path=python_file_path,
                 config_file_path=config_file_path,
                 title=title,
