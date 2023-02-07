@@ -26,12 +26,12 @@ def create_project_html(
 
 
     Params:
-        - title(str): application title, that will be placed as title of the html
-        - python_file_path(str): path to the python file to be loaded by the app
-        - config_file_path(str): path to the config file to be loaded by the app
-        - output_file_path(Path): path where to write the new html file
-        - PYSCRIPT_VERSION(str): version of pyscript to be used
-        - template(str): name of the template to be used
+        - title (str): application title, that will be placed as title of the html
+        - python_file_path (str): path to the python file to be loaded by the app
+        - config_file_path (str): path to the config file to be loaded by the app
+        - output_file_path (Path): path where to write the new html file
+        - pyscript_version (str): version of pyscript to be used
+        - template (str): name of the template to be used
 
     Output:
         (None)
