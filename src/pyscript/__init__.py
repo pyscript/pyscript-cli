@@ -51,6 +51,6 @@ with CONFIG_FILE.open() as config_file:
 
 # Make sure all configuration keys are there. If any is missing,
 # we pick from the default config
-for (k, v) in DEFAULT_CONFIG.items():
+for k, v in DEFAULT_CONFIG.items():
     if k not in config:
         config[k] = v
