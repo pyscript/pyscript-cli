@@ -19,6 +19,9 @@ TESTS_AUTHOR_EMAIL = "acoder@domain.com"
 
 
 def test_create_app(tmp_cwd: Path, is_not_none: Any) -> None:
+    """
+    Test that a new app is created with the correct files and manifest.
+    """
     app_name = "app_name"
     app_description = "A longer, human friendly, app description."
 
@@ -32,7 +35,28 @@ def test_create_app(tmp_cwd: Path, is_not_none: Any) -> None:
     check_project_files(tmp_cwd / app_name)
 
 
+def test_create_bad_type(tmp_cwd: Path, is_not_none: Any) -> None:
+    """
+    Test that a new project with a bad type raises a ValueError
+    """
+    app_name = "app_name"
+    app_description = "A longer, human friendly, app description."
+
+    # GIVEN a a new project with a bad type assert it raises a
+    with pytest.raises(ValueError):
+        gen.create_project(
+            app_name,
+            app_description,
+            TESTS_AUTHOR_NAME,
+            TESTS_AUTHOR_EMAIL,
+            project_type="bad_type",
+        )
+
+
 def test_create_plugin(tmp_cwd: Path, is_not_none: Any) -> None:
+    """
+    Test that a new plugin is created with the correct files and manifest.
+    """
     plugin_name = "test_plugin"
     plugin_description = "A longer, human friendly, plugin description."
 

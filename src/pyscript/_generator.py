@@ -146,8 +146,12 @@ def create_project(
     index_file = app_dir / "index.html"
     if project_type == "app":
         template = "basic.html"
-    else:
+    elif project_type == "plugin":
         template = "plugin.html"
+    else:
+        raise ValueError(
+            f"Unknown project type: {project_type}. Valid values are: 'app' and 'plugin'"
+        )
 
     # Save the new python file
     python_filepath = app_dir / "main.py"
