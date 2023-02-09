@@ -20,12 +20,27 @@ def create_project_html(
     config_file_path: str,
     output_file_path: Path,
     pyscript_version: str = LATEST_PYSCRIPT_VERSION,
+    template: str = "basic.html",
 ) -> None:
-    """Write a Python script string to an HTML file template."""
-    template = _env.get_template("basic.html")
+    """Write a Python script string to an HTML file template.
+
+
+    Params:
+        - title (str): application title, that will be placed as title of the html
+        - python_file_path (str): path to the python file to be loaded by the app
+        - config_file_path (str): path to the config file to be loaded by the app
+        - output_file_path (Path): path where to write the new html file
+        - pyscript_version (str): version of pyscript to be used
+        - template (str): name of the template to be used
+
+    Output:
+        (None)
+    """
+    template_instance = _env.get_template(template)
+
     with output_file_path.open("w") as fp:
         fp.write(
-            template.render(
+            template_instance.render(
                 python_file_path=python_file_path,
                 config_file_path=config_file_path,
                 title=title,
@@ -101,6 +116,7 @@ def create_project(
     author_name: str,
     author_email: str,
     pyscript_version: str = LATEST_PYSCRIPT_VERSION,
+    project_type: str = "app",
 ) -> None:
     """
     New files created:
@@ -128,6 +144,14 @@ def create_project(
             toml.dump(context, fp)
 
     index_file = app_dir / "index.html"
+    if project_type == "app":
+        template = "basic.html"
+    elif project_type == "plugin":
+        template = "plugin.html"
+    else:
+        raise ValueError(
+            f"Unknown project type: {project_type}. Valid values are: 'app' and 'plugin'"
+        )
 
     # Save the new python file
     python_filepath = app_dir / "main.py"
@@ -140,4 +164,5 @@ def create_project(
         config["project_config_filename"],
         index_file,
         pyscript_version=pyscript_version,
+        template=template,
     )
