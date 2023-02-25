@@ -18,6 +18,11 @@ def create(
         "--pyscript-version",
         help="If provided, defines what version of pyscript will be used to create the app",
     ),
+    project_type: str = typer.Option(
+        "app",
+        "--project-type",
+        help="Type of project that is being created. Supported types are: 'app' or 'plugin'",
+    ),
 ):
     """
     Create a new pyscript project with the passed in name, creating a new
