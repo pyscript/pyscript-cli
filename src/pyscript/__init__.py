@@ -5,7 +5,7 @@ from pathlib import Path
 import platformdirs
 from rich.console import Console
 
-LATEST_PYSCRIPT_VERSION = "2022.12.1"
+LATEST_PYSCRIPT_VERSION = "2023.03.1"
 APPNAME = "pyscript"
 APPAUTHOR = "python"
 DEFAULT_CONFIG_FILENAME = ".pyscriptconfig"
