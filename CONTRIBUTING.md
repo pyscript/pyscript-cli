@@ -1,5 +1,44 @@
 # Contribution guide for developers
 
+## Developer setup
+
+Git clone the repository:
+
+```shell
+git clone https://github.com/pyscript/pyscript.git
+```
+
+(Recommended) Upgrade local pip:
+
+```shell
+pip install --upgrade pip
+```
+
+Make a virtualenv and activate it:
+
+```shell
+python -m venv .venv
+. .venv/bin/activate
+```
+
+Install your local enviroment dependencies
+
+```shell
+pip install -e ".[dev]"
+```
+
+## Use the CLI
+
+It is now possible to normally use the CLI. For more information on how to use it and it's commands, see the [Use the CLI section of the README](README.md)
+
+## Run the tests
+
+After setting up your developer enviroment, you can run the tests with the following command from the root directory:
+
+```shell
+pytest .
+```
+
 ## Documentation
 
 ### Install the documentation dependencies

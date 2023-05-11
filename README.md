@@ -15,9 +15,16 @@ Quickly wrap Python scripts into a HTML template, pre-configured with [PyScript]
 
 ## Installation
 
+### Using Pip
+
 ```shell
 $ pip install pyscript
 ```
+
+### Installing the developer setup from the a repository clone
+
+
+[see the Developer setup section on CONTRIBUTING page](CONTRIBUTING.md)
 
 ## Usage
 
