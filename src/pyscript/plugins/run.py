@@ -22,7 +22,7 @@ def run(
     """
 
     with socketserver.TCPServer(("", port), SimpleHTTPRequestHandler) as httpd:
-        print(f"Serving at port {port}")
+        print(f"Serving at port {port}. To stop, press Ctrl+C.")
         webbrowser.open_new_tab(f"http://localhost:{port}/")
         httpd.serve_forever()
 
