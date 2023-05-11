@@ -7,7 +7,7 @@ from pluggy import PluginManager
 from pyscript import __version__, app, console, plugins, typer
 from pyscript.plugins import hookspecs
 
-DEFAULT_PLUGINS = ["create", "wrap"]
+DEFAULT_PLUGINS = ["create", "wrap", "run"]
 
 
 def ok(msg: str = ""):
@@ -62,4 +62,5 @@ for modname in DEFAULT_PLUGINS:
     loaded = pm.load_setuptools_entrypoints("pyscript")
 
 for cmd in pm.hook.pyscript_subcommand():
+    print(f"CHECKING.... {cmd}")
     plugins._add_cmd(cmd)
