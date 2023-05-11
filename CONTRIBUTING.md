@@ -27,6 +27,10 @@ Install your local enviroment dependencies
 pip install -e ".[dev]"
 ```
 
+## Run the tests
+
+After setting up your developer enviroment, you can run the tests with the following command
+
 ## Documentation
 
 ### Install the documentation dependencies
