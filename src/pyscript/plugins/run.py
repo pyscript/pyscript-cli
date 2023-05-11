@@ -1,3 +1,6 @@
+import socketserver
+import webbrowser
+from http.server import SimpleHTTPRequestHandler
 from typing import Optional
 
 from pyscript import app, console, plugins
@@ -17,6 +20,11 @@ def run(
     """
     Creates a local server to run the app on the path and port specified.
     """
+
+    with socketserver.TCPServer(("", port), SimpleHTTPRequestHandler) as httpd:
+        print(f"Serving at port {port}")
+        webbrowser.open_new_tab(f"http://localhost:{port}/")
+        httpd.serve_forever()
 
     if show:
         console.print("Opening in web browser!")

@@ -62,5 +62,4 @@ for modname in DEFAULT_PLUGINS:
     loaded = pm.load_setuptools_entrypoints("pyscript")
 
 for cmd in pm.hook.pyscript_subcommand():
-    print(f"CHECKING.... {cmd}")
     plugins._add_cmd(cmd)
