@@ -29,7 +29,11 @@ pip install -e ".[dev]"
 
 ## Run the tests
 
-After setting up your developer enviroment, you can run the tests with the following command
+After setting up your developer enviroment, you can run the tests with the following command from the root directory:
+
+```shell
+pytest .
+```
 
 ## Documentation
 
