@@ -1,5 +1,21 @@
 # Contribution guide for developers
 
+## Developer setup
+
+Git clone the repository:
+
+```
+git clone https://github.com/pyscript/pyscript.git
+```
+
+(Recommended) Upgrade local pip:
+
+```
+pip install --upgrade pip
+```
+
+
+
 ## Documentation
 
 ### Install the documentation dependencies
