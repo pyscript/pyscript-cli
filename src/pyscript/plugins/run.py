@@ -1,4 +1,3 @@
-import os
 import socketserver
 import threading
 import webbrowser
@@ -25,7 +24,15 @@ def start_server(path: str, show: bool, port: int):
             open_browser = partial(webbrowser.open_new_tab, f"http://localhost:{port}/")
             threading.Timer(0.5, open_browser).start()
 
-        httpd.serve_forever()
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            print("\nStopping server... Bye bye!")
+
+            # Clean after ourselves....
+            httpd.shutdown()
+            httpd.socket.close()
+            raise typer.Exit()
 
 
 @app.command()
@@ -40,27 +47,16 @@ def run(
 
     try:
         start_server(path, show, port)
-    except KeyboardInterrupt:
-        print("\nStopping server... Bye bye!")
-        raise typer.Exit()
     except OSError as e:
         if e.errno == 48:
             console.print(
-                f"Error: Port {port} is already in use!",
+                f"Error: Port {port} is already in use! :( Please, stop the process using that port"
+                f"or ry another port using the --port option.",
                 style="red",
             )
-            kill_current_process = typer.prompt(
-                "Do you want to kill the current process and run this app instead?"
-            )
-            breakpoint()
-            if kill_current_process == "y":
-                # Kill the current process serving on the port.
-                os.system(f"lsof -ti:{port} | xargs kill -9")
-            else:
-                console.print("Aborting... Choose another port and try again.")
-                raise typer.Exit()
+        else:
+            console.print(f"Error: {e.strerror}", style="red")
 
-        console.print(f"Error: {e.strerror}", style="red")
         raise typer.Exit()
 
 
