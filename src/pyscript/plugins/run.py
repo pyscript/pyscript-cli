@@ -14,23 +14,42 @@ except ImportError:  # pragma: no cover
     import typer  # type: ignore
 
 
+def get_folder_based_http_request_handler(folder: Path) -> SimpleHTTPRequestHandler:
+    """
+    Returns a FolderBasedHTTPRequestHandler with the specified directory.
+
+    Args:
+        folder (str): The folder that will be served.
+
+    Returns:
+        FolderBasedHTTPRequestHandler: The SimpleHTTPRequestHandler with the
+                                        specified directory.
+    """
+
+    class FolderBasedHTTPRequestHandler(SimpleHTTPRequestHandler):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, directory=folder, **kwargs)
+
+    return FolderBasedHTTPRequestHandler
+
+
 def split_path_and_filename(path: Path) -> str:
     """Receives a path to a pyscript project or file and returns the base
-    path of the project and the filename that should be opened (returns
-    None if the path points to a folder).
+    path of the project and the filename that should be opened (filename defaults
+    to "" (empty string) if the path points to a folder).
 
     Args:
         path (str): The path to the pyscript project or file.
 
 
-        Returns:
-            tuple(str, str|None): The base path of the project and the filename
+    Returns:
+        tuple(str, str): The base path of the project and the filename
     """
     abs_path = path.absolute()
     if path.is_file():
-        return abs_path.parts[:-1], abs_path.parts[-1]
+        return "/".join(abs_path.parts[:-1]), abs_path.parts[-1]
     else:
-        return abs_path, None
+        return abs_path, ""
 
 
 def start_server(path: str, show: bool, port: int):
@@ -50,15 +69,18 @@ def start_server(path: str, show: bool, port: int):
     # see https://stackoverflow.com/questions/31745040/
     socketserver.TCPServer.allow_reuse_address = True
 
-    parts = split_path_and_filename(path)
-    print(parts)
+    app_folder, filename = split_path_and_filename(path)
+    CustomHTTPRequestHandler = get_folder_based_http_request_handler(app_folder)
+
     # Start the server within a context manager to make sure we clean up after
-    with socketserver.TCPServer(("", port), SimpleHTTPRequestHandler) as httpd:
+    with socketserver.TCPServer(("", port), CustomHTTPRequestHandler) as httpd:
         console.print(f"Serving at port {port}. To stop, press Ctrl+C.", style="green")
 
         if show:
             # Open the web browser in a separate thread after 0.5 seconds.
-            open_browser = partial(webbrowser.open_new_tab, f"http://localhost:{port}/")
+            open_browser = partial(
+                webbrowser.open_new_tab, f"http://localhost:{port}/{filename}"
+            )
             threading.Timer(0.5, open_browser).start()
 
         try:
