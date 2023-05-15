@@ -16,6 +16,14 @@ except ImportError:  # pragma: no cover
 def start_server(path: str, show: bool, port: int):
     """
     Creates a local server to run the app on the path and port specified.
+
+    Args:
+        path(str): The path of the project that will run.
+        show(bool): Open the app in web browser.
+        port(int): The port that the app will run on.
+
+    Returns:
+        None
     """
     # We need to set the allow_resuse_address to True because socketserver will
     # keep the port in use for a while after the server is stopped.
