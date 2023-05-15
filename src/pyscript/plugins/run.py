@@ -3,6 +3,7 @@ import threading
 import webbrowser
 from functools import partial
 from http.server import SimpleHTTPRequestHandler
+from pathlib import Path
 from typing import Optional
 
 from pyscript import app, console, plugins
@@ -30,6 +31,7 @@ def start_server(path: str, show: bool, port: int):
     # see https://stackoverflow.com/questions/31745040/
     socketserver.TCPServer.allow_reuse_address = True
 
+    breakpoint()
     # Start the server within a context manager to make sure we clean up after
     with socketserver.TCPServer(("", port), SimpleHTTPRequestHandler) as httpd:
         console.print(f"Serving at port {port}. To stop, press Ctrl+C.", style="green")
@@ -52,13 +54,18 @@ def start_server(path: str, show: bool, port: int):
 
 @app.command()
 def run(
-    path: str = typer.Option(".", help="The path of the project that will run."),
+    path: Path = typer.Option(Path("."), help="The path of the project that will run."),
     show: Optional[bool] = typer.Option(True, help="Open the app in web browser."),
     port: Optional[int] = typer.Option(8000, help="The port that the app will run on."),
 ):
     """
     Creates a local server to run the app on the path and port specified.
     """
+
+    # First thing we need to do is to check if the path exists
+    if not path.exists():
+        console.print(f"Error: Path {path} does not exist.", style="red")
+        raise typer.Exit()
 
     try:
         start_server(path, show, port)
