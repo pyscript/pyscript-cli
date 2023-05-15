@@ -17,8 +17,15 @@ def start_server(path: str, show: bool, port: int):
     """
     Creates a local server to run the app on the path and port specified.
     """
+    # We need to set the allow_resuse_address to True because socketserver will
+    # keep the port in use for a while after the server is stopped.
+    # see https://stackoverflow.com/questions/31745040/
+    socketserver.TCPServer.allow_reuse_address = True
+
+    # Start the server within a context manager to make sure we clean up after
     with socketserver.TCPServer(("", port), SimpleHTTPRequestHandler) as httpd:
-        print(f"Serving at port {port}. To stop, press Ctrl+C.")
+        console.print(f"Serving at port {port}. To stop, press Ctrl+C.", style="green")
+
         if show:
             # Open the web browser in a separate thread after 0.5 seconds.
             open_browser = partial(webbrowser.open_new_tab, f"http://localhost:{port}/")
@@ -27,7 +34,7 @@ def start_server(path: str, show: bool, port: int):
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
-            print("\nStopping server... Bye bye!")
+            console.print("\nStopping server... Bye bye!")
 
             # Clean after ourselves....
             httpd.shutdown()
