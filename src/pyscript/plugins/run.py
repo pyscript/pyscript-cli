@@ -14,6 +14,25 @@ except ImportError:  # pragma: no cover
     import typer  # type: ignore
 
 
+def split_path_and_filename(path: Path) -> str:
+    """Receives a path to a pyscript project or file and returns the base
+    path of the project and the filename that should be opened (returns
+    None if the path points to a folder).
+
+    Args:
+        path (str): The path to the pyscript project or file.
+
+
+        Returns:
+            tuple(str, str|None): The base path of the project and the filename
+    """
+    abs_path = path.absolute()
+    if path.is_file():
+        return abs_path.parts[:-1], abs_path.parts[-1]
+    else:
+        return abs_path, None
+
+
 def start_server(path: str, show: bool, port: int):
     """
     Creates a local server to run the app on the path and port specified.
@@ -31,7 +50,8 @@ def start_server(path: str, show: bool, port: int):
     # see https://stackoverflow.com/questions/31745040/
     socketserver.TCPServer.allow_reuse_address = True
 
-    breakpoint()
+    parts = split_path_and_filename(path)
+    print(parts)
     # Start the server within a context manager to make sure we clean up after
     with socketserver.TCPServer(("", port), SimpleHTTPRequestHandler) as httpd:
         console.print(f"Serving at port {port}. To stop, press Ctrl+C.", style="green")
