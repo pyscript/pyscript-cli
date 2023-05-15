@@ -74,7 +74,10 @@ def start_server(path: str, show: bool, port: int):
 
     # Start the server within a context manager to make sure we clean up after
     with socketserver.TCPServer(("", port), CustomHTTPRequestHandler) as httpd:
-        console.print(f"Serving at port {port}. To stop, press Ctrl+C.", style="green")
+        console.print(
+            f"Serving from {app_folder} at port {port}. To stop, press Ctrl+C.",
+            style="green",
+        )
 
         if show:
             # Open the web browser in a separate thread after 0.5 seconds.
