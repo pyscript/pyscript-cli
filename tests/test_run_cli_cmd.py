@@ -103,8 +103,5 @@ def test_run_server_with_valid_combinations(
     result = invoke_cli("run", *run_args)
     # EXPECT the command to succeed
     assert result.exit_code == 0
-    # EXPECT start_server_mock function to be called with the default values:
-    # Path("."): path to local folder
-    # show=False: the opposite of the --silent option
-    # port=8000: that is the default port
+    # EXPECT start_server_mock function to be called with the expected values
     start_server_mock.assert_called_once_with(*expected_values)
