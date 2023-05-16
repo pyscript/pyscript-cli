@@ -6,7 +6,7 @@ from http.server import SimpleHTTPRequestHandler
 from pathlib import Path
 from typing import Optional
 
-from pyscript import app, console, plugins
+from pyscript import app, cli, console, plugins
 
 try:
     import rich_click.typer as typer
@@ -94,12 +94,14 @@ def start_server(path: str, show: bool, port: int):
             # Clean after ourselves....
             httpd.shutdown()
             httpd.socket.close()
-            raise typer.Exit()
+            raise typer.Exit(1)
 
 
 @app.command()
 def run(
-    path: Path = typer.Option(Path("."), help="The path of the project that will run."),
+    path: Path = typer.Argument(
+        Path("."), help="The path of the project that will run."
+    ),
     show: Optional[bool] = typer.Option(True, help="Open the app in web browser."),
     port: Optional[int] = typer.Option(8000, help="The port that the app will run on."),
 ):
@@ -109,8 +111,7 @@ def run(
 
     # First thing we need to do is to check if the path exists
     if not path.exists():
-        console.print(f"Error: Path {path} does not exist.", style="red")
-        raise typer.Exit()
+        raise cli.Abort(f"Error: Path {str(path)} does not exist.", style="red")
 
     try:
         start_server(path, show, port)
@@ -124,7 +125,7 @@ def run(
         else:
             console.print(f"Error: {e.strerror}", style="red")
 
-        raise typer.Exit()
+        raise cli.Abort("")
 
 
 @plugins.register
