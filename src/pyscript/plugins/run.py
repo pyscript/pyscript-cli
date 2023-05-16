@@ -102,7 +102,7 @@ def run(
     path: Path = typer.Argument(
         Path("."), help="The path of the project that will run."
     ),
-    show: Optional[bool] = typer.Option(True, help="Open the app in web browser."),
+    silent: Optional[bool] = typer.Option(False, help="Open the app in web browser."),
     port: Optional[int] = typer.Option(8000, help="The port that the app will run on."),
 ):
     """
@@ -114,7 +114,7 @@ def run(
         raise cli.Abort(f"Error: Path {str(path)} does not exist.", style="red")
 
     try:
-        start_server(path, show, port)
+        start_server(path, not silent, port)
     except OSError as e:
         if e.errno == 48:
             console.print(
