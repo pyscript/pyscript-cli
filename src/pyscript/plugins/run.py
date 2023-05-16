@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 import socketserver
 import threading
 import webbrowser
 from functools import partial
 from http.server import SimpleHTTPRequestHandler
 from pathlib import Path
-from typing import Optional
 
 from pyscript import app, cli, console, plugins
 
@@ -14,7 +15,9 @@ except ImportError:  # pragma: no cover
     import typer  # type: ignore
 
 
-def get_folder_based_http_request_handler(folder: Path) -> SimpleHTTPRequestHandler:
+def get_folder_based_http_request_handler(
+    folder: Path,
+) -> type[SimpleHTTPRequestHandler]:
     """
     Returns a FolderBasedHTTPRequestHandler with the specified directory.
 
@@ -33,7 +36,7 @@ def get_folder_based_http_request_handler(folder: Path) -> SimpleHTTPRequestHand
     return FolderBasedHTTPRequestHandler
 
 
-def split_path_and_filename(path: Path) -> str:
+def split_path_and_filename(path: Path) -> tuple[Path, str]:
     """Receives a path to a pyscript project or file and returns the base
     path of the project and the filename that should be opened (filename defaults
     to "" (empty string) if the path points to a folder).
@@ -47,12 +50,12 @@ def split_path_and_filename(path: Path) -> str:
     """
     abs_path = path.absolute()
     if path.is_file():
-        return "/".join(abs_path.parts[:-1]), abs_path.parts[-1]
+        return Path("/".join(abs_path.parts[:-1])), abs_path.parts[-1]
     else:
         return abs_path, ""
 
 
-def start_server(path: str, show: bool, port: int):
+def start_server(path: Path, show: bool, port: int):
     """
     Creates a local server to run the app on the path and port specified.
 
@@ -102,8 +105,8 @@ def run(
     path: Path = typer.Argument(
         Path("."), help="The path of the project that will run."
     ),
-    silent: Optional[bool] = typer.Option(False, help="Open the app in web browser."),
-    port: Optional[int] = typer.Option(8000, help="The port that the app will run on."),
+    silent: bool = typer.Option(False, help="Open the app in web browser."),
+    port: int = typer.Option(8000, help="The port that the app will run on."),
 ):
     """
     Creates a local server to run the app on the path and port specified.
