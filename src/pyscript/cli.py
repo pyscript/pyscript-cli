@@ -68,5 +68,7 @@ for modname in DEFAULT_PLUGINS:
 # Load plugins registered via setuptools entrypoints
 loaded = pm.load_setuptools_entrypoints("pyscript")
 
+# Register the commands from plugins that have been loaded and used the
+# `pyscript_subcommand` hook.
 for cmd in pm.hook.pyscript_subcommand():
     plugins._add_cmd(cmd)
