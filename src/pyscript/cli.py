@@ -45,9 +45,13 @@ def main(
         raise typer.Exit()
 
 
+# Create the default PluginManager
 pm = PluginManager("pyscript")
 
+# Register the hooks specifications available for PyScript Plugins
 pm.add_hookspecs(hookspecs)
+
+# Register the default plugins available with the bare pyscript cli installation
 for modname in DEFAULT_PLUGINS:
     importspec = f"pyscript.plugins.{modname}"
     try:
@@ -61,6 +65,7 @@ for modname in DEFAULT_PLUGINS:
         pm.register(mod, modname)
 
 
+# Load plugins registered via setuptools entrypoints
 loaded = pm.load_setuptools_entrypoints("pyscript")
 
 for cmd in pm.hook.pyscript_subcommand():
