@@ -27,7 +27,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "coverage<6.4",
+    "coverage<6.6",
     "mypy<=0.950",
     "pytest<7.5",
     "types-toml<0.11",
