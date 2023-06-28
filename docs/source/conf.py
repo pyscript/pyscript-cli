@@ -18,7 +18,7 @@ copyright = f"2022 - {datetime.now().year}, {author}"
 
 # Load the package version from pyproject.toml
 with (project_root / "pyproject.toml").open("r") as fp:
-    version = toml.load(fp)["tool"]["poetry"]["version"]
+    version = toml.load(fp)["project"]["version"]
     release = version
 
 
