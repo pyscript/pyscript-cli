@@ -19,7 +19,7 @@ dependencies = [
     "Jinja2<3.2",
     "pluggy<1.1",
     "rich<13.0",
-    "rich-click[typer]<1.4",
+    "rich-click[typer]<1.7",
     "toml<0.11",
     "typer<0.5",
     "platformdirs<2.7",
