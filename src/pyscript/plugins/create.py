@@ -27,12 +27,15 @@ def create(
     """
     Create a new pyscript project with the passed in name, creating a new
     directory in the current directory.
-    Inspired by Sphinx guided setup.
-    TODO: Agree on the metadata to be collected from the user.
     """
     try:
         create_project(
-            app_name, app_description, author_name, author_email, pyscript_version
+            app_name,
+            app_description,
+            author_name,
+            author_email,
+            pyscript_version,
+            project_type,
         )
     except FileExistsError:
         raise cli.Abort(
