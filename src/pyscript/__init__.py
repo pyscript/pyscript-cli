@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 import platformdirs
-import rich_click.typer as typer
+import typer
 from rich.console import Console
 
 LATEST_PYSCRIPT_VERSION = "2023.05.1"

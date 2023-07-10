@@ -1,4 +1,4 @@
-import rich_click.typer as typer
+import typer
 
 from pyscript import LATEST_PYSCRIPT_VERSION, app, cli, plugins
 from pyscript._generator import create_project
