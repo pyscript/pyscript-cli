@@ -1,43 +1,43 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
+requires = ["setuptools", "setuptools-scm"]
 
 [project]
-name = "pyscript"
-version = "0.2.5"
-description = "Command Line Interface for PyScript"
 authors = [
-    {name = "Matt Kramer", email = "mkramer@anaconda.com"},
-    {name = "Fabio Pliger", email = "fpliger@anaconda.com"},
-    {name = "Nicholas Tollervey", email = "ntollervey@anaconda.com"},
+  {name = "Matt Kramer", email = "mkramer@anaconda.com"},
+  {name = "Fabio Pliger", email = "fpliger@anaconda.com"},
+  {name = "Nicholas Tollervey", email = "ntollervey@anaconda.com"}
 ]
+dependencies = [
+  'importlib-metadata; python_version<"3.8"',
+  "Jinja2<3.2",
+  "pluggy<1.1",
+  "rich<13.0",
+  "rich-click[typer]<1.4",
+  "toml<0.11",
+  "typer<0.5",
+  "platformdirs<2.7"
+]
+description = "Command Line Interface for PyScript"
 license = {text = "Apache-2.0"}
+name = "pyscript"
 readme = "README.md"
 requires-python = ">=3.7"
-dependencies = [
-    'importlib-metadata; python_version<"3.8"',
-    "Jinja2<3.2",
-    "pluggy<1.1",
-    "rich<13.0",
-    "rich-click[typer]<1.4",
-    "toml<0.11",
-    "typer<0.5",
-    "platformdirs<2.7",
-]
+version = "0.2.5"
 
 [project.optional-dependencies]
 dev = [
-    "coverage<7.3",
-    "mypy<=1.4.1",
-    "pytest<7.5",
-    "types-toml<0.11",
+  "coverage<7.3",
+  "mypy<=1.4.1",
+  "pytest<7.5",
+  "types-toml<0.11"
 ]
 docs = [
-    "Sphinx<5.2",
-    "sphinx-autobuild<2021.4.0",
-    "sphinx-autodoc-typehints<1.20",
-    "myst-parser<0.19.3",
-    "pydata-sphinx-theme<0.13.4",
+  "Sphinx<5.2",
+  "sphinx-autobuild<2021.4.0",
+  "sphinx-autodoc-typehints<1.20",
+  "myst-parser<0.19.3",
+  "pydata-sphinx-theme<0.13.4"
 ]
 
 [project.scripts]
