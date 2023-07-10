@@ -1,10 +1,7 @@
+import rich_click.typer as typer
+
 from pyscript import LATEST_PYSCRIPT_VERSION, app, cli, plugins
 from pyscript._generator import create_project
-
-try:
-    import rich_click.typer as typer
-except ImportError:  # pragma: no cover
-    import typer  # type: ignore
 
 
 @app.command()
