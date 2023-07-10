@@ -28,7 +28,9 @@ $ pip install pyscript
 
 ## Usage
 
-### Embed a Python script into a PyScript HTML file
+### wrap
+
+#### Embed a Python script into a PyScript HTML file
 
 ```shell
 $ pyscript wrap <filename.py>
@@ -41,13 +43,13 @@ This can be overwritten with the `-o` or `--output` option:
 $ pyscript wrap <filename.py> -o <another_filename.html>
 ```
 
-### Open the script inside the browser using the `--show` option
+#### Open the script inside the browser using the `--show` option
 
 ```shell
 $ pyscript wrap <filename.py> --show
 ```
 
-### Set a title for the browser tab
+#### Set a title for the browser tab
 
 You can set the title of the browser tab with the `--title` option:
 
@@ -55,7 +57,7 @@ You can set the title of the browser tab with the `--title` option:
 $ pyscript wrap <filename.py> --title "My cool app!"
 ```
 
-### Very simple command examples with `--command` option
+#### Very simple command examples with `--command` option
 
 The `-c` or `--command` option can be used to demo very simple cases.
 In this case, if the `--show` option is used and no `--output` file is used, a temporary file will be generated.
@@ -63,3 +65,47 @@ In this case, if the `--show` option is used and no `--output` file is used, a t
 ```shell
 $ pyscript wrap -c 'print("Hello World!")' --show
 ```
+
+### run
+
+#### Spin up a local server to run on the path and specified port
+
+```shell
+$ pyscript run <path_of_folder>
+```
+
+This will serve the folder `path_of_folder` at `localhost:8000` by default
+and will open the URL in a browser window. Default is current directory if
+`path_of_folder` is not supplied.
+
+To use a different port, use `--port` option.
+
+```shell
+$ pyscript run <path_of_folder> --port 9000
+```
+
+To avoid opening a browser window, use `--silent` option.
+
+```shell
+$ pyscript run <path_of_folder> --silent
+```
+
+### create
+
+#### Create a new pyscript project with the passed in name, creating a new directory
+
+```shell
+$ pyscript create <name_of_app>
+```
+
+This will create a new directory named `name_of_app` under the current directory.
+
+The interactive prompts will further ask for information such as `description of the app`,
+`name of the author`, `email of the author`, etc. These of course can be provided via
+options such as `--author-name` etc. Use `pyscript create --help` for more information.
+
+The following files will be created:
+
+- `index.html`: start page for the project
+- `pyscript.toml`: project metadata and config file
+- `main.py`: a "Hello world" python starter module

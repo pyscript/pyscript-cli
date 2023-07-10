@@ -7,12 +7,9 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler
 from pathlib import Path
 
-from pyscript import app, cli, console, plugins
+import rich_click.typer as typer
 
-try:
-    import rich_click.typer as typer
-except ImportError:  # pragma: no cover
-    import typer  # type: ignore
+from pyscript import app, cli, console, plugins
 
 
 def get_folder_based_http_request_handler(
@@ -43,7 +40,6 @@ def split_path_and_filename(path: Path) -> tuple[Path, str]:
 
     Args:
         path (str): The path to the pyscript project or file.
-
 
     Returns:
         tuple(str, str): The base path of the project and the filename
@@ -94,7 +90,7 @@ def start_server(path: Path, show: bool, port: int):
         except KeyboardInterrupt:
             console.print("\nStopping server... Bye bye!")
 
-            # Clean after ourselves....
+            # Clean up resources....
             httpd.shutdown()
             httpd.socket.close()
             raise typer.Exit(1)
@@ -122,7 +118,7 @@ def run(
         if e.errno == 48:
             console.print(
                 f"Error: Port {port} is already in use! :( Please, stop the process using that port"
-                f"or ry another port using the --port option.",
+                f"or try another port using the --port option.",
                 style="red",
             )
         else:
