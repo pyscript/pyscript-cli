@@ -7,12 +7,9 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler
 from pathlib import Path
 
-from pyscript import app, cli, console, plugins
+import rich_click.typer as typer
 
-try:
-    import rich_click.typer as typer
-except ImportError:  # pragma: no cover
-    import typer  # type: ignore
+from pyscript import app, cli, console, plugins
 
 
 def get_folder_based_http_request_handler(
