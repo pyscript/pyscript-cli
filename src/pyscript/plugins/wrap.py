@@ -3,13 +3,10 @@ import webbrowser
 from pathlib import Path
 from typing import Optional
 
+import typer
+
 from pyscript import LATEST_PYSCRIPT_VERSION, app, cli, console, plugins
 from pyscript._generator import file_to_html, string_to_html
-
-try:
-    import rich_click.typer as typer
-except ImportError:  # pragma: no cover
-    import typer  # type: ignore
 
 
 @app.command()

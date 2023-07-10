@@ -3,9 +3,10 @@ import json
 from pathlib import Path
 
 import platformdirs
+import typer
 from rich.console import Console
 
-LATEST_PYSCRIPT_VERSION = "2023.03.1"
+LATEST_PYSCRIPT_VERSION = "2023.05.1"
 APPNAME = "pyscript"
 APPAUTHOR = "python"
 DEFAULT_CONFIG_FILENAME = ".pyscriptconfig"
@@ -30,13 +31,6 @@ try:
     from importlib import metadata
 except ImportError:  # pragma: no cover
     import importlib_metadata as metadata  # type: ignore
-
-
-try:
-    import rich_click.typer as typer
-except ImportError:  # pragma: no cover
-    import typer  # type: ignore
-
 
 try:
     __version__ = metadata.version("pyscript")
