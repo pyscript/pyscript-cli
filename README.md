@@ -89,3 +89,23 @@ To avoid opening a browser window, use `--silent` option.
 ```shell
 $ pyscript run <path_of_folder> --silent
 ```
+
+### create
+
+#### Create a new pyscript project with the passed in name, creating a new directory
+
+```shell
+$ pyscript create <name_of_app>
+```
+
+This will create a new directory named `name_of_app` under the current directory.
+
+The interactive prompts will further ask for information such as `description of the app`,
+`name of the author`, `email of the author`, etc. These of course can be provided via
+options such as `--author-name` etc. Use `pyscript create --help` for more information.
+
+The following files will be created:
+
+- `index.html`: start page for the project
+- `pyscript.toml`: project metadata and config file
+- `main.py`: a "Hello world" python starter module

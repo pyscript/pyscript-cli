@@ -121,10 +121,9 @@ def create_project(
     """
     New files created:
 
-    pyscript.json - project metadata
-    index.html - a "Hello world" start page for the project.
-
-    TODO: more files to add to the core project start state.
+    pyscript.toml - project metadata and config file
+    main.py - a "Hello world" python starter module
+    index.html - start page for the project
     """
     date_stamp = datetime.date.today()
     context = {
@@ -138,11 +137,8 @@ def create_project(
     app_dir = Path(".") / app_name
     app_dir.mkdir()
     manifest_file = app_dir / config["project_config_filename"]
-    with manifest_file.open("w", encoding="utf-8") as fp:
-        if str(manifest_file).endswith(".json"):
-            json.dump(context, fp)
-        else:
-            toml.dump(context, fp)
+
+    save_config_file(manifest_file, context)
 
     index_file = app_dir / "index.html"
     if project_type == "app":
