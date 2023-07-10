@@ -54,7 +54,7 @@ def save_config_file(config_file: Path, configuration: dict):
 
     Params:
 
-     - config_file(Path): path configuration file. (I.e.: "pyscript.toml"). Supported
+     - config_file(Path): path configuration file. (i.e.: "pyscript.toml"). Supported
                           formats: `toml` and `json`.
      - configuration(dict): app configuration to be saved
 
@@ -72,7 +72,7 @@ def string_to_html(
     code: str,
     title: str,
     output_path: Path,
-    template_name: str = "basic.html",
+    template_name: str = "wrap.html",
     pyscript_version: str = LATEST_PYSCRIPT_VERSION,
 ) -> None:
     """Write a Python script string to an HTML file template.
@@ -101,7 +101,7 @@ def file_to_html(
     input_path: Path,
     title: str,
     output_path: Optional[Path],
-    template_name: str = "basic.html",
+    template_name: str = "wrap.html",
     pyscript_version: str = LATEST_PYSCRIPT_VERSION,
 ) -> None:
     """Write a Python script string to an HTML file template."""
@@ -126,13 +126,14 @@ def create_project(
 
     TODO: more files to add to the core project start state.
     """
+    date_stamp = datetime.date.today()
     context = {
         "name": app_name,
         "description": app_description,
         "type": "app",
         "author_name": author_name,
         "author_email": author_email,
-        "version": f"{datetime.date.today().year}.1.1",
+        "version": f"{date_stamp.year}.{date_stamp.month}.1",
     }
     app_dir = Path(".") / app_name
     app_dir.mkdir()
