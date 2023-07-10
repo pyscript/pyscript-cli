@@ -7,7 +7,7 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler
 from pathlib import Path
 
-import rich_click.typer as typer
+import typer
 
 from pyscript import app, cli, console, plugins
 
