@@ -21,7 +21,7 @@ description = "Command Line Interface for PyScript"
 license = {text = "Apache-2.0"}
 name = "pyscript"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 version = "0.2.5"
 
 [project.optional-dependencies]
