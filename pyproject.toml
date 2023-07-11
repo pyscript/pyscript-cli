@@ -12,16 +12,16 @@ dependencies = [
   'importlib-metadata; python_version<"3.8"',
   "Jinja2<3.2",
   "pluggy<1.3",
-  "rich<13.0",
+  "rich==13.4.2",
   "toml<0.11",
-  "typer<0.5",
+  "typer==0.9.0",
   "platformdirs<2.7"
 ]
 description = "Command Line Interface for PyScript"
 license = {text = "Apache-2.0"}
 name = "pyscript"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 version = "0.2.5"
 
 [project.optional-dependencies]
