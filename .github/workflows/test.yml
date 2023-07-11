@@ -34,7 +34,7 @@ jobs:
             run: mypy .
         -   name: Test with pytest
             run: |
-                coverage run -m pytest tests -s
+                coverage run -m pytest tests
                 coverage xml
         -   uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d # v3
             with:

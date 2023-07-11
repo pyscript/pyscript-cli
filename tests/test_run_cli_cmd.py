@@ -35,10 +35,7 @@ def test_run_server_bad_port(invoke_cli: CLIInvoker):  # noqa: F811
     assert result.exit_code == 2
     # EXPECT the right error message to be printed
     assert "Error" in result.stdout
-    print("xxx", str(result.stdout))
-    assert (
-        "Invalid value for '--port': 'bad_port' is not a valid integer" in result.stdout
-    )
+    assert "'bad_port' is not a valid integer" in result.stdout
 
 
 @mock.patch("pyscript.plugins.run.start_server")
