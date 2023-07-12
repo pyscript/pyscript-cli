@@ -84,10 +84,10 @@ To use a different port, use `--port` option.
 $ pyscript run <path_of_folder> --port 9000
 ```
 
-To avoid opening a browser window, use `--silent` option.
+To avoid opening a browser window, use `--no-view` option.
 
 ```shell
-$ pyscript run <path_of_folder> --silent
+$ pyscript run <path_of_folder> --no-view
 ```
 
 ### create

@@ -52,13 +52,13 @@ def test_run_server_with_default_values(
     assert result.exit_code == 0
     # EXPECT start_server_mock function to be called with the default values:
     # Path("."): path to local folder
-    # show=True: the opposite of the --silent option (which default to False)
+    # show=True: same as passing the --view option (which defaults to True)
     # port=8000: that is the default port
     start_server_mock.assert_called_once_with(Path("."), True, 8000)
 
 
 @mock.patch("pyscript.plugins.run.start_server")
-def test_run_server_with_silent_flag(
+def test_run_server_with_no_view_flag(
     start_server_mock, invoke_cli: CLIInvoker  # noqa: F811
 ):
     """
@@ -66,12 +66,12 @@ def test_run_server_with_silent_flag(
     default values
     """
     # GIVEN a call to run without arguments
-    result = invoke_cli("run", "--silent")
+    result = invoke_cli("run", "--no-view")
     # EXPECT the command to succeed
     assert result.exit_code == 0
     # EXPECT start_server_mock function to be called with the default values:
     # Path("."): path to local folder
-    # show=False: the opposite of the --silent option
+    # show=False: same as passing the --no-view option
     # port=8000: that is the default port
     start_server_mock.assert_called_once_with(Path("."), False, 8000)
 
@@ -79,13 +79,13 @@ def test_run_server_with_silent_flag(
 @pytest.mark.parametrize(
     "run_args, expected_values",
     [
-        (("--silent",), (Path("."), False, 8000)),
+        (("--no-view",), (Path("."), False, 8000)),
         ((BASEPATH,), (Path(BASEPATH), True, 8000)),
         (("--port=8001",), (Path("."), True, 8001)),
-        (("--silent", "--port=8001"), (Path("."), False, 8001)),
-        ((BASEPATH, "--silent"), (Path(BASEPATH), False, 8000)),
+        (("--no-view", "--port=8001"), (Path("."), False, 8001)),
+        ((BASEPATH, "--no-view"), (Path(BASEPATH), False, 8000)),
         ((BASEPATH, "--port=8001"), (Path(BASEPATH), True, 8001)),
-        ((BASEPATH, "--silent", "--port=8001"), (Path(BASEPATH), False, 8001)),
+        ((BASEPATH, "--no-view", "--port=8001"), (Path(BASEPATH), False, 8001)),
         ((BASEPATH, "--port=8001"), (Path(BASEPATH), True, 8001)),
     ],
 )
