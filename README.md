@@ -74,7 +74,7 @@ The following files will be created:
 
 #### Use --wrap to embed a python file OR a command string
 
-##### Embed a Python script into a PyScript HTML file
+- ##### Embed a Python script into a PyScript HTML file
 
 ```shell
 $ pyscript create --wrap <filename.py>
@@ -87,13 +87,13 @@ This can be overwritten with the `-o` or `--output` option:
 $ pyscript create --wrap <filename.py> -o <another_filename.html>
 ```
 
-##### Open the script inside the browser using the `--show` option
+- ##### Open the script inside the browser using the `--show` option
 
 ```shell
 $ pyscript create --wrap <filename.py> --show
 ```
 
-##### Set a title for the browser tab
+- ##### Set a title for the browser tab
 
 You can set the title of the browser tab with the `--title` option:
 
@@ -101,7 +101,7 @@ You can set the title of the browser tab with the `--title` option:
 $ pyscript create --wrap <filename.py> --title "My cool app!"
 ```
 
-##### Very simple command examples with `--command` option
+- ##### Very simple command examples with `--command` option
 
 The `-c` or `--command` option can be used to demo very simple cases.
 In this case, if the `--show` option is used and no `--output` file is used, a temporary file will be generated.
