@@ -83,7 +83,7 @@ def create(
             if not author_email:
                 author_email = typer.prompt("Author email")
             create_project(
-                app_or_file_name,
+                str(app_or_file_name),
                 app_description,
                 author_name,
                 author_email,
