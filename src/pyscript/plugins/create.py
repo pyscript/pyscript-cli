@@ -9,6 +9,45 @@ from pyscript import LATEST_PYSCRIPT_VERSION, app, cli, console, plugins
 from pyscript._generator import create_project, file_to_html, string_to_html
 
 
+def wrap_file(title, output, command, show, app_or_file_name, pyscript_version):
+    title = title or "PyScript App"
+
+    # Derive the output path if it is not provided
+    remove_output = False
+    if output is None:
+        if command and show:
+            output = Path("pyscript_tmp.html")
+            remove_output = True
+        elif not command:
+            assert app_or_file_name is not None
+            output = app_or_file_name.with_suffix(".html")
+        else:
+            raise cli.Abort("Must provide an output file or use `--show` option")
+    if app_or_file_name is not None:
+        file_to_html(
+            app_or_file_name,
+            title,
+            output,
+            template_name="wrap.html",
+            pyscript_version=pyscript_version,
+        )
+    if command:
+        string_to_html(
+            command,
+            title,
+            output,
+            template_name="wrap.html",
+            pyscript_version=pyscript_version,
+        )
+    if output:
+        if show:
+            console.print("Opening in web browser!")
+            webbrowser.open(f"file://{output.resolve()}")
+        if remove_output:
+            time.sleep(1)
+            output.unlink()
+
+
 @app.command()
 def create(
     app_or_file_name: Optional[Path] = typer.Argument(
@@ -75,13 +114,13 @@ def create(
         )
 
     if not wrap:
+        if not app_description:
+            app_description = typer.prompt("App description")
+        if not author_name:
+            author_name = typer.prompt("Author name")
+        if not author_email:
+            author_email = typer.prompt("Author email")
         try:
-            if not app_description:
-                app_description = typer.prompt("App description")
-            if not author_name:
-                author_name = typer.prompt("Author name")
-            if not author_email:
-                author_email = typer.prompt("Author email")
             create_project(
                 str(app_or_file_name),
                 app_description,
@@ -95,42 +134,7 @@ def create(
                 f"A directory called {app_or_file_name} already exists in this location."
             )
     else:
-        title = title or "PyScript App"
-
-        # Derive the output path if it is not provided
-        remove_output = False
-        if output is None:
-            if command and show:
-                output = Path("pyscript_tmp.html")
-                remove_output = True
-            elif not command:
-                assert app_or_file_name is not None
-                output = app_or_file_name.with_suffix(".html")
-            else:
-                raise cli.Abort("Must provide an output file or use `--show` option")
-        if app_or_file_name is not None:
-            file_to_html(
-                app_or_file_name,
-                title,
-                output,
-                template_name="wrap.html",
-                pyscript_version=pyscript_version,
-            )
-        if command:
-            string_to_html(
-                command,
-                title,
-                output,
-                template_name="wrap.html",
-                pyscript_version=pyscript_version,
-            )
-        if output:
-            if show:
-                console.print("Opening in web browser!")
-                webbrowser.open(f"file://{output.resolve()}")
-            if remove_output:
-                time.sleep(1)
-                output.unlink()
+        wrap_file(title, output, command, show, app_or_file_name, pyscript_version)
 
 
 @plugins.register
