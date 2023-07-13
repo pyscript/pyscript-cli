@@ -40,7 +40,7 @@ def test_version() -> None:
 @pytest.mark.parametrize("flag", ["-c", "--command"])
 def test_wrap_command(invoke_cli: CLIInvoker, tmp_path: Path, flag: str) -> None:
     command = 'print("Hello World!")'
-    result = invoke_cli("wrap", flag, command, "-o", "output.html")
+    result = invoke_cli("create", "--wrap", flag, command, "-o", "output.html")
     assert result.exit_code == 0
 
     expected_html_path = tmp_path / "output.html"
@@ -58,7 +58,7 @@ def test_wrap_command(invoke_cli: CLIInvoker, tmp_path: Path, flag: str) -> None
     ids=["empty_args", "command_and_script", "command_no_output_or_show"],
 )
 def test_wrap_abort(invoke_cli: CLIInvoker, wrap_args: tuple[str]):
-    result = invoke_cli("wrap", *wrap_args)
+    result = invoke_cli("create", "--wrap", *wrap_args)
     assert result.exit_code == 1
 
 
@@ -78,7 +78,7 @@ def test_wrap_file(
     with input_file.open("w") as fp:
         fp.write(command)
 
-    result = invoke_cli("wrap", str(input_file), *wrap_args)
+    result = invoke_cli("create", str(input_file), "--wrap", *wrap_args)
     assert result.exit_code == 0
 
     expected_html_path = tmp_path / expected_output_filename
@@ -117,8 +117,8 @@ def test_wrap_show(
     else:
         args = additional_args
 
-    with unittest.mock.patch("pyscript.plugins.wrap.webbrowser.open") as browser_mock:
-        result = invoke_cli("wrap", "--show", *args)
+    with unittest.mock.patch("pyscript.plugins.create.webbrowser.open") as browser_mock:
+        result = invoke_cli("create", "--wrap", "--show", *args)
 
     assert result.exit_code == 0
     assert browser_mock.called
@@ -152,7 +152,7 @@ def test_wrap_title(
     tmp_path: Path,
 ) -> None:
     command = 'print("Hello World!")'
-    args = ["wrap", "-c", command, "-o", "output.html"]
+    args = ["create", "--wrap", "-c", command, "-o", "output.html"]
     if title is not None:
         args.extend(["--title", title])
     result = invoke_cli(*args)
@@ -184,7 +184,7 @@ def test_wrap_pyscript_version(
     the project is created correctly
     """
     command = 'print("Hello World!")'
-    args = ["wrap", "-c", command, "-o", "output.html"]
+    args = ["create", "--wrap", "-c", command, "-o", "output.html"]
     if version is not None:
         args.extend(["--pyscript-version", version])
 
@@ -234,7 +234,7 @@ def test_wrap_pyscript_version_file(
     with input_file.open("w") as fp:
         fp.write(command)
 
-    args = ["wrap", str(input_file), "-o", "output.html"]
+    args = ["create", "--wrap", str(input_file), "-o", "output.html"]
 
     if version is not None:
         args.extend(["--pyscript-version", version])
@@ -290,7 +290,7 @@ def test_create_project_version(
 
     cmd_args = list(create_args) + [
         "--app-description",
-        "",
+        "tester-app",
         "--author-name",
         "tester",
         "--author-email",

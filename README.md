@@ -28,44 +28,6 @@ $ pip install pyscript
 
 ## Usage
 
-### wrap
-
-#### Embed a Python script into a PyScript HTML file
-
-```shell
-$ pyscript wrap <filename.py>
-```
-
-This will generate a file called `<filename.html>` by default.
-This can be overwritten with the `-o` or `--output` option:
-
-```shell
-$ pyscript wrap <filename.py> -o <another_filename.html>
-```
-
-#### Open the script inside the browser using the `--show` option
-
-```shell
-$ pyscript wrap <filename.py> --show
-```
-
-#### Set a title for the browser tab
-
-You can set the title of the browser tab with the `--title` option:
-
-```shell
-$ pyscript wrap <filename.py> --title "My cool app!"
-```
-
-#### Very simple command examples with `--command` option
-
-The `-c` or `--command` option can be used to demo very simple cases.
-In this case, if the `--show` option is used and no `--output` file is used, a temporary file will be generated.
-
-```shell
-$ pyscript wrap -c 'print("Hello World!")' --show
-```
-
 ### run
 
 #### Spin up a local server to run on the path and specified port
@@ -109,3 +71,41 @@ The following files will be created:
 - `index.html`: start page for the project
 - `pyscript.toml`: project metadata and config file
 - `main.py`: a "Hello world" python starter module
+
+#### Use --wrap to embed a python file OR a command string
+
+##### Embed a Python script into a PyScript HTML file
+
+```shell
+$ pyscript create --wrap <filename.py>
+```
+
+This will generate a file called `<filename.html>` by default.
+This can be overwritten with the `-o` or `--output` option:
+
+```shell
+$ pyscript create --wrap <filename.py> -o <another_filename.html>
+```
+
+##### Open the script inside the browser using the `--show` option
+
+```shell
+$ pyscript create --wrap <filename.py> --show
+```
+
+##### Set a title for the browser tab
+
+You can set the title of the browser tab with the `--title` option:
+
+```shell
+$ pyscript create --wrap <filename.py> --title "My cool app!"
+```
+
+##### Very simple command examples with `--command` option
+
+The `-c` or `--command` option can be used to demo very simple cases.
+In this case, if the `--show` option is used and no `--output` file is used, a temporary file will be generated.
+
+```shell
+$ pyscript create --wrap -c 'print("Hello World!")' --show
+```
