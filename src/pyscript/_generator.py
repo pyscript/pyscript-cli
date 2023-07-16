@@ -111,7 +111,7 @@ def file_to_html(
 
 
 def create_project(
-    app_or_file_name: str,
+    app_or_file_name: Optional[str],
     app_description: str,
     author_name: str,
     author_email: str,
@@ -132,10 +132,14 @@ def create_project(
 
     if wrap:
         if command:
+            # app_or_file_name is None in this case
+            assert app_or_file_name is None
             app_name = str(output).removesuffix(".html")
         else:
+            assert app_or_file_name is not None
             app_name = app_or_file_name.removesuffix(".py")
     else:
+        assert app_or_file_name is not None
         app_name = app_or_file_name
 
     context = {
@@ -193,6 +197,7 @@ def create_project(
                 pyscript_version=pyscript_version,
             )
         else:
+            assert app_or_file_name is not None
             file_to_html(
                 Path(app_or_file_name),
                 "PyScript App",

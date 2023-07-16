@@ -9,7 +9,7 @@ from pyscript._generator import create_project
 
 @app.command()
 def create(
-    app_or_file_name: Optional[Path] = typer.Argument(
+    app_or_file_name: Optional[str] = typer.Argument(
         None, help="The name of your new app or path to an input .py script"
     ),
     app_description: str = typer.Option(None, help="App description"),
@@ -81,7 +81,7 @@ def create(
 
     try:
         create_project(
-            str(app_or_file_name),
+            app_or_file_name,
             app_description,
             author_name,
             author_email,
