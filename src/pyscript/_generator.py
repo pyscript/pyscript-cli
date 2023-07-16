@@ -1,7 +1,7 @@
 import datetime
 import json
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import jinja2
 import toml
@@ -119,7 +119,7 @@ def create_project(
     project_type: str = "app",
     wrap: bool = False,
     command: Optional[str] = None,
-    output: Optional[Path] = None,
+    output: Optional[Union[Path, str]] = None,
 ) -> None:
     """
     New files created:
