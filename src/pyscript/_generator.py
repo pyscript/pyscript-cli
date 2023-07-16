@@ -111,12 +111,15 @@ def file_to_html(
 
 
 def create_project(
-    app_name: str,
+    app_or_file_name: str,
     app_description: str,
     author_name: str,
     author_email: str,
     pyscript_version: str = LATEST_PYSCRIPT_VERSION,
     project_type: str = "app",
+    wrap: bool = False,
+    command: str = "",
+    output: Optional[Path] = None,
 ) -> None:
     """
     New files created:
@@ -126,6 +129,15 @@ def create_project(
     index.html - start page for the project
     """
     date_stamp = datetime.date.today()
+
+    if wrap:
+        if command:
+            app_name = str(output).removesuffix(".html")
+        else:
+            app_name = app_or_file_name.removesuffix(".py")
+    else:
+        app_name = app_or_file_name
+
     context = {
         "name": app_name,
         "description": app_description,
@@ -140,26 +152,50 @@ def create_project(
 
     save_config_file(manifest_file, context)
 
-    index_file = app_dir / "index.html"
-    if project_type == "app":
-        template = "basic.html"
-    elif project_type == "plugin":
-        template = "plugin.html"
-    else:
-        raise ValueError(
-            f"Unknown project type: {project_type}. Valid values are: 'app' and 'plugin'"
+    if not wrap:
+        output = app_dir / "index.html"
+        if project_type == "app":
+            template = "basic.html"
+        elif project_type == "plugin":
+            template = "plugin.html"
+        else:
+            raise ValueError(
+                f"Unknown project type: {project_type}. Valid values are: 'app' and 'plugin'"
+            )
+
+        # Save the new python file
+        python_filepath = app_dir / "main.py"
+        with python_filepath.open("w", encoding="utf-8") as fp:
+            fp.write(TEMPLATE_PYTHON_CODE)
+
+        create_project_html(
+            app_name,
+            config["project_main_filename"],
+            config["project_config_filename"],
+            output,
+            pyscript_version=pyscript_version,
+            template=template,
         )
+    else:
+        if not command and output is None:
+            assert app_or_file_name is not None
+            output = Path(app_or_file_name).with_suffix(".html").name
 
-    # Save the new python file
-    python_filepath = app_dir / "main.py"
-    with python_filepath.open("w", encoding="utf-8") as fp:
-        fp.write(TEMPLATE_PYTHON_CODE)
+        output_path = app_dir / output
 
-    create_project_html(
-        app_name,
-        config["project_main_filename"],
-        config["project_config_filename"],
-        index_file,
-        pyscript_version=pyscript_version,
-        template=template,
-    )
+        if command:
+            string_to_html(
+                command,
+                "PyScript App",
+                output_path,
+                template_name="wrap.html",
+                pyscript_version=pyscript_version,
+            )
+        else:
+            file_to_html(
+                Path(app_or_file_name),
+                "PyScript App",
+                output_path,
+                template_name="wrap.html",
+                pyscript_version=pyscript_version,
+            )

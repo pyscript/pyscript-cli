@@ -80,32 +80,36 @@ The following files will be created:
 $ pyscript create --wrap <filename.py>
 ```
 
-This will generate a file called `<filename.html>` by default.
-This can be overwritten with the `-o` or `--output` option:
+This will generate a project i.e. a new directory named `filename` under the current directory.
+
+Similar to the above, interactive prompts will further ask for metadata information.
+
+The following files will be created:
+- `filename.html`: embeds the code of `filename.py` in a `<py-script>` tag.
+- `pyscript.toml`: project metadata and config file
+
+This can be overridden with the `-o` or `--output` option:
 
 ```shell
 $ pyscript create --wrap <filename.py> -o <another_filename.html>
 ```
 
-- ##### Open the script inside the browser using the `--show` option
-
-```shell
-$ pyscript create --wrap <filename.py> --show
-```
-
-- ##### Set a title for the browser tab
-
-You can set the title of the browser tab with the `--title` option:
-
-```shell
-$ pyscript create --wrap <filename.py> --title "My cool app!"
-```
+i.e. the HTML file created in the above directory will now be named `another_filename.html`
 
 - ##### Very simple command examples with `--command` option
 
 The `-c` or `--command` option can be used to demo very simple cases.
-In this case, if the `--show` option is used and no `--output` file is used, a temporary file will be generated.
+
+Note that `-o/--output` option is to be compulsorily used with the `-c/--command` option.
 
 ```shell
-$ pyscript create --wrap -c 'print("Hello World!")' --show
+$ pyscript create --wrap -c 'print("Hello World!")' -o <output_filename.html>
 ```
+
+This will generate a project i.e. a new directory named `output_filename` under the current directory.
+
+Similar to the above, interactive prompts will further ask for metadata information.
+
+The following files will be created:
+- `output_filename.html`: embeds the command string passed via `-c/--command` in a `<py-script>` tag.
+- `pyscript.toml`: project metadata and config file
