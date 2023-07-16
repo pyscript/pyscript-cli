@@ -118,7 +118,7 @@ def create_project(
     pyscript_version: str = LATEST_PYSCRIPT_VERSION,
     project_type: str = "app",
     wrap: bool = False,
-    command: str = "",
+    command: Optional[str] = None,
     output: Optional[Path] = None,
 ) -> None:
     """

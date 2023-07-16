@@ -25,7 +25,7 @@ def create(
         "--project-type",
         help="Type of project that is being created. Supported types are: 'app' or 'plugin'",
     ),
-    wrap: Optional[bool] = typer.Option(
+    wrap: bool = typer.Option(
         False,
         "-w",
         "--wrap",
