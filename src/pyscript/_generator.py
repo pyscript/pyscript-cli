@@ -181,6 +181,7 @@ def create_project(
             assert app_or_file_name is not None
             output = Path(app_or_file_name).with_suffix(".html").name
 
+        assert output is not None
         output_path = app_dir / output
 
         if command:
