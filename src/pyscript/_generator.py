@@ -68,55 +68,16 @@ def save_config_file(config_file: Path, configuration: dict):
             toml.dump(configuration, fp)
 
 
-def string_to_html(
-    code: str,
-    title: str,
-    output_path: Path,
-    template_name: str = "wrap.html",
-    pyscript_version: str = LATEST_PYSCRIPT_VERSION,
-) -> None:
-    """Write a Python script string to an HTML file template.
-
-    Params:
-
-        - code(str): string containing the application code to be written to the
-                     PyScript app template
-        - title(str): application title, that will be placed as title of the html
-                      app template
-        - output_path(Path): path where to write the new html file
-        - template_name(str): name of the template to be used
-        - pyscript_version(str): version of pyscript to be used
-
-    Output:
-        (None)
-    """
-    template = _env.get_template(template_name)
-    with output_path.open("w") as fp:
-        fp.write(
-            template.render(code=code, title=title, pyscript_version=pyscript_version)
-        )
-
-
-def file_to_html(
-    input_path: Path,
-    title: str,
-    output_path: Optional[Path],
-    template_name: str = "wrap.html",
-    pyscript_version: str = LATEST_PYSCRIPT_VERSION,
-) -> None:
-    """Write a Python script string to an HTML file template."""
-    output_path = output_path or input_path.with_suffix(".html")
-    with input_path.open("r") as fp:
-        string_to_html(fp.read(), title, output_path, template_name, pyscript_version)
-
-
 def create_project(
-    app_name: str,
+    app_or_file_name: Optional[str],
     app_description: str,
     author_name: str,
     author_email: str,
     pyscript_version: str = LATEST_PYSCRIPT_VERSION,
     project_type: str = "app",
+    wrap: bool = False,
+    command: Optional[str] = None,
+    output: Optional[str] = None,
 ) -> None:
     """
     New files created:
@@ -126,40 +87,63 @@ def create_project(
     index.html - start page for the project
     """
     date_stamp = datetime.date.today()
+
+    if wrap:
+        if command:
+            # app_or_file_name is None in this case
+            assert app_or_file_name is None
+            if output:
+                app_name = output.removesuffix(".html")
+            else:
+                app_name = "pyscript-command-app"
+        else:
+            assert app_or_file_name is not None
+            app_name = app_or_file_name.removesuffix(".py")
+    else:
+        assert app_or_file_name is not None
+        app_name = app_or_file_name
+
     context = {
         "name": app_name,
         "description": app_description,
         "type": "app",
         "author_name": author_name,
         "author_email": author_email,
-        "version": f"{date_stamp.year}.{date_stamp.month}.1",
+        "version": f"{date_stamp.year}.{'{:02d}'.format(date_stamp.month)}.1",
     }
     app_dir = Path(".") / app_name
     app_dir.mkdir()
     manifest_file = app_dir / config["project_config_filename"]
 
     save_config_file(manifest_file, context)
+    output_path = app_dir / "index.html" if output is None else app_dir / output
 
-    index_file = app_dir / "index.html"
     if project_type == "app":
         template = "basic.html"
-    elif project_type == "plugin":
-        template = "plugin.html"
     else:
         raise ValueError(
-            f"Unknown project type: {project_type}. Valid values are: 'app' and 'plugin'"
+            f"Unknown project type: {project_type}. Valid values are: 'app'"
         )
 
-    # Save the new python file
     python_filepath = app_dir / "main.py"
-    with python_filepath.open("w", encoding="utf-8") as fp:
-        fp.write(TEMPLATE_PYTHON_CODE)
+
+    if not wrap:
+        # Save the new python file
+        with python_filepath.open("w", encoding="utf-8") as fp:
+            fp.write(TEMPLATE_PYTHON_CODE)
+    else:
+        if command:
+            with python_filepath.open("w", encoding="utf-8") as fp:
+                fp.write(command)
+        else:
+            assert app_or_file_name is not None
+            python_filepath.write_bytes(Path(app_or_file_name).read_bytes())
 
     create_project_html(
         app_name,
         config["project_main_filename"],
         config["project_config_filename"],
-        index_file,
+        output_path,
         pyscript_version=pyscript_version,
         template=template,
     )

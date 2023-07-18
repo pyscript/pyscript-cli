@@ -53,31 +53,6 @@ def test_create_bad_type(tmp_cwd: Path, is_not_none: Any) -> None:
         )
 
 
-def test_create_plugin(tmp_cwd: Path, is_not_none: Any) -> None:
-    """
-    Test that a new plugin is created with the correct files and manifest.
-    """
-    plugin_name = "test_plugin"
-    plugin_description = "A longer, human friendly, plugin description."
-
-    # GIVEN a a new project
-    gen.create_project(
-        plugin_name,
-        plugin_description,
-        TESTS_AUTHOR_NAME,
-        TESTS_AUTHOR_EMAIL,
-        project_type="plugin",
-    )
-
-    # with a default config path
-    manifest_path = tmp_cwd / plugin_name / config["project_config_filename"]
-
-    check_project_manifest(
-        manifest_path, toml, plugin_name, is_not_none, plugin_description
-    )
-    check_plugin_project_files(tmp_cwd / plugin_name, plugin_name, plugin_description)
-
-
 def test_create_project_twice_raises_error(tmp_cwd: Path) -> None:
     """We get a FileExistsError when we try to create an existing project."""
     app_name = "app_name"

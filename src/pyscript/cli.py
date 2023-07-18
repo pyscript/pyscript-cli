@@ -7,7 +7,7 @@ from pluggy import PluginManager
 from pyscript import __version__, app, console, plugins, typer
 from pyscript.plugins import hookspecs
 
-DEFAULT_PLUGINS = ["create", "wrap", "run"]
+DEFAULT_PLUGINS = ["create", "run"]
 
 
 def ok(msg: str = ""):
