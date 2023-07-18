@@ -85,8 +85,10 @@ This will generate a project i.e. a new directory named `filename` under the cur
 Similar to the above, interactive prompts will further ask for metadata information.
 
 The following files will be created:
-- `filename.html`: embeds the code of `filename.py` in a `<py-script>` tag.
+
+- `index.html`: start page for the project
 - `pyscript.toml`: project metadata and config file
+- `main.py`: contains code of `filename.py`
 
 This can be overridden with the `-o` or `--output` option:
 
@@ -100,7 +102,10 @@ i.e. the HTML file created in the above directory will now be named `another_fil
 
 The `-c` or `--command` option can be used to demo very simple cases.
 
-Note that `-o/--output` option is to be compulsorily used with the `-c/--command` option.
+By default, the name of the project folder created will be `pyscript-command-app` with the HTML file named `index.html`.
+
+`-o/--output` option can be used with the `-c/--command` option to configure name of the project folder as well
+as the name of the resulting HTML file.
 
 ```shell
 $ pyscript create --wrap -c 'print("Hello World!")' -o <output_filename.html>
@@ -111,5 +116,7 @@ This will generate a project i.e. a new directory named `output_filename` under 
 Similar to the above, interactive prompts will further ask for metadata information.
 
 The following files will be created:
-- `output_filename.html`: embeds the command string passed via `-c/--command` in a `<py-script>` tag.
+
+- `output_filename.html`: start page for the project
 - `pyscript.toml`: project metadata and config file
+- `main.py`: contains code of the command string passed via `-c/--command`

@@ -61,16 +61,17 @@ def test_wrap_command(
     expected_html_path = tmp_path / "output" / "output.html"
     assert expected_html_path.exists()
 
-    with expected_html_path.open() as fp:
-        html_text = fp.read()
+    expected_main_py_path = tmp_path / "output" / "main.py"
+    with expected_main_py_path.open() as fp:
+        py_text = fp.read()
 
-    assert f"<py-script>\n{command}\n</py-script>" in html_text
+    assert command in py_text
 
 
 @pytest.mark.parametrize(
     "wrap_args",
-    [tuple(), ("-c", "print()", "script_name.py"), ("-c", "print()")],
-    ids=["empty_args", "command_and_script", "command_no_output_or_show"],
+    [tuple(), ("-c", "print()", "script_name.py")],
+    ids=["empty_args", "command_and_script"],
 )
 def test_wrap_abort(invoke_cli: CLIInvoker, wrap_args: tuple[str]):
     result = invoke_cli("create", "--wrap", *wrap_args)
@@ -79,7 +80,7 @@ def test_wrap_abort(invoke_cli: CLIInvoker, wrap_args: tuple[str]):
 
 @pytest.mark.parametrize(
     "wrap_args, expected_output_filename",
-    [(("-o", "output.html"), "output.html"), (tuple(), "hello.html")],
+    [(("-o", "output.html"), "output.html"), (tuple(), "index.html")],
 )
 def test_wrap_file(
     invoke_cli: CLIInvoker,
@@ -102,10 +103,11 @@ def test_wrap_file(
     expected_html_path = tmp_path / "hello" / expected_output_filename
     assert expected_html_path.exists()
 
-    with expected_html_path.open() as fp:
-        html_text = fp.read()
+    expected_main_py_path = tmp_path / "hello" / "main.py"
+    with expected_main_py_path.open() as fp:
+        py_text = fp.read()
 
-    assert f"<py-script>\n{command}\n</py-script>" in html_text
+    assert command in py_text
 
 
 @pytest.mark.parametrize(
@@ -139,8 +141,11 @@ def test_wrap_pyscript_version(
     with expected_html_path.open() as fp:
         html_text = fp.read()
 
-    # EXPECT the right cmd to be present in the output file
-    assert f"<py-script>\n{command}\n</py-script>" in html_text
+    expected_main_py_path = tmp_path / "output" / "main.py"
+    with expected_main_py_path.open() as fp:
+        py_text = fp.read()
+
+    assert command in py_text
 
     # EXPECT the right JS and CSS version to be present in the output file
     version_str = (
@@ -191,8 +196,11 @@ def test_wrap_pyscript_version_file(
     with expected_html_path.open() as fp:
         html_text = fp.read()
 
-    # EXPECT the right cmd to be present in the output file
-    assert f"<py-script>\n{command}\n</py-script>" in html_text
+    expected_main_py_path = tmp_path / "hello" / "main.py"
+    with expected_main_py_path.open() as fp:
+        py_text = fp.read()
+
+    assert command in py_text
 
     # EXPECT the right JS and CSS version to be present in the output file
     version_str = (

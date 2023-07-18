@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Optional
 
 import typer
@@ -23,7 +22,7 @@ def create(
     project_type: str = typer.Option(
         "app",
         "--project-type",
-        help="Type of project that is being created. Supported types are: 'app' or 'plugin'",
+        help="Type of project that is being created. Supported types are: 'app'",
     ),
     wrap: bool = typer.Option(
         False,
@@ -31,18 +30,17 @@ def create(
         "--wrap",
         help="Use wrap mode i.e. embed a python script into an HTML file",
     ),
-    output: Optional[Path] = typer.Option(
-        None,
-        "-o",
-        "--output",
-        help="""Path to the resulting HTML output file. Defaults to input_file with suffix replaced.
-        Meant to be used with `--wrap`""",
-    ),
     command: Optional[str] = typer.Option(
         None,
         "-c",
         "--command",
         help="If provided, embed a single command string. Meant to be used with `--wrap`",
+    ),
+    output: Optional[str] = typer.Option(
+        None,
+        "-o",
+        "--output",
+        help="""Name of the resulting HTML output file. Meant to be used with `-w/--wrap`""",
     ),
 ):
     """
@@ -61,15 +59,7 @@ def create(
     if (output or command) and (not wrap):
         raise cli.Abort(
             """`--output/-o`, and `--command/-c`
-            are meant to be used together with `--wrap/-w`"""
-        )
-
-    if wrap and not ((not command) or output):
-        # if wrap is used and command doesn't imply usage of output
-        # here, ((not command) or output) --> command implies usage of output
-        raise cli.Abort(
-            """`--output/-o` must be specified when `--command/-c`
-            is used with `--wrap/-w`"""
+            are meant to be used with `--wrap/-w`"""
         )
 
     if not app_description:
