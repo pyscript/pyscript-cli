@@ -34,7 +34,7 @@ dev = [
 docs = [
   "Sphinx<5.2",
   "sphinx-autobuild<2021.4.0",
-  "sphinx-autodoc-typehints<1.20",
+  "sphinx-autodoc-typehints<1.25",
   "myst-parser<0.19.3",
   "pydata-sphinx-theme<0.13.4"
 ]
