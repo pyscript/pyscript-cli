@@ -15,7 +15,7 @@ dependencies = [
   "rich==13.4.2",
   "toml<0.11",
   "typer==0.9.0",
-  "platformdirs<2.7"
+  "platformdirs<3.11"
 ]
 description = "Command Line Interface for PyScript"
 license = {text = "Apache-2.0"}
