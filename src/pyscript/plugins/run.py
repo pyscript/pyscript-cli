@@ -30,6 +30,11 @@ def get_folder_based_http_request_handler(
         def __init__(self, *args, **kwargs):
             super().__init__(*args, directory=folder, **kwargs)
 
+        def end_headers(self):
+            self.send_header("Cross-Origin-Opener-Policy", "same-origin")
+            self.send_header("Cross-Origin-Embedder-Policy", "require-corp")
+            SimpleHTTPRequestHandler.end_headers(self)
+
     return FolderBasedHTTPRequestHandler
 
 
