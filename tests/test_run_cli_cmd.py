@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+import http.client
+import http.server
+import threading
 from pathlib import Path
 from unittest import mock
 
 import pytest
 from utils import CLIInvoker, invoke_cli  # noqa: F401
+
+from pyscript.plugins.run import get_folder_based_http_request_handler
 
 BASEPATH = str(Path(__file__).parent)
 
@@ -103,3 +108,32 @@ def test_run_server_with_valid_combinations(
     assert result.exit_code == 0
     # EXPECT start_server_mock function to be called with the expected values
     start_server_mock.assert_called_once_with(*expected_values)
+
+
+class TestFolderBasedHTTPRequestHandler:
+    def setup_method(self, method):
+        # Create a test server instance with the custom handler
+        CustomHTTPRequestHandler = get_folder_based_http_request_handler(Path("."))
+        self.server = http.server.HTTPServer(("127.0.0.1", 0), CustomHTTPRequestHandler)
+        self.server_thread = threading.Thread(target=self.server.serve_forever)
+        self.server_thread.daemon = True
+        self.server_thread.start()
+
+        # Get the port the server is listening on
+        self.server_address = self.server.socket.getsockname()
+
+    def teardown_method(self, method):
+        # Clean up the server
+        self.server.shutdown()
+        self.server_thread.join()
+
+    def test_headers(self):
+        # Given a request to the test server
+        connection = http.client.HTTPConnection(*self.server_address)
+        connection.request("GET", "/")
+        response = connection.getresponse()
+
+        # Expect the custom headers to be present in the response
+        assert response.getheader("Cross-Origin-Opener-Policy") == "same-origin"
+        assert response.getheader("Cross-Origin-Embedder-Policy") == "require-corp"
+        assert response.getheader("Cross-Origin-Resource-Policy") == "cross-origin"
