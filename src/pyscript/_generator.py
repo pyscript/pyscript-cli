@@ -111,15 +111,20 @@ def create_project(
         "author_email": author_email,
         "version": f"{date_stamp.year}.{'{:02d}'.format(date_stamp.month)}.1",
     }
+
+    # Create the new app directory using the app name provided
     app_dir = Path(".") / app_name
     app_dir.mkdir()
+    # Create the new config file
     manifest_file = app_dir / config["project_config_filename"]
-
     save_config_file(manifest_file, context)
+    # Create the html file (index.html by default)
     output_path = app_dir / "index.html" if output is None else app_dir / output
 
     if project_type == "app":
         template = "basic.html"
+    elif project_type == "asgi":
+        template = "asgi/index.html"
     else:
         raise ValueError(
             f"Unknown project type: {project_type}. Valid values are: 'app'"
