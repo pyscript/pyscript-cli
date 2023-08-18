@@ -300,3 +300,56 @@ def test_create_type_asgi_abort(
     result = invoke_cli("create", "--project-type", "asgi", *wrap_args)
     assert result.exit_code == 1
     assert expected_msg in result.stdout
+
+
+def test_asgi_file(
+    invoke_cli: CLIInvoker,
+    tmp_path: Path,
+    app_details_args: list[str],
+) -> None:
+    # GIVEN a python file with some "asgi" app code
+    command = 'print("Hello World!")'
+    filename = "fastapi"
+    input_file = _write_test_file(tmp_path / f"{filename}.py", command)
+    # WHEN the user calls create with the asgi project type priding that file as input
+    result = invoke_cli(
+        "create", str(input_file), "--project-type", "asgi", *app_details_args
+    )
+    # EXPECT the project to be created correctly
+    assert result.exit_code == 0
+
+    # EXPECT the output HTML file to exist
+    project_path = tmp_path / filename
+    expected_html_path = project_path / "index.html"
+    assert expected_html_path.exists()
+
+    # EXPECT the main.py file to exist
+    expected_main_py_path = project_path / "main.py"
+    with expected_main_py_path.open() as fp:
+        py_text = fp.read()
+    with input_file.open() as fp:
+        input_file_text = fp.read()
+
+    # EXPECT the main.py file to contain the same code as the input file
+    assert command == py_text == input_file_text
+
+    # EXPECT the other template files to exist and to contain the right content
+    for template_filename in ["pyscript.toml", "pyscript.sw.js", "bob.py"]:
+        expected_file_path = project_path / template_filename
+        assert expected_file_path.exists()
+        original_file = (
+            Path(__file__).parent
+            / "pyscript"
+            / "plugins"
+            / "templates"
+            / "asgi"
+            / template_filename
+        )
+        assert expected_file_path.read() == original_file.read()
+
+
+def _write_test_file(path: str, content: str) -> Path:
+    _path = Path(path)
+    with path.open("w") as fp:
+        fp.write(content)
+    return _path
