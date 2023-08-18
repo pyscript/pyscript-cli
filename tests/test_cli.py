@@ -273,3 +273,30 @@ def test_create_project_version(
     # EXPECT the folder to also contain the config file
     config_file = expected_app_path / config["project_config_filename"]
     assert config_file.exists()
+
+
+########
+# Tests related to creating ASGI type apps
+########
+
+
+@pytest.mark.parametrize(
+    "wrap_args, expected_msg",
+    [
+        (
+            tuple(),
+            "\x1b[31mMust provide either an input \x1b[0m\x1b[32m'.py'\x1b[0m\x1b[31m "
+            "file or a command with the \x1b[0m\x1b[32m'-c'\x1b[0m\x1b[31m option."
+            "\x1b[0m\nAborted.\n",
+        ),
+        (("non_existing_file.py",), "File non_existing_file.py does not exist."),
+    ],
+    ids=["empty_args", "command_and_script"],
+)
+def test_create_type_asgi_abort(
+    invoke_cli: CLIInvoker, wrap_args: tuple[str], expected_msg: str
+):
+    """Test that create asgi apps aborts when no input file is provided"""
+    result = invoke_cli("create", "--project-type", "asgi", *wrap_args)
+    assert result.exit_code == 1
+    assert expected_msg in result.stdout
