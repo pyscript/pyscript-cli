@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Optional
 
 import typer
@@ -61,6 +62,13 @@ def create(
             """`--output/-o`, and `--command/-c`
             are meant to be used with `--wrap/-w`"""
         )
+
+    # TODO: this check should be delegated to some logic that dynamically checks
+    #       the pre-requisites for the different project types
+    if project_type == "asgi":
+        input_filepath = Path(app_or_file_name)
+        if not input_filepath.exists():
+            raise cli.Abort(f"File {input_filepath} does not exist.")
 
     if not app_description:
         app_description = typer.prompt("App description")

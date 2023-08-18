@@ -125,6 +125,18 @@ def create_project(
         template = "basic.html"
     elif project_type == "asgi":
         template = "asgi/index.html"
+
+        # copy all the files from the asgi template to the new app directory
+        template_dir = Path(__file__).parent / "templates" / "asgi"
+        for file in template_dir.iterdir():
+            if file.is_file() and file.name != "index.html":
+                file_destination = app_dir / file.name
+                file_destination.write_bytes(file.read_bytes())
+
+        # copy the application files provided by the user as input
+        if app_or_file_name:
+            python_filepath = app_dir / app_or_file_name
+            python_filepath.write_bytes(Path(app_or_file_name).read_bytes())
     else:
         raise ValueError(
             f"Unknown project type: {project_type}. Valid values are: 'app'"
