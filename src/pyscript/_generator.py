@@ -101,7 +101,10 @@ def create_project(
             app_name = app_or_file_name.removesuffix(".py")
     else:
         assert app_or_file_name is not None
-        app_name = app_or_file_name
+        if app_or_file_name.endswith(".py"):
+            app_name = app_or_file_name.removesuffix(".py")
+        else:
+            app_name = app_or_file_name
 
     context = {
         "name": app_name,
