@@ -313,7 +313,7 @@ def test_asgi_file(
     input_file = _write_test_file(tmp_path / f"{filename}.py", command)
     # WHEN the user calls create with the asgi project type priding that file as input
     result = invoke_cli(
-        "create", str(input_file), "--project-type", "asgi", *app_details_args
+        "create", str(input_file), "--wrap", "--project-type", "asgi", *app_details_args
     )
     # EXPECT the project to be created correctly
     assert result.exit_code == 0
@@ -334,18 +334,23 @@ def test_asgi_file(
     assert command == py_text == input_file_text
 
     # EXPECT the other template files to exist and to contain the right content
-    for template_filename in ["pyscript.toml", "pyscript.sw.js", "bob.py"]:
+    for template_filename in ["pyscript.toml", "pyscript.sw.js"]:
         expected_file_path = project_path / template_filename
         assert expected_file_path.exists()
         original_file = (
-            Path(__file__).parent
+            Path(__file__).parent.parent
+            / "src"
             / "pyscript"
-            / "plugins"
             / "templates"
             / "asgi"
             / template_filename
         )
-        assert expected_file_path.read() == original_file.read()
+        with expected_file_path.open() as fp:
+            expected_content = fp.read()
+        with original_file.open() as fp:
+            original_content = fp.read()
+        assert expected_content == original_content
+        print(result.stdout)
 
 
 def _write_test_file(path: str, content: str) -> Path:
