@@ -149,12 +149,12 @@ def test_wrap_pyscript_version(
 
     # EXPECT the right JS and CSS version to be present in the output file
     version_str = (
-        f'<script defer src="https://pyscript.net/releases/{expected_version}'
-        '/pyscript.js"></script>'
+        '<script type="module" src="https://pyscript.net/releases/'
+        f'{expected_version}/core.js"></script>'
     )
     css_version_str = (
         '<link rel="stylesheet" href="https://pyscript.net/releases/'
-        f'{expected_version}/pyscript.css"/>'
+        f'{expected_version}/core.css">'
     )
     assert version_str in html_text
     assert css_version_str in html_text
@@ -204,12 +204,12 @@ def test_wrap_pyscript_version_file(
 
     # EXPECT the right JS and CSS version to be present in the output file
     version_str = (
-        f'<script defer src="https://pyscript.net/releases/{expected_version}'
-        '/pyscript.js"></script>'
+        '<script type="module" src="https://pyscript.net/releases/'
+        f'{expected_version}/core.js"></script>'
     )
     css_version_str = (
         '<link rel="stylesheet" href="https://pyscript.net/releases/'
-        f'{expected_version}/pyscript.css"/>'
+        f'{expected_version}/core.css">'
     )
     assert version_str in html_text
     assert css_version_str in html_text
@@ -256,12 +256,12 @@ def test_create_project_version(
 
     # EXPECT the right JS and CSS version to be present in the html file
     version_str = (
-        f'<script defer src="https://pyscript.net/releases/{expected_version}'
-        '/pyscript.js"></script>'
+        '<script type="module" src="https://pyscript.net/releases/'
+        f'{expected_version}/core.js"></script>'
     )
     css_version_str = (
         '<link rel="stylesheet" href="https://pyscript.net/releases/'
-        f'{expected_version}/pyscript.css"/>'
+        f'{expected_version}/core.css">'
     )
     assert version_str in html_text
     assert css_version_str in html_text
