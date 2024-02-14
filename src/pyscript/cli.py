@@ -1,4 +1,5 @@
 """The main CLI entrypoint and commands."""
+
 import sys
 from typing import Any, Optional
 

@@ -30,3 +30,6 @@ coverage.xml
 # Generated documentation
 /docs/build/
 /docs/source/api/
+
+pyscript.egg-info/
+build/

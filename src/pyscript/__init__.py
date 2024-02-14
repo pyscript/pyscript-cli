@@ -1,4 +1,5 @@
 """A CLI for PyScript!"""
+
 import json
 from pathlib import Path
 

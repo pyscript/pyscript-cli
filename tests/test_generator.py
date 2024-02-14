@@ -3,6 +3,7 @@ Tests for utility functions in the _generator.py module that cannot be
 exercised because of limitations in the Typer testing framework (specifically,
 multiple "prompt" arguments).
 """
+
 import json
 from pathlib import Path
 from textwrap import dedent
