@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING, Callable
 
 import pytest
 from mypy_extensions import VarArg
@@ -29,7 +29,7 @@ def app_details_args():
 
 
 @pytest.fixture()
-def invoke_cli(tmp_path: Path, monkeypatch: "MonkeyPatch") -> CLIInvoker:
+def invoke_cli(tmp_path: Path, monkeypatch: MonkeyPatch) -> CLIInvoker:
     """Returns a function, which can be used to call the CLI from within a temporary directory."""
     runner = CliRunner()
 
@@ -49,7 +49,7 @@ def test_version() -> None:
 
 
 def test_create_command(
-    invoke_cli: CLIInvoker, tmp_path: Path, app_details_args: list[str]
+    invoke_cli: CLIInvoker, tmp_path: Path, app_details_args: list[str], auto_enter
 ) -> None:
     result = invoke_cli("create", "myapp")
     assert result.exit_code == 0
@@ -140,7 +140,7 @@ def test_wrap_file(
 )
 def test_wrap_pyscript_version(
     invoke_cli: CLIInvoker,
-    version: Optional[str],
+    version: str | None,
     expected_version: str,
     tmp_path: Path,
     app_details_args: list[str],
@@ -190,7 +190,7 @@ def test_wrap_pyscript_version(
 )
 def test_wrap_pyscript_version_file(
     invoke_cli: CLIInvoker,
-    version: Optional[str],
+    version: str | None,
     expected_version: str,
     tmp_path: Path,
     app_details_args: list[str],

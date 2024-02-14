@@ -16,7 +16,7 @@ CLIInvoker = Callable[[VarArg(str)], Result]
 
 
 @pytest.fixture()
-def invoke_cli(tmp_path: Path, monkeypatch: "MonkeyPatch") -> CLIInvoker:
+def invoke_cli(tmp_path: Path, monkeypatch: MonkeyPatch) -> CLIInvoker:
     """Returns a function, which can be used to call the CLI from within a temporary directory."""
     runner = CliRunner()
 
