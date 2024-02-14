@@ -63,11 +63,11 @@ def create(
         )
 
     if not app_description:
-        app_description = typer.prompt("App description")
+        app_description = typer.prompt("App description", default="")
     if not author_name:
-        author_name = typer.prompt("Author name")
+        author_name = typer.prompt("Author name", default="")
     if not author_email:
-        author_email = typer.prompt("Author email")
+        author_email = typer.prompt("Author email", default="")
 
     try:
         create_project(
