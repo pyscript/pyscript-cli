@@ -136,7 +136,7 @@ def test_wrap_file(
 
 @pytest.mark.parametrize(
     "version, expected_version",
-    [(None, LATEST_PYSCRIPT_VERSION), ("2022.9.1", "2022.9.1")],
+    [(None, LATEST_PYSCRIPT_VERSION), ("2023.11.1", "2023.11.1")],
 )
 def test_wrap_pyscript_version(
     invoke_cli: CLIInvoker,
@@ -173,12 +173,12 @@ def test_wrap_pyscript_version(
 
     # EXPECT the right JS and CSS version to be present in the output file
     version_str = (
-        f'<script defer src="https://pyscript.net/releases/{expected_version}'
-        '/pyscript.js"></script>'
+        '<script type="module" src="https://pyscript.net/releases/'
+        f'{expected_version}/core.js"></script>'
     )
     css_version_str = (
         '<link rel="stylesheet" href="https://pyscript.net/releases/'
-        f'{expected_version}/pyscript.css"/>'
+        f'{expected_version}/core.css">'
     )
     assert version_str in html_text
     assert css_version_str in html_text
@@ -186,7 +186,7 @@ def test_wrap_pyscript_version(
 
 @pytest.mark.parametrize(
     "version, expected_version",
-    [(None, LATEST_PYSCRIPT_VERSION), ("2022.9.1", "2022.9.1")],
+    [(None, LATEST_PYSCRIPT_VERSION), ("2023.11.1", "2023.11.1")],
 )
 def test_wrap_pyscript_version_file(
     invoke_cli: CLIInvoker,
@@ -228,12 +228,12 @@ def test_wrap_pyscript_version_file(
 
     # EXPECT the right JS and CSS version to be present in the output file
     version_str = (
-        f'<script defer src="https://pyscript.net/releases/{expected_version}'
-        '/pyscript.js"></script>'
+        '<script type="module" src="https://pyscript.net/releases/'
+        f'{expected_version}/core.js"></script>'
     )
     css_version_str = (
         '<link rel="stylesheet" href="https://pyscript.net/releases/'
-        f'{expected_version}/pyscript.css"/>'
+        f'{expected_version}/core.css">'
     )
     assert version_str in html_text
     assert css_version_str in html_text
@@ -243,7 +243,7 @@ def test_wrap_pyscript_version_file(
     "create_args, expected_version",
     [
         (("myapp1",), LATEST_PYSCRIPT_VERSION),
-        (("myapp-w-version", "--pyscript-version", "2022.9.1"), "2022.9.1"),
+        (("myapp-w-version", "--pyscript-version", "2023.11.1"), "2023.11.1"),
     ],
 )
 def test_create_project_version(
@@ -280,12 +280,12 @@ def test_create_project_version(
 
     # EXPECT the right JS and CSS version to be present in the html file
     version_str = (
-        f'<script defer src="https://pyscript.net/releases/{expected_version}'
-        '/pyscript.js"></script>'
+        '<script type="module" src="https://pyscript.net/releases/'
+        f'{expected_version}/core.js"></script>'
     )
     css_version_str = (
         '<link rel="stylesheet" href="https://pyscript.net/releases/'
-        f'{expected_version}/pyscript.css"/>'
+        f'{expected_version}/core.css">'
     )
     assert version_str in html_text
     assert css_version_str in html_text

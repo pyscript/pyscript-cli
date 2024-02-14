@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="https://pyscript.net/releases/{{ pyscript_version }}/pyscript.css"/>
-    <script defer src="https://pyscript.net/releases/{{ pyscript_version }}/pyscript.js"></script>
+    <link rel="stylesheet" href="https://pyscript.net/releases/{{ pyscript_version }}/core.css">
+    <script type="module" src="https://pyscript.net/releases/{{ pyscript_version }}/core.js"></script>
 </head>
 <body>
-    <py-config src="./{{ config_file_path }}"></py-config>
-    <py-script src="./{{ python_file_path }}"></py-script>
+    <script type="py" src="./{{ python_file_path }}" config="./{{ config_file_path }}"></script>
 </body>
 </html>
