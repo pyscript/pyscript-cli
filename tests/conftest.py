@@ -5,6 +5,18 @@ import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
 
+@pytest.fixture
+def auto_enter(monkeypatch):
+    """
+    Monkey patch 'typer.confirm' to always hit <Enter>".
+    """
+
+    def user_hit_enter(*args, **kwargs):
+        return ""
+
+    monkeypatch.setattr("typer.prompt", user_hit_enter)
+
+
 @pytest.fixture()
 def tmp_cwd(monkeypatch: MonkeyPatch, tmp_path: Path) -> Path:
     """Create & return a temporary directory after setting current working directory to it."""
