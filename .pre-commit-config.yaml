@@ -1,34 +1,38 @@
 # This is the configuration for pre-commit, a local framework for managing pre-commit hooks
 #   Check out the docs at: https://pre-commit.com/
+ci:
+    #skip: [eslint]
+    autoupdate_schedule: monthly
 
+default_stages: [commit]
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
 -   repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: v2.10.0
+    rev: v2.12.0
     hooks:
     -   id: pretty-format-yaml
         args: [--autofix, --indent, '4']
     -   id: pretty-format-toml
         args: [--autofix]
--   repo: https://github.com/sondrelg/pep585-upgrade
-    rev: v1.0
+-   repo: https://github.com/asottile/pyupgrade
+    rev: v3.15.0
     hooks:
-    -   id: upgrade-type-hints
-        args: [--futures=true]
+    -   id: pyupgrade
 -   repo: https://github.com/pycqa/isort
-    rev: 5.12.0
+    rev: 5.13.2
     hooks:
     -   id: isort
-        name: isort
+        name: isort (python)
+        args: [--profile, black]
 -   repo: https://github.com/psf/black
-    rev: 23.7.0
+    rev: 24.2.0
     hooks:
     -   id: black
 -   repo: https://github.com/pycqa/flake8
-    rev: 6.1.0
+    rev: 7.0.0
     hooks:
     -   id: flake8
