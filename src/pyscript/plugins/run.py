@@ -34,7 +34,7 @@ def get_folder_based_http_request_handler(
             self.send_header("Cross-Origin-Opener-Policy", "same-origin")
             self.send_header("Cross-Origin-Embedder-Policy", "require-corp")
             self.send_header("Cross-Origin-Resource-Policy", "cross-origin")
-            self.send_header("CacheControl", "no-cache, must-revalidate")
+            self.send_header("Cache-Control", "no-cache, must-revalidate")
             SimpleHTTPRequestHandler.end_headers(self)
 
     return FolderBasedHTTPRequestHandler
