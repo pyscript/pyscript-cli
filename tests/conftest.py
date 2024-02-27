@@ -8,11 +8,15 @@ from _pytest.monkeypatch import MonkeyPatch
 @pytest.fixture
 def auto_enter(monkeypatch):
     """
-    Monkey patch 'typer.confirm' to always hit <Enter>".
+    Monkey patch 'typer.prompt' to always hit <Enter>".
     """
 
     def user_hit_enter(*args, **kwargs):
-        return ""
+        # This makes sure that if there is a default value on a prompt
+        # we will return it, otherwise we will return an empty string
+        # which isn't the same as hitting enter!
+        default_value = kwargs.get("default", "")
+        return default_value
 
     monkeypatch.setattr("typer.prompt", user_hit_enter)
 

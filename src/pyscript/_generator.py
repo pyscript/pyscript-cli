@@ -100,8 +100,12 @@ def create_project(
             assert app_or_file_name is not None
             app_name = app_or_file_name.removesuffix(".py")
     else:
-        assert app_or_file_name is not None
-        app_name = app_or_file_name
+        if app_or_file_name and app_or_file_name.endswith(".py"):
+            app_name = app_or_file_name.removesuffix(".py")
+        else:
+            # At this point we should always have a name, but typing
+            # was complaining so let's add a default
+            app_name = app_or_file_name or "my-pyscript-app"
 
     context = {
         "name": app_name,
@@ -111,6 +115,7 @@ def create_project(
         "author_email": author_email,
         "version": f"{date_stamp.year}.{'{:02d}'.format(date_stamp.month)}.1",
     }
+
     app_dir = Path(".") / app_name
     app_dir.mkdir()
     manifest_file = app_dir / config["project_config_filename"]
@@ -128,9 +133,12 @@ def create_project(
     python_filepath = app_dir / "main.py"
 
     if not wrap:
-        # Save the new python file
-        with python_filepath.open("w", encoding="utf-8") as fp:
-            fp.write(TEMPLATE_PYTHON_CODE)
+        if app_or_file_name and app_or_file_name.endswith(".py"):
+            python_filepath.write_bytes(Path(app_or_file_name).read_bytes())
+        else:
+            # Save the new python file
+            with python_filepath.open("w", encoding="utf-8") as fp:
+                fp.write(TEMPLATE_PYTHON_CODE)
     else:
         if command:
             with python_filepath.open("w", encoding="utf-8") as fp:

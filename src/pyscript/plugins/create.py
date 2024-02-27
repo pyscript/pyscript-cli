@@ -49,9 +49,7 @@ def create(
     a python file instead.
     """
     if not app_or_file_name and not command:
-        raise cli.Abort(
-            "Must provide either an input '.py' file or a command with the '-c' option."
-        )
+        app_or_file_name = typer.prompt("App name", default="my-pyscript-app")
 
     if app_or_file_name and command:
         raise cli.Abort("Cannot provide both an input '.py' file and '-c' option.")
