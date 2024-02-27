@@ -190,8 +190,10 @@ def check_project_files(
 
     with html_file_path.open() as fp:
         contents = fp.read()
-        assert f'<py-script src="./{python_file}">' in contents
-        assert f'<py-config src="./{config_file}">' in contents
+        assert (
+            f'<script type="py" src="./{python_file}" config="./{config_file}">'
+            in contents
+        )
 
 
 def check_plugin_project_files(
