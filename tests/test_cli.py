@@ -96,6 +96,37 @@ def test_create_command_no_app_name(
     assert 'author_email = ""' in config_text
 
 
+def test_create_command_with_single_py_file(
+    invoke_cli: CLIInvoker, tmp_path: Path, app_details_args: list[str], auto_enter
+):
+    """
+    Test that when create is called with a single python file as input,
+    the project is created correctly
+    """
+    input_file = tmp_path / "hello.py"
+    with input_file.open("w") as fp:
+        fp.write('print("Hello World!")')
+
+    result = invoke_cli("create", "hello.py", *app_details_args)
+    assert result.exit_code == 0
+
+    expected_path = tmp_path / "hello"
+    assert expected_path.exists()
+
+    expected_main_py_path = expected_path / "main.py"
+    assert expected_main_py_path.exists()
+
+    expected_config_path = expected_path / config["project_config_filename"]
+    assert expected_config_path.exists()
+    with expected_config_path.open() as fp:
+        config_text = fp.read()
+
+    assert 'name = "hello' in config_text
+    # Assert that description, author name and email are empty
+    assert 'description = "tester-app"' in config_text
+    assert 'author_name = "tester"' in config_text
+
+
 @pytest.mark.parametrize("flag", ["-c", "--command"])
 def test_wrap_command(
     invoke_cli: CLIInvoker, tmp_path: Path, flag: str, app_details_args: list[str]
