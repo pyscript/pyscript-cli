@@ -105,7 +105,7 @@ def test_create_command_with_single_py_file(
     """
     input_file = tmp_path / "hello.py"
     with input_file.open("w") as fp:
-        fp.write('print("Hello World!")')
+        fp.write('print("Yo!")')
 
     result = invoke_cli("create", "hello.py", *app_details_args)
     assert result.exit_code == 0
@@ -115,6 +115,10 @@ def test_create_command_with_single_py_file(
 
     expected_main_py_path = expected_path / "main.py"
     assert expected_main_py_path.exists()
+    with expected_main_py_path.open() as fp:
+        py_text = fp.read()
+
+    assert 'print("Yo!")' in py_text
 
     expected_config_path = expected_path / config["project_config_filename"]
     assert expected_config_path.exists()

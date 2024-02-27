@@ -133,9 +133,12 @@ def create_project(
     python_filepath = app_dir / "main.py"
 
     if not wrap:
-        # Save the new python file
-        with python_filepath.open("w", encoding="utf-8") as fp:
-            fp.write(TEMPLATE_PYTHON_CODE)
+        if app_or_file_name and app_or_file_name.endswith(".py"):
+            python_filepath.write_bytes(Path(app_or_file_name).read_bytes())
+        else:
+            # Save the new python file
+            with python_filepath.open("w", encoding="utf-8") as fp:
+                fp.write(TEMPLATE_PYTHON_CODE)
     else:
         if command:
             with python_filepath.open("w", encoding="utf-8") as fp:
