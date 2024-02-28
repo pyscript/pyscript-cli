@@ -30,7 +30,8 @@ dev = [
   "coverage<7.3",
   "mypy<=1.4.1",
   "pytest<7.5",
-  "types-toml<0.11"
+  "types-toml<0.11",
+  "types-requests"
 ]
 docs = [
   "Sphinx<5.2",
