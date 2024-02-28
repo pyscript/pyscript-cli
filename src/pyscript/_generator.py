@@ -1,4 +1,3 @@
-import datetime
 import json
 from pathlib import Path
 from typing import Optional
@@ -110,14 +109,13 @@ def create_project(
     if not pyscript_version:
         pyscript_version = _get_latest_pyscript_version()
 
-    date_stamp = datetime.date.today()
     context = {
         "name": app_name,
         "description": app_description,
         "type": "app",
         "author_name": author_name,
         "author_email": author_email,
-        "version": f"{date_stamp.year}.{'{:02d}'.format(date_stamp.month)}.1",
+        "version": "v0",
     }
 
     app_dir = Path(".") / app_name
