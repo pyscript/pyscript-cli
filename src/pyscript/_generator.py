@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional
 
 import jinja2
+import requests
 import toml
 
 from pyscript import LATEST_PYSCRIPT_VERSION, config
@@ -160,16 +161,17 @@ def create_project(
 
 def _get_latest_pyscript_version() -> str:
     """Get the latest version of PyScript from GitHub."""
-    import requests
-
     url = "https://api.github.com/repos/pyscript/pyscript/releases/latest"
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
 
-    if not response.ok:
+        if not response.ok:
+            pyscript_version = LATEST_PYSCRIPT_VERSION
+        else:
+
+            data = response.json()
+            pyscript_version = data["tag_name"]
+    except Exception:
         pyscript_version = LATEST_PYSCRIPT_VERSION
-    else:
-
-        data = response.json()
-        pyscript_version = data["tag_name"]
 
     return pyscript_version
