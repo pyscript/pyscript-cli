@@ -237,7 +237,7 @@ def test_wrap_pyscript_version(
     )
     css_version_str = (
         '<link rel="stylesheet" href="https://pyscript.net/releases/'
-        f'{expected_version}/core.css" />'
+        f'{expected_version}/core.css">'
     )
     assert version_str in html_text
     assert css_version_str in html_text
@@ -292,7 +292,7 @@ def test_wrap_pyscript_version_file(
     )
     css_version_str = (
         '<link rel="stylesheet" href="https://pyscript.net/releases/'
-        f'{expected_version}/core.css" />'
+        f'{expected_version}/core.css">'
     )
     assert version_str in html_text
     assert css_version_str in html_text
@@ -344,7 +344,7 @@ def test_create_project_version(
     )
     css_version_str = (
         '<link rel="stylesheet" href="https://pyscript.net/releases/'
-        f'{expected_version}/core.css" />'
+        f'{expected_version}/core.css">'
     )
     assert version_str in html_text
     assert css_version_str in html_text
