@@ -191,7 +191,7 @@ def check_project_files(
     with html_file_path.open() as fp:
         contents = fp.read()
         assert (
-            f'<script type="py" src="./{python_file}" config="./{config_file}">'
+            f'<script type="py" src="./{python_file}" config="./{config_file}" terminal>'
             in contents
         )
 

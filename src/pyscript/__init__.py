@@ -7,7 +7,7 @@ import platformdirs
 import typer
 from rich.console import Console
 
-LATEST_PYSCRIPT_VERSION = "2023.11.2"
+LATEST_PYSCRIPT_VERSION = "2024.2.1"
 APPNAME = "pyscript"
 APPAUTHOR = "python"
 DEFAULT_CONFIG_FILENAME = ".pyscriptconfig"
