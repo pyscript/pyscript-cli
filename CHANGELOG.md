@@ -2,9 +2,9 @@
 
 All notable changes to the PyScript CLI will be documented in this file, with the latest release at the top.
 
-## [0.2.6] - 2023-03-06
+## [0.3.0] - 2023-03-06
 
-*A lot has changed between 0.2.5 and 0.2.6. This is a summary of the most important changes.*
+*A lot has changed between 0.2.5 and 0.3.6. This is a summary of the most important changes.*
 
 ### Features
 
