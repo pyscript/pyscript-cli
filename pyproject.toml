@@ -6,7 +6,20 @@ requires = ["setuptools", "setuptools-scm"]
 authors = [
   {name = "Matt Kramer", email = "mkramer@anaconda.com"},
   {name = "Fabio Pliger", email = "fpliger@anaconda.com"},
-  {name = "Nicholas Tollervey", email = "ntollervey@anaconda.com"}
+  {name = "Nicholas Tollervey", email = "ntollervey@anaconda.com"},
+  {name = "Fabio Rosado", email = "frosado@anaconda.com"}
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Topic :: Software Development :: Code Generators",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Software Development :: Pre-processors"
 ]
 dependencies = [
   'importlib-metadata; python_version<"3.8"',
@@ -18,11 +31,12 @@ dependencies = [
   "platformdirs<2.7"
 ]
 description = "Command Line Interface for PyScript"
+keywords = ["pyscript", "cli", "pyodide", "micropython", "pyscript-cli"]
 license = {text = "Apache-2.0"}
 name = "pyscript"
 readme = "README.md"
 requires-python = ">=3.9"
-version = "0.2.5"
+version = "0.3.0"
 
 [project.optional-dependencies]
 dev = [
@@ -41,3 +55,9 @@ docs = [
 
 [project.scripts]
 pyscript = "pyscript.cli:app"
+
+[project.urls]
+Documentation = "https://docs.pyscript.net"
+Examples = "https://pyscript.com/@examples"
+Homepage = "https://pyscript.net"
+Repository = "https://github.com/pyscript/pyscript-cli"
