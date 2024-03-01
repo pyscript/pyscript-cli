@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional
 
 import jinja2
+import requests
 import toml
 
 from pyscript import LATEST_PYSCRIPT_VERSION, config
@@ -18,7 +19,7 @@ def create_project_html(
     python_file_path: str,
     config_file_path: str,
     output_file_path: Path,
-    pyscript_version: str = LATEST_PYSCRIPT_VERSION,
+    pyscript_version: str,
     template: str = "basic.html",
 ) -> None:
     """Write a Python script string to an HTML file template.
@@ -53,9 +54,9 @@ def save_config_file(config_file: Path, configuration: dict):
 
     Params:
 
-     - config_file(Path): path configuration file. (i.e.: "pyscript.toml"). Supported
-                          formats: `toml` and `json`.
-     - configuration(dict): app configuration to be saved
+        - config_file(Path): path configuration file. (i.e.: "pyscript.toml"). Supported
+            formats: `toml` and `json`.
+        - configuration(dict): app configuration to be saved
 
     Return:
         (None)
@@ -72,7 +73,7 @@ def create_project(
     app_description: str,
     author_name: str,
     author_email: str,
-    pyscript_version: str = LATEST_PYSCRIPT_VERSION,
+    pyscript_version: Optional[str] = None,
     project_type: str = "app",
     wrap: bool = False,
     command: Optional[str] = None,
@@ -104,6 +105,9 @@ def create_project(
             # At this point we should always have a name, but typing
             # was complaining so let's add a default
             app_name = app_or_file_name or "my-pyscript-app"
+
+    if not pyscript_version:
+        pyscript_version = _get_latest_pyscript_version()
 
     context = {
         "name": app_name,
@@ -153,3 +157,21 @@ def create_project(
         pyscript_version=pyscript_version,
         template=template,
     )
+
+
+def _get_latest_pyscript_version() -> str:
+    """Get the latest version of PyScript from GitHub."""
+    url = "https://api.github.com/repos/pyscript/pyscript/releases/latest"
+    try:
+        response = requests.get(url)
+
+        if not response.ok:
+            pyscript_version = LATEST_PYSCRIPT_VERSION
+        else:
+
+            data = response.json()
+            pyscript_version = data["tag_name"]
+    except Exception:
+        pyscript_version = LATEST_PYSCRIPT_VERSION
+
+    return pyscript_version
