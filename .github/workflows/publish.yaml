@@ -5,27 +5,52 @@ on:
     push:
         tags: v[0-9]+.[0-9]+.[0-9]+
 
+    workflow_dispatch:
+
+
+
 jobs:
-    publish:
+    build:
+        name: Build distribution
         runs-on: ubuntu-latest
 
         steps:
-        -   name: Check out repository
-            uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
-        -   name: Set up python 3.9
-            uses: actions/setup-python@bd6b4b6205c4dbad673328db7b31b7fab9e241c0 # v4
+        -   name: Checkout repository
+            uses: actions/checkout@v4
+        -   name: Setup Python
+            uses: actions/setup-python@v4
             with:
-                python-version: 3.9
-        -   name: Install Poetry
-            uses: snok/install-poetry@v1.1.6
+                python-version: '3.9'
+        -   name: Install pypa/build
+            run: python3 -m pip install build --user
+        -   name: Build a binary wheel and a source tarball
+            run: python3 -m build
+        -   name: Store the distribution packages
+            uses: actions/upload-artifact@v3
             with:
-                virtualenvs-create: true
-                virtualenvs-in-project: true
-        -   name: Install package dependencies
-            run: poetry install --no-dev
-        -   name: Build package
-            run: poetry build
-        -   name: Publish package
-            run: |
-                poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-                poetry publish
+                name: python-package-distributions
+                path: dist/
+
+    # TODO: Add logic to do github release too here
+
+    publish:
+        name: Publish to TestPyPI
+        runs-on: ubuntu-latest
+        environment:
+            # name: pypi
+            name: testpypi
+            url: https://pypi.org/project/pyscript
+        permissions:
+            id-token: ${{ secrets.PYPI_TOKEN }}
+
+        steps:
+        -   name: Download all the dists
+            uses: actions/download-artifacts@v3
+            with:
+                name: python-package-distributions
+                path: dist/
+        -   name: Publish release to PyPI
+            uses: pypa/gh-action-pypi-publish@release/v1
+            # This is for testing
+            with:
+                repository-url: https://test.pypi.org/legacy/
