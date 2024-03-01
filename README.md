@@ -11,7 +11,24 @@ A command-line interface for [PyScript](https://pyscript.net).
 
 Quickly wrap Python scripts into a HTML template, pre-configured with [PyScript](https://pyscript.net).
 
-<img src="https://user-images.githubusercontent.com/11037737/166966219-9440c3cc-e911-4730-882c-2ab9fa47147f.gif" style="width: 100%; max-width: 680px;" />
+```bash
+❯ pyscript
+
+ Usage: pyscript [OPTIONS] COMMAND [ARGS]...
+
+ Command Line Interface for PyScript.
+
+╭─ Options ──────────────────────────────────────────────────────────────────────────────────────╮
+│ --version          Show project version and exit.                                              │
+│ --help             Show this message and exit.                                                 │
+╰────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ─────────────────────────────────────────────────────────────────────────────────────╮
+│ create  Create a new pyscript project with the passed in name, creating a new directory in the │
+│         current directory. Alternatively, use `--wrap` so as to embed a python file instead.   │
+│ run     Creates a local server to run the app on the path and port specified.                  │
+╰────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+```
 
 ## Installation
 
