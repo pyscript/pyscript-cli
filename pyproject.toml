@@ -25,10 +25,10 @@ dependencies = [
   'importlib-metadata; python_version<"3.8"',
   "Jinja2<3.2",
   "pluggy<1.3",
-  "rich==13.4.2",
+  "rich<=13.7.1",
   "toml<0.11",
-  "typer==0.9.0",
-  "platformdirs<2.7",
+  "typer<=0.9.0",
+  "platformdirs<4.3",
   "requests<=2.31.0"
 ]
 description = "Command Line Interface for PyScript"
