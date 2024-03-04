@@ -115,7 +115,7 @@ def create_project(
         "type": "app",
         "author_name": author_name,
         "author_email": author_email,
-        "version": "v0",
+        "version": "latest",
     }
 
     app_dir = Path(".") / app_name
