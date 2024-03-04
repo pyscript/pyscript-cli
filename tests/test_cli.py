@@ -72,6 +72,16 @@ def test_create_command(
     assert 'author_email = ""' in config_text
 
 
+def test_create_command_bad_app_type(
+    invoke_cli: CLIInvoker, tmp_path: Path, app_details_args: list[str], auto_enter
+) -> None:
+    result = invoke_cli("create", "myapp", "--project-type", "bad_type")
+    assert (
+        str(result.exception)
+        == "Unknown project type: bad_type. Valid values are: 'app'"
+    )
+
+
 def test_create_command_no_app_name(
     invoke_cli: CLIInvoker, tmp_path: Path, app_details_args: list[str], auto_enter
 ) -> None:
