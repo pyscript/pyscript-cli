@@ -1,8 +1,23 @@
 from pathlib import Path
 from typing import Any
+from unittest.mock import MagicMock, patch
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
+
+from pyscript import LATEST_PYSCRIPT_VERSION
+
+
+@pytest.fixture(scope="session", autouse=True)
+def requests():
+    mocked_result = {"tag_name": LATEST_PYSCRIPT_VERSION}
+
+    with patch("pyscript._generator.requests") as mocked_requests:
+        mocked_get = MagicMock()
+        mocked_get.ok = True
+        mocked_get.json = MagicMock(return_value=mocked_result)
+        mocked_requests.get.return_value = mocked_get
+        yield mocked_requests
 
 
 @pytest.fixture
