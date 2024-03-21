@@ -5,9 +5,6 @@ on:
     push:
         tags: v[0-9]+.[0-9]+.[0-9]+
 
-    workflow_dispatch:
-
-
 
 jobs:
     build:
@@ -34,23 +31,21 @@ jobs:
     # TODO: Add logic to do github release too here
 
     publish:
-        name: Publish to TestPyPI
+        name: Publish to PyPI
         runs-on: ubuntu-latest
+        needs:
+        -   build
         environment:
-            # name: pypi
-            name: testpypi
+            name: pypi
             url: https://pypi.org/project/pyscript
         permissions:
-            id-token: ${{ secrets.PYPI_TOKEN }}
+            id-token: write
 
         steps:
         -   name: Download all the dists
-            uses: actions/download-artifacts@v3
+            uses: actions/download-artifact@v3
             with:
                 name: python-package-distributions
                 path: dist/
         -   name: Publish release to PyPI
             uses: pypa/gh-action-pypi-publish@release/v1
-            # This is for testing
-            with:
-                repository-url: https://test.pypi.org/legacy/
