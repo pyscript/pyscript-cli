@@ -109,10 +109,17 @@ def create_project(
     if not pyscript_version:
         pyscript_version = _get_latest_pyscript_version()
 
+    if project_type == "app":
+        template = "basic.html"
+    else:
+        raise ValueError(
+            f"Unknown project type: {project_type}. Valid values are: 'app'"
+        )
+
     context = {
         "name": app_name,
         "description": app_description,
-        "type": "app",
+        "type": project_type,
         "author_name": author_name,
         "author_email": author_email,
         "version": "latest",
@@ -124,13 +131,6 @@ def create_project(
 
     save_config_file(manifest_file, context)
     output_path = app_dir / "index.html" if output is None else app_dir / output
-
-    if project_type == "app":
-        template = "basic.html"
-    else:
-        raise ValueError(
-            f"Unknown project type: {project_type}. Valid values are: 'app'"
-        )
 
     python_filepath = app_dir / "main.py"
 
