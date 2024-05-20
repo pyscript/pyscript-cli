@@ -41,6 +41,8 @@
     git pull upstream main
     ```
 
+    > Contribute changes using the [GitHub flow model](https://docs.github.com/en/get-started/using-github/github-flow) of coding collaboration.
+
 * (Recommended) Upgrade local pip:
 
     ```shell
