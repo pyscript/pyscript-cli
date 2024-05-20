@@ -2,30 +2,63 @@
 
 ## Developer setup
 
-Git clone the repository:
+* Create a [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) of the [PyScript-CLI github repository](https://github.com/pyscript/pyscript-cli/fork) to your own GitHub account.
 
-```shell
-git clone https://github.com/pyscript/pyscript-cli.git
-```
+* [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) your newly forked version of the PyScript-CLI repository onto your local development machine. For example, use this command in your terminal:
 
-(Recommended) Upgrade local pip:
+    ```sh
+    git clone https://github.com/<YOUR USERNAME>/pyscript-cli
+    ```
 
-```shell
-pip install --upgrade pip
-```
+    > **WARNING**: In the URL for the forked PyScript-CLI repository, remember to replace
+        `<YOUR USERNAME>` with your actual GitHub username.
 
-Make a virtualenv and activate it:
+* Change into the root directory of your newly cloned `pyscript-cli` repository:
 
-```shell
-python -m venv .venv
-source .venv/bin/activate
-```
+    ```sh
+    cd pyscript-cli
+    ```
 
-Install your local enviroment dependencies
+* Add the original PyScript-CLI repository as your `upstream` to allow you to keep your own fork up-to-date with the latest changes:
 
-```shell
-pip install -e ".[dev]"
-```
+    ```sh
+    git remote add upstream https://github.com/pyscript/pyscript-cli.git
+    ```
+
+* If the above fails, try this alternative:
+
+  ```sh
+  git remote remove upstream
+  ```
+
+  ```sh
+  git remote add upstream git@github.com:pyscript/pyscript-cli.git
+  ```
+
+* Pull in the latest changes from the main `upstream` PyScript repository:
+
+    ```sh
+    git pull upstream main
+    ```
+
+* (Recommended) Upgrade local pip:
+
+    ```shell
+    pip install --upgrade pip
+    ```
+
+* Make a virtualenv and activate it:
+
+    ```shell
+    python -m venv .venv
+    source .venv/bin/activate
+    ```
+
+* Install your local enviroment dependencies
+
+    ```shell
+    pip install -e ".[dev]"
+    ```
 
 ## Use the CLI
 
