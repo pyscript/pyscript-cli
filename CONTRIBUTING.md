@@ -5,7 +5,7 @@
 Git clone the repository:
 
 ```shell
-git clone https://github.com/pyscript/pyscript.git
+git clone https://github.com/pyscript/pyscript-cli.git
 ```
 
 (Recommended) Upgrade local pip:
