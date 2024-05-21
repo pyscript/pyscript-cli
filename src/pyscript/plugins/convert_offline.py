@@ -3,20 +3,20 @@ import os
 import re
 import tarfile
 import tempfile
-import toml
-
 from pathlib import Path
 from typing import Optional
 
 import requests
+import toml
 import typer
 
 from pyscript import app, cli, plugins
 from pyscript._generator import (
-    _get_latest_pyscript_version, 
+    _get_latest_pyscript_version,
     _get_latest_repo_version,
     save_config_file,
 )
+
 
 @app.command()
 def convert_offline(
@@ -24,29 +24,31 @@ def convert_offline(
         None, help="Path to pyscript project to convert for offline usage"
     ),
     config_files: str = typer.Option(
-        "pyscript.toml",
-        "--config-files",
-        help="Comma-separated list of config files"
+        "pyscript.toml", "--config-files", help="Comma-separated list of config files"
     ),
     interpreter: str = typer.Option(
         "pyodide",
         "--interpreter",
-        help="Choose which interpreter to configure. Choices are 'pyodide' or 'micropython'"
+        help="Choose which interpreter to configure. Choices are 'pyodide' or 'micropython'",
     ),
     download_full_pyodide: bool = typer.Option(
         False,
         "--download-full-pyodide",
-        help="Download the 200MB+ pyodide libraries instead of just required interpreter"
-    )
+        help="Download the 200MB+ pyodide libraries instead of just required interpreter",
+    ),
 ):
     """
     Takes an existing pyscript app and converts it for offline usage
     """
     app_path = Path(path)
-    PYSCRIPT_TAR_URL_BASE = "https://pyscript.net/releases/{pyscript_version}/release.tar"
+    PYSCRIPT_TAR_URL_BASE = (
+        "https://pyscript.net/releases/{pyscript_version}/release.tar"
+    )
     PYODIDE_TAR_URL_BASE = "https://github.com/pyodide/pyodide/releases/download/{pyodide_version}/{pyodide_tar_name}-{pyodide_version}.tar.bz2"
-    MPY_BASE_URL = "https://cdn.jsdelivr.net/npm/@micropython/micropython-webassembly-pyscript/"
-    remote_pyscript_pattern = re.compile(r'https://pyscript.net/releases/[\d.]+/')
+    MPY_BASE_URL = (
+        "https://cdn.jsdelivr.net/npm/@micropython/micropython-webassembly-pyscript/"
+    )
+    remote_pyscript_pattern = re.compile(r"https://pyscript.net/releases/[\d.]+/")
 
     if interpreter not in ("pyodide", "micropython"):
         raise cli.Abort("Interpreter must be one of 'pyodide' or 'micropython'")
@@ -57,9 +59,9 @@ def convert_offline(
     config = _get_config(config_path)
 
     # Get the required pyscript version based on config
-    pyscript_version = config.get('version', 'latest')
-    if pyscript_version  == 'latest':
-        pyscript_version = _get_latest_pyscript_version() 
+    pyscript_version = config.get("version", "latest")
+    if pyscript_version == "latest":
+        pyscript_version = _get_latest_pyscript_version()
 
     pyscript_tar_url = PYSCRIPT_TAR_URL_BASE.format(pyscript_version=pyscript_version)
     pyscript_files_dir = app_path / "pyscript"
@@ -79,8 +81,7 @@ def convert_offline(
     # the core
     pyodide_tar_name = "pyodide" if download_full_pyodide else "pyodide-core"
     pyodide_tar_url = PYODIDE_TAR_URL_BASE.format(
-            pyodide_version=pyodide_version, 
-            pyodide_tar_name=pyodide_tar_name
+        pyodide_version=pyodide_version, pyodide_tar_name=pyodide_tar_name
     )
     _download_and_extract_tarfile(pyodide_tar_url, app_path)
     print("Downloading and extraction of pyodide files successful.")
@@ -96,15 +97,15 @@ def convert_offline(
         url = MPY_BASE_URL + file
 
         # wasm file is bytes format, mjs is text
-        response = requests.get(url) 
-        if 'wasm' in file:
-            with open(target_path, 'wb') as fp:
+        response = requests.get(url)
+        if "wasm" in file:
+            with open(target_path, "wb") as fp:
                 fp.write(response.content)
         else:
-            with open(target_path, 'w') as fp:
+            with open(target_path, "w") as fp:
                 fp.write(response.text)
     print("Downloading of micropython files sucessful")
-    
+
     # Finding all HTML files
     html_files = []
     for dirpath, dirnames, filenames in app_path.walk():
@@ -112,16 +113,16 @@ def convert_offline(
 
     # Replace remote resources with freshly downloaded resources
     # Also for old config format to warn user
-    old_config_pattern = re.compile(r'py-config>')
+    old_config_pattern = re.compile(r"py-config>")
     found_old_config = False
 
     for filepath in html_files:
-        with open(filepath, 'r') as fpi:
+        with open(filepath) as fpi:
             content = fpi.read()
 
         if remote_pyscript_pattern.search(content):
             new_content = remote_pyscript_pattern.sub("/pyscript/", content)
-            with open(filepath, 'w') as fpo:
+            with open(filepath, "w") as fpo:
                 fpo.write(new_content)
                 print(f"Updated {filepath}")
 
@@ -131,19 +132,20 @@ def convert_offline(
     for config_file in config_files_list:
         config_file_path = app_path / config_file
         config = _get_config(config_file_path)
-        config['interpreter'] = f"/{interpreter}/{interpreter}.mjs"
+        config["interpreter"] = f"/{interpreter}/{interpreter}.mjs"
         save_config_file(config_file_path, config)
 
         print(f"Updated {config_file_path}")
 
     if found_old_config:
-        print("WARNING: <py-config> and <mpy-config> are not currently supported by this tool") 
-        
+        print(
+            "WARNING: <py-config> and <mpy-config> are not currently supported by this tool"
+        )
 
 
 def _download_and_extract_tarfile(remote_url: str, extract_dir: Path):
     """Downloads the tarfile at `remote_url` and extracts it into `extract_dir`
-        
+
     Params:
         - remote_url(str): URL of the tarball, for example https://example.com/file.tar
         - extract_dir(Path): directory to extract the tarball into
@@ -155,10 +157,12 @@ def _download_and_extract_tarfile(remote_url: str, extract_dir: Path):
             with open(tarfile_target, "wb") as fp:
                 fp.write(response.raw.read())
         else:
-            raise cli.Abort(f"Unable to download required files. Please check your network connection")
+            raise cli.Abort(
+                f"Unable to download required files. Please check your network connection"
+            )
 
-        with tarfile.open(tarfile_target, 'r') as tfile:
-            tfile.extractall(path=extract_dir)    
+        with tarfile.open(tarfile_target, "r") as tfile:
+            tfile.extractall(path=extract_dir)
 
 
 def _get_config(config_path: Path):
@@ -166,6 +170,5 @@ def _get_config(config_path: Path):
     if "toml" in str(config_path):
         return toml.load(config_path)
     elif "json" in str(config_path):
-        with open(config_path, 'r') as fp:
+        with open(config_path) as fp:
             return json.load(fp)
-
