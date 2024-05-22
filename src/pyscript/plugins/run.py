@@ -6,7 +6,6 @@ import webbrowser
 from functools import partial
 from http.server import SimpleHTTPRequestHandler
 from pathlib import Path
-from typing import Optional
 
 import typer
 
