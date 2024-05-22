@@ -78,6 +78,7 @@ def create_project(
     wrap: bool = False,
     command: Optional[str] = None,
     output: Optional[str] = None,
+    template: Optional[str] = "basic.html",
 ) -> None:
     """
     New files created:
@@ -110,7 +111,7 @@ def create_project(
         pyscript_version = _get_latest_pyscript_version()
 
     if project_type == "app":
-        template = "basic.html"
+        project_template = template or "basic.html"
     else:
         raise ValueError(
             f"Unknown project type: {project_type}. Valid values are: 'app'"
@@ -155,7 +156,7 @@ def create_project(
         config["project_config_filename"],
         output_path,
         pyscript_version=pyscript_version,
-        template=template,
+        template=project_template,
     )
 
 
