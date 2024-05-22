@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from typing import Optional
-
 import socketserver
 import threading
 import webbrowser
 from functools import partial
 from http.server import SimpleHTTPRequestHandler
 from pathlib import Path
+from typing import Optional
 
 import typer
 
@@ -16,7 +15,7 @@ from pyscript import app, cli, console, plugins
 
 def get_folder_based_http_request_handler(
     folder: Path,
-    default_file: Optional[Path] = None,
+    default_file: Path | None = None,
 ) -> type[SimpleHTTPRequestHandler]:
     """
     Returns a FolderBasedHTTPRequestHandler with the specified directory.
@@ -71,7 +70,7 @@ def split_path_and_filename(path: Path) -> tuple[Path, str]:
         return abs_path, ""
 
 
-def start_server(path: Path, show: bool, port: int, default_file: Optional[Path] = None):
+def start_server(path: Path, show: bool, port: int, default_file: Path | None = None):
     """
     Creates a local server to run the app on the path and port specified.
 
@@ -125,7 +124,7 @@ def run(
     ),
     view: bool = typer.Option(True, help="Open the app in web browser."),
     port: int = typer.Option(8000, help="The port that the app will run on."),
-    default_file: Optional[Path] = typer.Option(
+    default_file: Path | None = typer.Option(
         None, help="A default file to serve when a nonexistent file is accessed."
     ),
 ):
