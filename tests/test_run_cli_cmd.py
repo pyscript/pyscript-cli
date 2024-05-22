@@ -59,7 +59,8 @@ def test_run_server_with_default_values(
     # Path("."): path to local folder
     # show=True: same as passing the --view option (which defaults to True)
     # port=8000: that is the default port
-    start_server_mock.assert_called_once_with(Path("."), True, 8000)
+    # default_file=None: default behavior is to have no default file
+    start_server_mock.assert_called_once_with(Path("."), True, 8000, default_file=None)
 
 
 @mock.patch("pyscript.plugins.run.start_server")
@@ -78,25 +79,90 @@ def test_run_server_with_no_view_flag(
     # Path("."): path to local folder
     # show=False: same as passing the --no-view option
     # port=8000: that is the default port
-    start_server_mock.assert_called_once_with(Path("."), False, 8000)
+    # default_file=None: default behavior is to have no default file
+    start_server_mock.assert_called_once_with(Path("."), False, 8000, default_file=None)
 
 
 @pytest.mark.parametrize(
-    "run_args, expected_values",
+    "run_args, expected_posargs, expected_kwargs",
     [
-        (("--no-view",), (Path("."), False, 8000)),
-        ((BASEPATH,), (Path(BASEPATH), True, 8000)),
-        (("--port=8001",), (Path("."), True, 8001)),
-        (("--no-view", "--port=8001"), (Path("."), False, 8001)),
-        ((BASEPATH, "--no-view"), (Path(BASEPATH), False, 8000)),
-        ((BASEPATH, "--port=8001"), (Path(BASEPATH), True, 8001)),
-        ((BASEPATH, "--no-view", "--port=8001"), (Path(BASEPATH), False, 8001)),
-        ((BASEPATH, "--port=8001"), (Path(BASEPATH), True, 8001)),
+        (("--no-view",), (Path("."), False, 8000), {"default_file": None}),
+        ((BASEPATH,), (Path(BASEPATH), True, 8000), {"default_file": None}),
+        (("--port=8001",), (Path("."), True, 8001), {"default_file": None}),
+        (
+            ("--no-view", "--port=8001"),
+            (Path("."), False, 8001),
+            {"default_file": None},
+        ),
+        (
+            (BASEPATH, "--no-view"),
+            (Path(BASEPATH), False, 8000),
+            {"default_file": None},
+        ),
+        (
+            (BASEPATH, "--port=8001"),
+            (Path(BASEPATH), True, 8001),
+            {"default_file": None},
+        ),
+        (
+            (BASEPATH, "--no-view", "--port=8001"),
+            (Path(BASEPATH), False, 8001),
+            {"default_file": None},
+        ),
+        (
+            (BASEPATH, "--port=8001"),
+            (Path(BASEPATH), True, 8001),
+            {"default_file": None},
+        ),
+        (
+            ("--no-view", "--default-file=index.html"),
+            (Path("."), False, 8000),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            (BASEPATH, "--default-file=index.html"),
+            (Path(BASEPATH), True, 8000),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            ("--port=8001", "--default-file=index.html"),
+            (Path("."), True, 8001),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            ("--no-view", "--port=8001", "--default-file=index.html"),
+            (Path("."), False, 8001),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            (BASEPATH, "--no-view", "--default-file=index.html"),
+            (Path(BASEPATH), False, 8000),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            (BASEPATH, "--port=8001", "--default-file=index.html"),
+            (Path(BASEPATH), True, 8001),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            (BASEPATH, "--no-view", "--port=8001", "--default-file=index.html"),
+            (Path(BASEPATH), False, 8001),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            (BASEPATH, "--port=8001", "--default-file=index.html"),
+            (Path(BASEPATH), True, 8001),
+            {"default_file": Path("index.html")},
+        ),
     ],
 )
 @mock.patch("pyscript.plugins.run.start_server")
 def test_run_server_with_valid_combinations(
-    start_server_mock, invoke_cli: CLIInvoker, run_args, expected_values  # noqa: F811
+    start_server_mock,
+    invoke_cli: CLIInvoker,  # noqa: F811
+    run_args,
+    expected_posargs,
+    expected_kwargs,
 ):
     """
     Test that when run is called without arguments the command runs with the
@@ -107,7 +173,7 @@ def test_run_server_with_valid_combinations(
     # EXPECT the command to succeed
     assert result.exit_code == 0
     # EXPECT start_server_mock function to be called with the expected values
-    start_server_mock.assert_called_once_with(*expected_values)
+    start_server_mock.assert_called_once_with(*expected_posargs, **expected_kwargs)
 
 
 class TestFolderBasedHTTPRequestHandler:

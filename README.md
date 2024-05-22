@@ -69,6 +69,12 @@ To avoid opening a browser window, use `--no-view` option.
 $ pyscript run <path_of_folder> --no-view
 ```
 
+To serve a default file (e.g., `index.html`) instead of a 404 HTTP status when a nonexistent file is accessed, use `--default-file` option.
+
+```shell
+pyscript run <path_of_folder> --default-file <name of default file>
+```
+
 ### create
 
 #### Create a new pyscript project with the passed in name, creating a new directory
