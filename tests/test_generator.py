@@ -12,6 +12,8 @@ from typing import Any
 import pytest
 import toml
 
+import jinja2
+
 from pyscript import _generator as gen
 from pyscript import config
 
@@ -103,6 +105,31 @@ def test_create_project_explicit_toml(
 
     check_project_manifest(manifest_path, toml, app_name, is_not_none)
 
+def test_create_project_explicit_template(
+    tmp_cwd: Path, is_not_none: Any, monkeypatch
+) -> None:
+    app_name = "TEMPLATE_app_name"
+    app_description = "A longer, human friendly, app description."
+
+    # Let's set a custom template to use
+    project_template = "custom_template.html"
+    project_template_content = "dummy text for comparison"
+    project_template_dir = tmp_cwd / "templates"
+    project_template_dir.mkdir()
+    project_template_path = project_template_dir / project_template
+    project_template_path.write_text(project_template_content)
+
+    # Let's monkeypatch the jinja2 template loader to use the temporary templates dir
+    monkeypatch.setattr(gen._env.loader, "_template_root", str(project_template_dir.resolve()))
+
+    # GIVEN a new project
+    gen.create_project(app_name, app_description, TESTS_AUTHOR_NAME, TESTS_AUTHOR_EMAIL, template=project_template)
+
+    # get the path where the config file is being created
+    manifest_path = tmp_cwd / app_name / config["project_config_filename"]
+
+    check_project_manifest(manifest_path, toml, app_name, is_not_none)
+    assert (tmp_cwd / app_name / "index.html").read_text() == project_template_content
 
 def check_project_manifest(
     config_path: Path,
