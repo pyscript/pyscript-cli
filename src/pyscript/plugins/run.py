@@ -37,15 +37,15 @@ def get_folder_based_http_request_handler(
             self.send_header("Cross-Origin-Resource-Policy", "cross-origin")
             self.send_header("Cache-Control", "no-cache, must-revalidate")
             SimpleHTTPRequestHandler.end_headers(self)
-        
+
         def do_GET(self):
             # intercept accesses to nonexistent files; replace them with the default file
             # this is to service SPA use cases (see Github Issue #132)
             if default_file:
                 path = Path(self.translate_path(self.path))
                 if not path.exists():
-                    self.path = f'/{default_file}'
-            
+                    self.path = f"/{default_file}"
+
             return super().do_GET()
 
     return FolderBasedHTTPRequestHandler
@@ -87,7 +87,9 @@ def start_server(path: Path, show: bool, port: int, default_file: Path = None):
     socketserver.TCPServer.allow_reuse_address = True
 
     app_folder, filename = split_path_and_filename(path)
-    CustomHTTPRequestHandler = get_folder_based_http_request_handler(app_folder, default_file=default_file)
+    CustomHTTPRequestHandler = get_folder_based_http_request_handler(
+        app_folder, default_file=default_file
+    )
 
     # Start the server within a context manager to make sure we clean up after
     with socketserver.TCPServer(("", port), CustomHTTPRequestHandler) as httpd:
@@ -121,7 +123,9 @@ def run(
     ),
     view: bool = typer.Option(True, help="Open the app in web browser."),
     port: int = typer.Option(8000, help="The port that the app will run on."),
-    default_file: Path = typer.Option(None, help="A default file to serve when a nonexistent file is accessed."),
+    default_file: Path = typer.Option(
+        None, help="A default file to serve when a nonexistent file is accessed."
+    ),
 ):
     """
     Creates a local server to run the app on the path and port specified.

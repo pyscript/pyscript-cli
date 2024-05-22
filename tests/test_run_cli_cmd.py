@@ -89,24 +89,80 @@ def test_run_server_with_no_view_flag(
         (("--no-view",), (Path("."), False, 8000), {"default_file": None}),
         ((BASEPATH,), (Path(BASEPATH), True, 8000), {"default_file": None}),
         (("--port=8001",), (Path("."), True, 8001), {"default_file": None}),
-        (("--no-view", "--port=8001"), (Path("."), False, 8001), {"default_file": None}),
-        ((BASEPATH, "--no-view"), (Path(BASEPATH), False, 8000), {"default_file": None}),
-        ((BASEPATH, "--port=8001"), (Path(BASEPATH), True, 8001), {"default_file": None}),
-        ((BASEPATH, "--no-view", "--port=8001"), (Path(BASEPATH), False, 8001), {"default_file": None}),
-        ((BASEPATH, "--port=8001"), (Path(BASEPATH), True, 8001), {"default_file": None}),
-        (("--no-view", "--default-file=index.html"), (Path("."), False, 8000), {"default_file": Path("index.html")}),
-        ((BASEPATH, "--default-file=index.html"), (Path(BASEPATH), True, 8000), {"default_file": Path("index.html")}),
-        (("--port=8001", "--default-file=index.html"), (Path("."), True, 8001), {"default_file": Path("index.html")}),
-        (("--no-view", "--port=8001", "--default-file=index.html"), (Path("."), False, 8001), {"default_file": Path("index.html")}),
-        ((BASEPATH, "--no-view", "--default-file=index.html"), (Path(BASEPATH), False, 8000), {"default_file": Path("index.html")}),
-        ((BASEPATH, "--port=8001", "--default-file=index.html"), (Path(BASEPATH), True, 8001), {"default_file": Path("index.html")}),
-        ((BASEPATH, "--no-view", "--port=8001", "--default-file=index.html"), (Path(BASEPATH), False, 8001), {"default_file": Path("index.html")}),
-        ((BASEPATH, "--port=8001", "--default-file=index.html"), (Path(BASEPATH), True, 8001), {"default_file": Path("index.html")}),
+        (
+            ("--no-view", "--port=8001"),
+            (Path("."), False, 8001),
+            {"default_file": None},
+        ),
+        (
+            (BASEPATH, "--no-view"),
+            (Path(BASEPATH), False, 8000),
+            {"default_file": None},
+        ),
+        (
+            (BASEPATH, "--port=8001"),
+            (Path(BASEPATH), True, 8001),
+            {"default_file": None},
+        ),
+        (
+            (BASEPATH, "--no-view", "--port=8001"),
+            (Path(BASEPATH), False, 8001),
+            {"default_file": None},
+        ),
+        (
+            (BASEPATH, "--port=8001"),
+            (Path(BASEPATH), True, 8001),
+            {"default_file": None},
+        ),
+        (
+            ("--no-view", "--default-file=index.html"),
+            (Path("."), False, 8000),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            (BASEPATH, "--default-file=index.html"),
+            (Path(BASEPATH), True, 8000),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            ("--port=8001", "--default-file=index.html"),
+            (Path("."), True, 8001),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            ("--no-view", "--port=8001", "--default-file=index.html"),
+            (Path("."), False, 8001),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            (BASEPATH, "--no-view", "--default-file=index.html"),
+            (Path(BASEPATH), False, 8000),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            (BASEPATH, "--port=8001", "--default-file=index.html"),
+            (Path(BASEPATH), True, 8001),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            (BASEPATH, "--no-view", "--port=8001", "--default-file=index.html"),
+            (Path(BASEPATH), False, 8001),
+            {"default_file": Path("index.html")},
+        ),
+        (
+            (BASEPATH, "--port=8001", "--default-file=index.html"),
+            (Path(BASEPATH), True, 8001),
+            {"default_file": Path("index.html")},
+        ),
     ],
 )
 @mock.patch("pyscript.plugins.run.start_server")
 def test_run_server_with_valid_combinations(
-    start_server_mock, invoke_cli: CLIInvoker, run_args, expected_posargs, expected_kwargs  # noqa: F811
+    start_server_mock,
+    invoke_cli: CLIInvoker,
+    run_args,
+    expected_posargs,
+    expected_kwargs,  # noqa: F811
 ):
     """
     Test that when run is called without arguments the command runs with the
