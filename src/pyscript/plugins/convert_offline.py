@@ -43,8 +43,10 @@ def convert_offline(
     PYSCRIPT_TAR_URL_BASE = (
         "https://pyscript.net/releases/{pyscript_version}/release.tar"
     )
-    PYODIDE_TAR_URL_BASE = "https://github.com/pyodide/pyodide/" \
+    PYODIDE_TAR_URL_BASE = (
+        "https://github.com/pyodide/pyodide/"
         "releases/download/{pyodide_version}/{pyodide_tar_name}-{pyodide_version}.tar.bz2"
+    )
     MPY_BASE_URL = (
         "https://cdn.jsdelivr.net/npm/@micropython/micropython-webassembly-pyscript/"
     )
