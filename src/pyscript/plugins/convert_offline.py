@@ -4,13 +4,12 @@ import re
 import tarfile
 import tempfile
 from pathlib import Path
-from typing import Optional
 
 import requests
 import toml
 import typer
 
-from pyscript import app, cli, plugins
+from pyscript import app, cli
 from pyscript._generator import (
     _get_latest_pyscript_version,
     _get_latest_repo_version,
@@ -44,7 +43,8 @@ def convert_offline(
     PYSCRIPT_TAR_URL_BASE = (
         "https://pyscript.net/releases/{pyscript_version}/release.tar"
     )
-    PYODIDE_TAR_URL_BASE = "https://github.com/pyodide/pyodide/releases/download/{pyodide_version}/{pyodide_tar_name}-{pyodide_version}.tar.bz2"
+    PYODIDE_TAR_URL_BASE = "https://github.com/pyodide/pyodide/" \
+        "releases/download/{pyodide_version}/{pyodide_tar_name}-{pyodide_version}.tar.bz2"
     MPY_BASE_URL = (
         "https://cdn.jsdelivr.net/npm/@micropython/micropython-webassembly-pyscript/"
     )
@@ -159,7 +159,7 @@ def _download_and_extract_tarfile(remote_url: str, extract_dir: Path):
                 fp.write(response.raw.read())
         else:
             raise cli.Abort(
-                f"Unable to download required files. Please check your network connection"
+                "Unable to download required files. Please check your network connection"
             )
 
         with tarfile.open(tarfile_target, "r") as tfile:
