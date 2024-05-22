@@ -124,6 +124,12 @@ By default, the name of the project folder created will be `pyscript-command-app
 `-o/--output` option can be used with the `-c/--command` option to configure name of the project folder as well
 as the name of the resulting HTML file.
 
+By default, the content of `index.html` will be a copy of `templates/basic.html`, which is a jinja2 template.
+
+`-t/--template` option can be used to configure the name of the template file that will be used. Custom templates may be added to the `templates` folder and referenced using this option.
+
+When creating custom templates, make sure to include the pyscript `core.css` stylesheet and `core.js` module before invoking your python script.
+
 ```shell
 $ pyscript create --wrap -c 'print("Hello World!")' -o <output_filename.html>
 ```
