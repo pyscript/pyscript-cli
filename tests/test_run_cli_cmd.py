@@ -59,6 +59,7 @@ def test_run_server_with_default_values(
     # Path("."): path to local folder
     # show=True: same as passing the --view option (which defaults to True)
     # port=8000: that is the default port
+    # default_file=None: default behavior is to have no default file
     start_server_mock.assert_called_once_with(Path("."), True, 8000, default_file=None)
 
 
@@ -78,6 +79,7 @@ def test_run_server_with_no_view_flag(
     # Path("."): path to local folder
     # show=False: same as passing the --no-view option
     # port=8000: that is the default port
+    # default_file=None: default behavior is to have no default file
     start_server_mock.assert_called_once_with(Path("."), False, 8000, default_file=None)
 
 
