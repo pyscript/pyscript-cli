@@ -159,7 +159,7 @@ def test_run_server_with_no_view_flag(
 @mock.patch("pyscript.plugins.run.start_server")
 def test_run_server_with_valid_combinations(
     start_server_mock,
-    invoke_cli: CLIInvoker, # noqa: F811
+    invoke_cli: CLIInvoker,  # noqa: F811
     run_args,
     expected_posargs,
     expected_kwargs,
