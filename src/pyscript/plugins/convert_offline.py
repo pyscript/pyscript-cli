@@ -73,7 +73,7 @@ def convert_offline(
 
     # Download and extract pyodide files
     print("Downloading pyodide files...")
-    pyodide_version = _get_latest_repo_version("pyodide", "pyodide", None)
+    pyodide_version = _get_latest_repo_version("pyodide", "pyodide", "")
     if not pyodide_version:
         raise cli.Abort("Unable to retrieve latest pyodide version from Github")
 
@@ -108,7 +108,8 @@ def convert_offline(
 
     # Finding all HTML files
     html_files = []
-    for dirpath, dirnames, filenames in app_path.walk():
+    for dirname, dirs, filenames in os.walk(app_path):
+        dirpath = Path(dirname)
         html_files.extend([dirpath / f for f in filenames if f.endswith(".html")])
 
     # Replace remote resources with freshly downloaded resources
@@ -126,7 +127,7 @@ def convert_offline(
                 fpo.write(new_content)
                 print(f"Updated {filepath}")
 
-        found_old_config = found_old_config or old_config_pattern.search(content)
+        found_old_config = found_old_config or bool(old_config_pattern.search(content))
 
     # Add/replace interpreter with downloaded interpreter
     for config_file in config_files_list:
