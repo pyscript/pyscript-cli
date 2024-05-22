@@ -9,7 +9,6 @@ from pathlib import Path
 from textwrap import dedent
 from typing import Any
 
-import jinja2
 import pytest
 import toml
 
@@ -273,7 +272,7 @@ def check_plugin_project_files(
         assert dedent(
             f"""        <div>
             <h2> Description </h2>
-            <p>{ plugin_description }</p>
+            <p>{plugin_description}</p>
         </div>"""
         )
         assert f'<py-script src="./{python_file}">' in contents
