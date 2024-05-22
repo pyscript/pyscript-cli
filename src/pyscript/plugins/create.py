@@ -42,6 +42,12 @@ def create(
         "--output",
         help="""Name of the resulting HTML output file. Meant to be used with `-w/--wrap`""",
     ),
+    template: Optional[str] = typer.Option(
+        "basic.html",
+        "-t",
+        "--template",
+        help="""Name of the Jinja2 template file to use. Meant to be used with `-w/--wrap`""",
+    ),
 ):
     """
     Create a new pyscript project with the passed in name, creating a new
@@ -78,6 +84,7 @@ def create(
             wrap,
             command,
             output,
+            template,
         )
     except FileExistsError:
         raise cli.Abort(
