@@ -1,0 +1,36 @@
+name: Release to PyPI
+
+on:
+    push:
+        tags:
+        -   '*'
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        environment:
+            name: pypi
+            url: https://pypi.org/project/pyscript
+        permissions:
+            id-token: write
+        steps:
+        -   name: Checkout code
+            uses: actions/checkout@v2
+
+        -   name: Set up Python
+            uses: actions/setup-python@v2
+            with:
+                python-version: 3.11
+
+        -   name: Install build tools
+            run: |
+                pip install --upgrade build
+
+        -   name: Build and package
+            env:
+                CHECK_VERSION: 'true'
+            run: |
+                python -m build
+
+        -   name: Upload to PyPI
+            uses: pypa/gh-action-pypi-publish@release/v1
