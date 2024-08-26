@@ -1,6 +1,6 @@
 import os
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def read_version():
@@ -28,6 +28,9 @@ setup(
     name="pyscript",
     version=read_version(),
     description="Command Line Interface for PyScript",
+    package_dir={"": "src"},
+    packages=find_packages(where="src"),
+    package_data={"pyscript": ["templates/*.html"]},
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/pyscript/pyscript-cli",
