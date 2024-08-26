@@ -14,7 +14,8 @@ def check_tag_version():
         expected_version = read_version()
         if tag != f"refs/tags/{expected_version}":
             raise Exception(
-                f"Tag '{tag}' does not match the expected " f"version '{expected_version}'"
+                f"Tag '{tag}' does not match the expected "
+                f"version '{expected_version}'"
             )
 
 
