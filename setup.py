@@ -30,7 +30,13 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/pyscript/pyscript-cli",
     author="Matt Kramer, Fabio Pliger, Nicholas Tollervey, Fabio Rosado, Madhur Tandon",
-    author_email="mkramer@anaconda.com, fpliger@anaconda.com, ntollervey@anaconda.com, frosado@anaconda.com, mtandon@anaconda.com",
+    author_email=(
+        "mkramer@anaconda.com, "
+        "fpliger@anaconda.com, "
+        "ntollervey@anaconda.com, "
+        "frosado@anaconda.com, "
+        "mtandon@anaconda.com"
+    ),
     license="Apache-2.0",
     install_requires=[
         'importlib-metadata; python_version<"3.8"',
