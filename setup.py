@@ -94,4 +94,5 @@ setup(
         "Homepage": "https://pyscript.net",
         "Repository": "https://github.com/pyscript/pyscript-cli",
     },
+    zip_safe=False,
 )
