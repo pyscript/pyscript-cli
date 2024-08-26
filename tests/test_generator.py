@@ -238,7 +238,7 @@ def check_plugin_project_files(
             f"""        <div>
             <h2> Description </h2>
             <p>{ plugin_description }</p>
-        </div>"""
+        </div>"""  # noqa: E201, E202
         )
         assert f'<py-script src="./{python_file}">' in contents
         assert f'<py-config src="./{config_file}">' in contents
