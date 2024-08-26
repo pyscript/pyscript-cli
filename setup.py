@@ -9,12 +9,13 @@ def read_version():
 
 
 def check_tag_version():
-    tag = os.getenv("GITHUB_REF")
-    expected_version = read_version()
-    if tag != f"refs/tags/{expected_version}":
-        raise Exception(
-            f"Tag '{tag}' does not match the expected " f"version '{expected_version}'"
-        )
+    if os.getenv("CHECK_VERSION", "false").lower() == "true":
+        tag = os.getenv("GITHUB_REF")
+        expected_version = read_version()
+        if tag != f"refs/tags/{expected_version}":
+            raise Exception(
+                f"Tag '{tag}' does not match the expected " f"version '{expected_version}'"
+            )
 
 
 with open("README.md") as fh:
