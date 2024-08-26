@@ -9,8 +9,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     environment:
-        name: pypi
-        url: https://pypi.org/project/pyscript
+      name: pypi
+      url: https://pypi.org/project/pyscript
     permissions:
       id-token: write
     steps:
