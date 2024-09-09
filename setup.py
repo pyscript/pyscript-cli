@@ -25,7 +25,7 @@ with open("README.md") as fh:
 check_tag_version()
 
 setup(
-    name="pyscript",
+    name="pyscript-cli",
     version=read_version(),
     description="Command Line Interface for PyScript",
     package_dir={"": "src"},
