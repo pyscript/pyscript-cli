@@ -46,7 +46,7 @@ setup(
     install_requires=[
         'importlib-metadata; python_version<"3.8"',
         "Jinja2<3.2",
-        "pluggy<1.3",
+        "pluggy==1.5.0",
         "rich<=13.7.1",
         "toml<0.11",
         "typer<=0.9.0",
