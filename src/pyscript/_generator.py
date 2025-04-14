@@ -161,17 +161,22 @@ def create_project(
 
 def _get_latest_pyscript_version() -> str:
     """Get the latest version of PyScript from GitHub."""
-    url = "https://api.github.com/repos/pyscript/pyscript/releases/latest"
+    return _get_latest_repo_version("pyscript", "pyscript", LATEST_PYSCRIPT_VERSION)
+
+
+def _get_latest_repo_version(gh_user: str, gh_repo: str, default: str):
+    """Get the latest version of given repo from GitHub."""
+    url = f"https://api.github.com/repos/{gh_user}/{gh_repo}/releases/latest"
     try:
         response = requests.get(url)
 
         if not response.ok:
-            pyscript_version = LATEST_PYSCRIPT_VERSION
+            version = default
         else:
 
             data = response.json()
-            pyscript_version = data["tag_name"]
+            version = data["tag_name"]
     except Exception:
-        pyscript_version = LATEST_PYSCRIPT_VERSION
+        version = default
 
-    return pyscript_version
+    return version
