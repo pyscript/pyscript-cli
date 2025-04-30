@@ -155,3 +155,28 @@ Note: Make sure all tests pass locally before creating a new release. The releas
 
 Note 2: The version number in `src/pyscript/version` and the tag pushed to git (`X.Y.Z` in the example above) MUST MATCH! If they don't match the, the
 action to create and publish the release won't start.
+
+
+### How the Release Process Works
+
+The release process is automated through GitHub Actions workflows. Here's what happens behind the scenes:
+
+1. When a new tag is pushed, it triggers the release workflow
+2. The workflow first checks that:
+   - The tag name matches the version in `src/pyscript/version`
+   - All tests pass successfully
+
+3. If checks pass, the workflow:
+   - Builds the Python package using setuptools
+   - Creates source and wheel distributions
+   - Uploads the distributions to PyPI using twine
+   - Creates a GitHub release with the tag name
+
+4. The version check is performed by the `check_tag_version()` function in setup.py, which:
+   - Reads the version from `src/pyscript/version`
+   - Compares it to the git tag that triggered the workflow
+   - Fails if they don't match exactly
+
+5. The PyPI upload uses credentials stored as GitHub repository secrets
+
+This automated process ensures consistent and reliable releases while preventing common issues like version mismatches or failed tests from being published.
