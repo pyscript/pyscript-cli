@@ -54,6 +54,37 @@ After setting up your developer enviroment, you can run the tests with the follo
 pytest .
 ```
 
+# Running CLI Commands
+
+Once the installation process is done, the `pyscript` CLI is avaible to be used once the environment has been
+activated. Simply run `pyscript` with the appropriate command. For instance, to see the list of commands:
+
+```shell
+>> pyscript --help
+
+ Usage: pyscript [OPTIONS] COMMAND [ARGS]...
+
+ Command Line Interface for PyScript.
+
+╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --version          Show project version and exit.                                                                                                                    │
+│ --help             Show this message and exit.                                                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ create  Create a new pyscript project with the passed in name, creating a new directory in the current directory. Alternatively, use `--wrap` so as to embed a       │
+│         python file instead.                                                                                                                                         │
+│ run     Creates a local server to run the app on the path and port specified.                                                                                        │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
+
+or, to run a pyscript app:
+
+```shell
+>> pyscript run
+Serving from /pyscript-example at port 8000. To stop, press Ctrl+C.
+127.0.0.1 - - [30/Apr/2025 17:01:03] "GET / HTTP/1.1" 200 -
+```
+
 ## Documentation
 
 ### Install the documentation dependencies
