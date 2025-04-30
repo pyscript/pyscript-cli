@@ -123,3 +123,35 @@ e.g.:
 ```shell
 make -C docs html
 ```
+
+
+## Creating a New Release
+
+To create a new release of pyscript-cli, follow these steps:
+
+1. Update the version number in `src/pyscript/version`
+
+2. Update CHANGELOG.md with the changes since the last release
+
+3. Create a new git tag matching the version number:
+   ```shell
+   git tag X.Y.Z
+   ```
+
+4. Push the tag to GitHub:
+   ```shell
+   git push origin X.Y.Z
+   ```
+
+5. The GitHub Actions workflow will automatically:
+   - Verify the tag matches the version in `src/pyscript/version`
+   - Run tests
+   - Build and publish the package to PyPI
+   - Create a GitHub release
+
+6. Verify the new version is available on PyPI: https://pypi.org/project/pyscript-cli/
+
+Note: Make sure all tests pass locally before creating a new release. The release workflow will fail if there are any test failures or version mismatches.
+
+Note 2: The version number in `src/pyscript/version` and the tag pushed to git (`X.Y.Z` in the example above) MUST MATCH! If they don't match the, the
+action to create and publish the release won't start.
