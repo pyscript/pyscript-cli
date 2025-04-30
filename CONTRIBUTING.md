@@ -14,14 +14,29 @@ git clone https://github.com/pyscript/pyscript.git
 pip install --upgrade pip
 ```
 
-Make a virtualenv and activate it:
+Create a local enviroment with your enviroment manager of choice.
+
+### Virtualenv
+
+In case you choose Virtualenv, make a virtualenv and activate it using the following commands:
 
 ```shell
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-Install your local enviroment dependencies
+### Conda
+
+In case you choose to use conda, use the following commands:
+
+```shell
+conda create -n pyscript-cli python
+conda activate pyscript-cli
+```
+
+### Installation
+
+Now that you have your environment set up and activated, install your local enviroment dependencies
 
 ```shell
 pip install -e ".[dev]"
