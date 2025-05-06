@@ -180,3 +180,6 @@ The release process is automated through GitHub Actions workflows. Here's what h
 5. The PyPI upload uses credentials stored as GitHub repository secrets
 
 This automated process ensures consistent and reliable releases while preventing common issues like version mismatches or failed tests from being published.
+
+NOTE: If you wanna build locally, run `CHECK_VERSION=False python -m build`. This will skip the check tag version conditions defined in `setup.py`, allowing
+to create the wheel locally, without having a tag with a version matching the `src/pyscript/version` file.
