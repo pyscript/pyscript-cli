@@ -30,7 +30,7 @@ source .venv/bin/activate
 In case you choose to use conda, use the following commands:
 
 ```shell
-conda create -n pyscript-cli python
+conda create -n pyscript-cli python=3.13
 conda activate pyscript-cli
 ```
 
