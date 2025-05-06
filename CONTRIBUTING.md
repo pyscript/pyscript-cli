@@ -14,7 +14,7 @@ git clone https://github.com/pyscript/pyscript.git
 pip install --upgrade pip
 ```
 
-Create a local enviroment with your enviroment manager of choice.
+Create a local environment with your environment manager of choice.
 
 ### Virtualenv
 
@@ -36,7 +36,7 @@ conda activate pyscript-cli
 
 ### Installation
 
-Now that you have your environment set up and activated, install your local enviroment dependencies
+Now that you have your environment set up and activated, install your local environment dependencies
 
 ```shell
 pip install -e ".[dev]"
@@ -48,7 +48,7 @@ It is now possible to normally use the CLI. For more information on how to use i
 
 ## Run the tests
 
-After setting up your developer enviroment, you can run the tests with the following command from the root directory:
+After setting up your developer environment, you can run the tests with the following command from the root directory:
 
 ```shell
 pytest .
@@ -56,7 +56,7 @@ pytest .
 
 # Running CLI Commands
 
-Once the installation process is done, the `pyscript` CLI is avaible to be used once the environment has been
+Once the installation process is done, the `pyscript` CLI is available to be used once the environment has been
 activated. Simply run `pyscript` with the appropriate command. For instance, to see the list of commands:
 
 ```shell
