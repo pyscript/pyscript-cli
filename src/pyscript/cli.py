@@ -8,7 +8,7 @@ from pluggy import PluginManager
 from pyscript import __version__, app, console, plugins, typer
 from pyscript.plugins import hookspecs
 
-DEFAULT_PLUGINS = ["create", "run"]
+DEFAULT_PLUGINS = ["create", "run", "convert_offline"]
 
 
 def ok(msg: str = ""):
