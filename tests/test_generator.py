@@ -234,11 +234,9 @@ def check_plugin_project_files(
         contents = fp.read()
         contents = dedent(contents)
         assert f"            <h1>{plugin_name}</h1>" in contents
-        assert dedent(
-            f"""        <div>
+        assert dedent(f"""        <div>
             <h2> Description </h2>
             <p>{ plugin_description }</p>
-        </div>"""  # noqa: E201, E202
-        )
+        </div>""")  # noqa: E201, E202
         assert f'<py-script src="./{python_file}">' in contents
         assert f'<py-config src="./{config_file}">' in contents
