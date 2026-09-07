@@ -55,10 +55,8 @@ def create(
         raise cli.Abort("Cannot provide both an input '.py' file and '-c' option.")
 
     if (output or command) and (not wrap):
-        raise cli.Abort(
-            """`--output/-o`, and `--command/-c`
-            are meant to be used with `--wrap/-w`"""
-        )
+        raise cli.Abort("""`--output/-o`, and `--command/-c`
+            are meant to be used with `--wrap/-w`""")
 
     if not app_description:
         app_description = typer.prompt("App description", default="")
